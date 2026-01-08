@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ivan Galaviz | Software Engineer @ Netflix</title>
+  <meta name="description"
+    content="Software Engineer at Netflix. Building scalable systems and solving challenging problems. Previously at Nubank and Wizeline.">
+  <meta property="og:title" content="Ivan Galaviz | Software Engineer">
+  <meta property="og:description"
+    content="Software Engineer at Netflix. Building scalable systems and solving challenging problems.">
+  <meta property="og:type" content="website">
+
+  <!-- Tailwind CSS v4 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style type="text/tailwindcss">
+    @theme {
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --color-netflix-red: #E50914;
+      --color-netflix-red-dark: #B20710;
+      --color-dark-900: #0a0a0a;
+      --color-dark-800: #141414;
+      --color-dark-700: #1a1a1a;
+      --color-dark-600: #2a2a2a;
+      --color-accent: #E50914;
+    }
+    
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(229, 9, 20, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(229, 9, 20, 0.6); }
+    }
+  </style>
+
+  <style>
+    * {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+    }
+
+    .font-display {
+      font-family: 'Bebas Neue', sans-serif;
+    }
+
+    .animate-fade-in-up {
+      animation: fade-in-up 0.8s ease-out forwards;
+    }
+
+    .animate-delay-100 {
+      animation-delay: 0.1s;
+    }
+
+    .animate-delay-200 {
+      animation-delay: 0.2s;
+    }
+
+    .animate-delay-300 {
+      animation-delay: 0.3s;
+    }
+
+    .animate-delay-400 {
+      animation-delay: 0.4s;
+    }
+
+    .animate-delay-500 {
+      animation-delay: 0.5s;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #fff 0%, #E50914 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-gradient {
+      background: radial-gradient(ellipse at top, rgba(229, 9, 20, 0.15) 0%, transparent 50%),
+        linear-gradient(180deg, #0a0a0a 0%, #141414 100%);
+    }
+
+    .grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+      z-index: 1000;
+    }
+
+    .timeline-line {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(180deg, #E50914 0%, #2a2a2a 100%);
+    }
+
+    @media (max-width: 768px) {
+      .timeline-line {
+        left: 20px;
+      }
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(229, 9, 20, 0.1);
+    }
+
+    .glow-border {
+      position: relative;
+    }
+
+    .glow-border::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, #E50914, transparent, #E50914);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    .glow-border:hover::before {
+      opacity: 1;
+    }
+
+    /* Mobile Menu Styles */
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      gap: 5px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 10, 10, 0.98);
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-menu a {
+      font-size: 1.5rem;
+      color: #9ca3af;
+      transition: color 0.3s ease, transform 0.3s ease;
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    .mobile-menu.active a {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .mobile-menu.active a:nth-child(1) {
+      transition-delay: 0.1s;
+    }
+
+    .mobile-menu.active a:nth-child(2) {
+      transition-delay: 0.15s;
+    }
+
+    .mobile-menu.active a:nth-child(3) {
+      transition-delay: 0.2s;
+    }
+
+    .mobile-menu.active a:nth-child(4) {
+      transition-delay: 0.25s;
+    }
+
+    .mobile-menu.active a:nth-child(5) {
+      transition-delay: 0.3s;
+    }
+
+    .mobile-menu a:hover {
+      color: white;
+    }
+
+    /* Scroll indicator hidden state */
+    .scroll-indicator {
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .scroll-indicator.hidden {
+      opacity: 0 !important;
+      visibility: hidden;
+    }
+
+    /* Profile picture glow */
+    .profile-glow {
+      box-shadow: 0 0 30px rgba(229, 9, 20, 0.3);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .profile-glow:hover {
+      box-shadow: 0 0 50px rgba(229, 9, 20, 0.5);
+      transform: scale(1.05);
+    }
+
+    /* Force hide mobile menu and hamburger on desktop/tablet */
+    @media (min-width: 768px) {
+      .mobile-menu {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+
+      .hamburger {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-dark-900 text-white min-h-screen">
+  <!-- Grain overlay -->
+  <div class="grain"></div>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobileMenu" class="mobile-menu">
+    <a href="#experience" onclick="closeMobileMenu()">Experience</a>
+    <a href="#education" onclick="closeMobileMenu()">Education</a>
+    <a href="#volunteering" onclick="closeMobileMenu()">Volunteering</a>
+    <a href="#awards" onclick="closeMobileMenu()">Awards</a>
+    <a href="#contact" onclick="closeMobileMenu()" class="text-netflix-red">Contact</a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-dark-900/80 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#"
+        class="font-display text-2xl tracking-wider text-white hover:text-netflix-red transition-colors">IG</a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center gap-6">
+        <a href="#experience" class="text-sm text-gray-400 hover:text-white transition-colors">Experience</a>
+        <a href="#education" class="text-sm text-gray-400 hover:text-white transition-colors">Education</a>
+        <a href="#volunteering" class="text-sm text-gray-400 hover:text-white transition-colors">Volunteering</a>
+        <a href="#awards" class="text-sm text-gray-400 hover:text-white transition-colors">Awards</a>
+        <a href="#contact"
+          class="text-sm px-4 py-2 bg-netflix-red hover:bg-netflix-red-dark rounded transition-colors">Contact</a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <div id="hamburger" class="hamburger md:hidden" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-gradient min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-netflix-red/10 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-netflix-red/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <!-- Profile Picture -->
+      <div id="hero-profile-pic" class="mb-8 opacity-0 animate-fade-in-up">
+        <img src="https://github.com/ivanovishado.png" alt="Ivan Galaviz"
+          class="w-24 h-24 md:w-32 md:h-32 rounded-full mx-auto border-2 border-netflix-red/50 profile-glow object-cover">
+      </div>
+      <p
+        class="text-netflix-red font-medium tracking-widest uppercase mb-4 opacity-0 animate-fade-in-up animate-delay-100">
+        Software
+        Engineer</p>
+      <h1 class="font-display text-7xl md:text-9xl tracking-wide mb-6 opacity-0 animate-fade-in-up animate-delay-200">
+        <span class="gradient-text">IVAN GALAVIZ</span>
+      </h1>
+      <p
+        class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in-up animate-delay-200">
+        Powering marketing campaigns for titles worldwide at <span class="text-white font-semibold">Netflix</span>.
+      </p>
+      <div class="flex items-center justify-center gap-4 opacity-0 animate-fade-in-up animate-delay-300">
+        <span class="flex items-center gap-2 text-gray-500">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Mexico
+        </span>
+      </div>
+
+      <!-- Social Links -->
+      <div class="flex items-center justify-center gap-6 mt-12 opacity-0 animate-fade-in-up animate-delay-400">
+        <a href="https://github.com/ivanovishado" target="_blank" rel="noopener"
+          class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-700 hover:bg-netflix-red transition-colors group">
+          <svg class="w-5 h-5 text-gray-400 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+          </svg>
+        </a>
+        <a href="https://linkedin.com/in/ivanovishado" target="_blank" rel="noopener"
+          class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-700 hover:bg-netflix-red transition-colors group">
+          <svg class="w-5 h-5 text-gray-400 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+          </svg>
+        </a>
+        <a href="mailto:galavizivan23@gmail.com"
+          class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-700 hover:bg-netflix-red transition-colors group">
+          <svg class="w-5 h-5 text-gray-400 group-hover:text-white" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div id="scrollIndicator"
+        class="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in-up animate-delay-500 scroll-indicator">
+        <div class="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center pt-2">
+          <div class="w-1 h-2 bg-netflix-red rounded-full animate-bounce"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="experience" class="py-32 bg-dark-800 relative">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">EXPERIENCE</h2>
+      <p class="text-gray-500 text-center mb-20">7+ years building scalable systems</p>
+
+      <div class="space-y-12">
+        <!-- Netflix -->
+        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 glow-border">
+          <div class="flex flex-col md:flex-row md:items-start gap-6">
+            <div class="flex-shrink-0">
+              <div id="logo-netflix"
+                class="w-16 h-16 rounded-xl bg-black flex items-center justify-center overflow-hidden border border-white/10">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Netflix_2016_N_logo.svg"
+                  alt="Netflix Logo" class="w-12 h-12 object-contain">
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                <div>
+                  <h3 class="text-2xl font-semibold">Software Engineer</h3>
+                  <p class="text-netflix-red font-medium">Netflix</p>
+                </div>
+                <span class="text-gray-500 mt-2 md:mt-0">Apr 2023 — Present</span>
+              </div>
+              <p class="text-gray-400 leading-relaxed">
+                Building a Digital Asset Management (DAM) System that powers marketing campaigns for Netflix titles.
+                Collaborating with cross-functional teams to deliver scalable solutions that reach our users
+                worldwide.
+              </p>
+              <div class="flex flex-wrap gap-2 mt-4">
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Distributed Systems</span>
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Java</span>
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Microservices</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nubank -->
+        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
+          <div class="flex flex-col md:flex-row md:items-start gap-6">
+            <div class="flex-shrink-0">
+              <div id="logo-nubank"
+                class="w-16 h-16 rounded-xl bg-white flex items-center justify-center overflow-hidden">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Nubank_logo_2021.svg" alt="Nubank Logo"
+                  class="w-12 h-12 object-contain">
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                <div>
+                  <h3 class="text-2xl font-semibold">Senior Software Engineer</h3>
+                  <p class="text-purple-400 font-medium">Nubank</p>
+                </div>
+                <span class="text-gray-500 mt-2 md:mt-0">Aug 2021 — Apr 2023</span>
+              </div>
+              <ul class="text-gray-400 space-y-2">
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400 mt-1">▸</span>
+                  Led the design, implementation, and monitoring of critical projects to enhance the experience of
+                  people applying for Nubank's products
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400 mt-1">▸</span>
+                  Mentored mid-level engineers to empower them to own essential tasks and projects
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400 mt-1">▸</span>
+                  Interviewed dozens of candidates across all hiring pipeline stages
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400 mt-1">▸</span>
+                  Organized and executed initiatives to increase brand awareness (Building Nu MX Meetups)
+                </li>
+              </ul>
+              <div class="flex flex-wrap gap-2 mt-4">
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Clojure</span>
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Datomic</span>
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Event-Driven</span>
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Functional Programming</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizeline -->
+        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
+          <div class="flex flex-col md:flex-row md:items-start gap-6">
+            <div class="flex-shrink-0">
+              <div id="logo-wizeline"
+                class="w-16 h-16 rounded-xl bg-white flex items-center justify-center overflow-hidden">
+                <img src="https://github.com/wizeline.png" alt="Wizeline Logo" class="w-full h-full object-cover">
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                <div>
+                  <h3 class="text-2xl font-semibold">Software Engineer I → III</h3>
+                  <p class="text-blue-400 font-medium">Wizeline</p>
+                </div>
+                <span class="text-gray-500 mt-2 md:mt-0">Aug 2018 — Jul 2021</span>
+              </div>
+              <ul class="text-gray-400 space-y-2">
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-400 mt-1">▸</span>
+                  Worked on a platform processing hundreds of billions of events monthly for major US broadcasting
+                  companies
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-400 mt-1">▸</span>
+                  Built Authorization/Identity flows for one of the biggest entertainment companies in the US
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-400 mt-1">▸</span>
+                  Developed a chatbot for the largest real estate company in the US
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-400 mt-1">▸</span>
+                  Promoted from Trainee to full-time in 2 months; progressed to SE III in 3 years
+                </li>
+              </ul>
+              <div class="flex flex-wrap gap-2 mt-4">
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Go</span>
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Python</span>
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">AWS</span>
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">gRPC</span>
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">React</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="py-32 bg-dark-900 relative">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">SKILLS</h2>
+      <p class="text-gray-500 text-center mb-20">Technologies I work with</p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div
+          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors">
+          <p class="font-semibold text-white">Programming Languages</p>
+          <p class="text-gray-400 text-sm mt-2">Java, Python, Go, Clojure, TypeScript</p>
+        </div>
+        <div
+          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors">
+          <p class="font-semibold text-white">Cloud</p>
+          <p class="text-gray-400 text-sm mt-2">AWS, GCP, Azure</p>
+        </div>
+        <div
+          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors">
+          <p class="font-semibold text-white">Databases</p>
+          <p class="text-gray-400 text-sm mt-2">Datomic, DynamoDB, Elasticsearch, MySQL</p>
+        </div>
+        <div
+          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors">
+          <p class="font-semibold text-white">Paradigms</p>
+          <p class="text-gray-400 text-sm mt-2">Distributed Systems, Event-Driven, Functional</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Education Section -->
+  <section id="education" class="py-32 bg-dark-800 relative">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">EDUCATION</h2>
+      <p class="text-gray-500 text-center mb-20">Academic background & continuous learning</p>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Main Education -->
+        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
+          <div class="flex items-center gap-4 mb-6">
+            <div id="logo-udeg"
+              class="w-16 h-16 rounded-xl bg-white/10 flex items-center justify-center overflow-hidden p-2">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Escudo_UdeG.svg" alt="UdeG Logo"
+                class="w-full h-full object-contain">
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold">B.E. Computer Engineering</h3>
+              <p class="text-yellow-400">Universidad de Guadalajara</p>
+            </div>
+          </div>
+          <p class="text-gray-500">Aug 2013 — Jun 2018</p>
+          <p class="text-gray-400 mt-4">Terminal Project: News scraper for Mexican news websites with violence
+            classification using NLP.</p>
+        </div>
+
+        <!-- Additional Training -->
+        <div class="space-y-4">
+          <div class="bg-dark-700 rounded-xl p-6 border border-white/5">
+            <h4 class="font-semibold text-white">Data Engineering Bootcamp</h4>
+            <p class="text-gray-500 text-sm">Wizeline Academy • Oct — Dec 2021</p>
+          </div>
+          <div class="bg-dark-700 rounded-xl p-6 border border-white/5">
+            <h4 class="font-semibold text-white">Deep Learning</h4>
+            <p class="text-gray-500 text-sm">Saturdays.AI • May — Jul 2021</p>
+          </div>
+          <div class="bg-dark-700 rounded-xl p-6 border border-white/5">
+            <h4 class="font-semibold text-white">Machine Learning</h4>
+            <p class="text-gray-500 text-sm">Saturdays.AI • Mar — Jun 2020</p>
+          </div>
+          <div class="bg-dark-700 rounded-xl p-6 border border-white/5">
+            <h4 class="font-semibold text-white">ELP English Language Program</h4>
+            <p class="text-gray-500 text-sm">University of Toronto • 2015</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Volunteering Section -->
+  <section id="volunteering" class="py-32 bg-dark-900 relative">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">VOLUNTEERING</h2>
+      <p class="text-gray-500 text-center mb-20">Giving back to the community</p>
+
+      <div class="space-y-12">
+        <!-- Mat X Space -->
+        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
+          <div class="flex flex-col md:flex-row md:items-start gap-6">
+            <div class="flex-shrink-0">
+              <div id="icon-matxspace"
+                class="w-16 h-16 rounded-xl bg-green-500/20 flex items-center justify-center text-3xl">
+                👽
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                <div>
+                  <h3 class="text-2xl font-semibold">Marketing Team Member</h3>
+                  <p class="text-green-400 font-medium">Mat X Space</p>
+                </div>
+                <span class="text-gray-500 mt-2 md:mt-0">Nov 2022 — Present</span>
+              </div>
+              <p class="text-gray-400 mb-4">I've been a key Marketing Team member for Mat X Space, focusing on web
+                presence and content strategy.</p>
+              <ul class="text-gray-400 space-y-2">
+                <li class="flex items-start gap-2">
+                  <span class="text-green-400 mt-1">▸</span>
+                  Developed the official webpage: <a href="https://matxspace.com" target="_blank"
+                    class="text-white hover:underline">matxspace.com</a>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-green-400 mt-1">▸</span>
+                  Developed the blog: <a href="https://blog.matxspace.com" target="_blank"
+                    class="text-white hover:underline">blog.matxspace.com</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Technovation -->
+        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
+          <div class="flex flex-col md:flex-row md:items-start gap-6">
+            <div class="flex-shrink-0">
+              <div id="icon-technovation"
+                class="w-16 h-16 rounded-xl bg-teal-500/20 flex items-center justify-center text-3xl">
+                👩‍💻
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                <div>
+                  <h3 class="text-2xl font-semibold">Mentor & Judge</h3>
+                  <p class="text-teal-400 font-medium">Technovation Girls</p>
+                </div>
+                <span class="text-gray-500 mt-2 md:mt-0">2019 • 2020 • 2021 • 2025</span>
+              </div>
+              <p class="text-gray-400">
+                Served as a Mentor and Judge for Technovation competitions, empowering girls to become tech
+                entrepreneurs and leaders. Supported teams in identifying problems in their community and creating
+                mobile app solutions.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizeline Academy -->
+        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
+          <div class="flex flex-col md:flex-row md:items-start gap-6">
+            <div class="flex-shrink-0">
+              <div id="icon-wizeline-academy"
+                class="w-16 h-16 rounded-xl bg-blue-500/20 flex items-center justify-center text-3xl">
+                🎓
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                <div>
+                  <h3 class="text-2xl font-semibold">Course Designer, Speaker & Mentor</h3>
+                  <p class="text-blue-400 font-medium">Wizeline Academy</p>
+                </div>
+                <span class="text-gray-500 mt-2 md:mt-0">2018 — 2021</span>
+              </div>
+              <p class="text-gray-400 mb-4">Significant participation in Wizeline Academy initiatives to foster talent
+                development.</p>
+              <div class="grid md:grid-cols-2 gap-4">
+                <ul class="text-gray-400 space-y-2">
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-400 mt-1">▸</span>
+                    Creating and implementing chatbots
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-400 mt-1">▸</span>
+                    Teaching JavaScript to complete beginners
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-400 mt-1">▸</span>
+                    Teaching Go to mid-advanced programmers
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-400 mt-1">▸</span>
+                    Giving talks about concurrency in Go
+                  </li>
+                </ul>
+                <ul class="text-gray-400 space-y-2">
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-400 mt-1">▸</span>
+                    Implementing a project to translate spoken English to ASL
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-400 mt-1">▸</span>
+                    Developing both soft and hard skills for junior engineers
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-400 mt-1">▸</span>
+                    Developing hard skills for senior engineers
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Presentations Section -->
+  <section class="py-32 bg-dark-800 relative">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">TALKS</h2>
+      <p class="text-gray-500 text-center mb-20">Sharing knowledge with the community</p>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <a href="https://www.youtube.com/watch?v=o75pGPjBqmU" target="_blank" rel="noopener"
+          class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 group">
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-12 h-12 rounded-xl bg-netflix-red/20 flex items-center justify-center group-hover:bg-netflix-red transition-colors">
+              <svg class="w-6 h-6 text-netflix-red group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold group-hover:text-netflix-red transition-colors">Engineering Principles at
+                Nubank</h3>
+            </div>
+          </div>
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=YpFuzEAWjJM" target="_blank" rel="noopener"
+          class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 group">
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
+              <svg class="w-6 h-6 text-blue-400 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold group-hover:text-blue-400 transition-colors">Go Concurrency Patterns</h3>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Awards Section -->
+  <section id="awards" class="py-32 bg-dark-900 relative">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">AWARDS</h2>
+      <p class="text-gray-500 text-center mb-20">Recognition & achievements</p>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div
+          class="bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-colors">
+          <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-netflix-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-white">Premio Ceneval</h3>
+          <p class="text-gray-500 text-sm">Excellence Award EGEL • 2018</p>
+        </div>
+
+        <div
+          class="bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-colors">
+          <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-netflix-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-white">3rd Place</h3>
+          <p class="text-gray-500 text-sm">Social Data Challenge • 2020</p>
+        </div>
+
+        <div
+          class="bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-colors">
+          <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-netflix-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-white">Research Scholarships</h3>
+          <p class="text-gray-500 text-sm">Programa Delfín • 2017, 2018</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-32 bg-dark-800 relative">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="font-display text-5xl md:text-6xl mb-4 tracking-wide">LET'S CONNECT</h2>
+      <p class="text-gray-400 text-lg mb-12 max-w-xl mx-auto">
+        I'm always open to discussing new opportunities, interesting projects, or ways to collaborate.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="mailto:galavizivan23@gmail.com"
+          class="w-full sm:w-auto px-8 py-4 bg-netflix-red hover:bg-netflix-red-dark rounded-xl font-semibold transition-colors flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Email Me
+        </a>
+        <a href="https://linkedin.com/in/ivanovishado" target="_blank" rel="noopener"
+          class="w-full sm:w-auto px-8 py-4 bg-dark-700 hover:bg-dark-600 border border-white/10 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+          </svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/ivanovishado" target="_blank" rel="noopener"
+          class="w-full sm:w-auto px-8 py-4 bg-dark-700 hover:bg-dark-600 border border-white/10 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 bg-dark-900 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-gray-500 text-sm">© Ivan Galaviz. All rights reserved.</p>
+      <div class="flex items-center gap-2 text-gray-500 text-sm">
+        <span>Built with</span>
+        <svg class="w-4 h-4 text-netflix-red" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
+        <span>using Tailwind CSS</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Intersection Observer for animations -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in-up');
+            entry.target.style.opacity = '1';
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('section > div').forEach(el => {
+        el.style.opacity = '0';
+        observer.observe(el);
+      });
+    });
+
+    // Mobile Menu Functions
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.getElementById('hamburger');
+      menu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+
+      // Prevent scrolling when menu is open
+      document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+    }
+
+    function closeMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.getElementById('hamburger');
+      menu.classList.remove('active');
+      hamburger.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Scroll Indicator Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const scrollIndicator = document.getElementById('scrollIndicator');
+
+      // Check if already scrolled previously
+      if (sessionStorage.getItem('hasScrolled')) {
+        scrollIndicator.classList.add('hidden');
+      }
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          scrollIndicator.classList.add('hidden');
+          sessionStorage.setItem('hasScrolled', 'true');
+        }
+      }, { once: true });
+      // Using { once: true } isn't enough if we want it to persist on slightly scrolling up/down
+      // Better to just listen and remove.
+
+      const handleScroll = () => {
+        if (window.scrollY > 50) {
+          scrollIndicator.classList.add('hidden');
+          sessionStorage.setItem('hasScrolled', 'true');
+          window.removeEventListener('scroll', handleScroll);
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+    });
+  </script>
+</body>
+
+</html>
