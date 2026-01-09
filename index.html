@@ -297,6 +297,7 @@
   <!-- Mobile Menu Overlay -->
   <div id="mobileMenu" class="mobile-menu">
     <a href="#experience" onclick="closeMobileMenu()">Experience</a>
+    <a href="#skills" onclick="closeMobileMenu()">Skills</a>
     <a href="#education" onclick="closeMobileMenu()">Education</a>
     <a href="#volunteering" onclick="closeMobileMenu()">Volunteering</a>
     <a href="#awards" onclick="closeMobileMenu()">Awards</a>
@@ -312,6 +313,7 @@
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center gap-6">
         <a href="#experience" class="text-sm text-gray-400 hover:text-white transition-colors">Experience</a>
+        <a href="#skills" class="text-sm text-gray-400 hover:text-white transition-colors">Skills</a>
         <a href="#education" class="text-sm text-gray-400 hover:text-white transition-colors">Education</a>
         <a href="#volunteering" class="text-sm text-gray-400 hover:text-white transition-colors">Volunteering</a>
         <a href="#awards" class="text-sm text-gray-400 hover:text-white transition-colors">Awards</a>
@@ -404,7 +406,8 @@
   <section id="experience" class="py-32 bg-dark-800 relative">
     <div class="max-w-6xl mx-auto px-6">
       <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">EXPERIENCE</h2>
-      <p class="text-gray-500 text-center mb-20">7+ years building scalable systems</p>
+      <p class="text-gray-500 text-center mb-20"><span id="years-experience"></span>+ years building scalable systems
+      </p>
 
       <div class="space-y-12">
         <!-- Netflix -->
@@ -431,6 +434,7 @@
                 worldwide.
               </p>
               <div class="flex flex-wrap gap-2 mt-4">
+                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">AI: LLMs & Emerging Tech</span>
                 <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Distributed Systems</span>
                 <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Java</span>
                 <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Microservices</span>
@@ -537,29 +541,36 @@
   </section>
 
   <!-- Skills Section -->
-  <section class="py-32 bg-dark-900 relative">
+  <section id="skills" class="py-32 bg-dark-900 relative">
     <div class="max-w-6xl mx-auto px-6">
       <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">SKILLS</h2>
       <p class="text-gray-500 text-center mb-20">Technologies I work with</p>
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div
-          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors">
+          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors col-span-2 md:col-span-4">
+          <p class="font-semibold text-white">AI & Emerging Tech</p>
+          <p class="text-gray-400 text-sm mt-2">Vibe Coding, LLM Orchestration, Sub-Agent Workflows, Context
+            Engineering, MCP Server Management, Skill Creation, AI-Powered Development</p>
+          <p class="text-gray-500 text-xs mt-2 italic">This entire site was vibe coded ✨</p>
+        </div>
+        <div
+          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors flex flex-col justify-center">
           <p class="font-semibold text-white">Programming Languages</p>
           <p class="text-gray-400 text-sm mt-2">Java, Python, Go, Clojure, TypeScript</p>
         </div>
         <div
-          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors">
+          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors flex flex-col justify-center">
           <p class="font-semibold text-white">Cloud</p>
           <p class="text-gray-400 text-sm mt-2">AWS, GCP, Azure</p>
         </div>
         <div
-          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors">
+          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors flex flex-col justify-center">
           <p class="font-semibold text-white">Databases</p>
           <p class="text-gray-400 text-sm mt-2">Datomic, DynamoDB, Elasticsearch, MySQL</p>
         </div>
         <div
-          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors">
+          class="bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors flex flex-col justify-center">
           <p class="font-semibold text-white">Paradigms</p>
           <p class="text-gray-400 text-sm mt-2">Distributed Systems, Event-Driven, Functional</p>
         </div>
@@ -574,31 +585,45 @@
       <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">EDUCATION</h2>
       <p class="text-gray-500 text-center mb-20">Academic background & continuous learning</p>
 
-      <div class="grid md:grid-cols-2 gap-8">
-        <!-- Main Education -->
-        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
-          <div class="flex items-center gap-4 mb-6">
-            <div id="logo-udeg"
-              class="w-16 h-16 rounded-xl bg-white/10 flex items-center justify-center overflow-hidden p-2">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Escudo_UdeG.svg" alt="UdeG Logo"
-                class="w-full h-full object-contain">
+      <div class="space-y-8">
+        <!-- Top Row: Main Education + Stacked Cards -->
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Main Education -->
+          <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
+            <div class="flex items-center gap-4 mb-6">
+              <div id="logo-udeg"
+                class="w-16 h-16 rounded-xl bg-white/10 flex items-center justify-center overflow-hidden p-2">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Escudo_UdeG.svg" alt="UdeG Logo"
+                  class="w-full h-full object-contain">
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold">B.E. Computer Engineering</h3>
+                <p class="text-yellow-400">Universidad de Guadalajara</p>
+              </div>
             </div>
-            <div>
-              <h3 class="text-xl font-semibold">B.E. Computer Engineering</h3>
-              <p class="text-yellow-400">Universidad de Guadalajara</p>
+            <p class="text-gray-500">Aug 2013 — Jun 2018</p>
+            <p class="text-gray-400 mt-4">Terminal Project: News scraper for Mexican news websites with violence
+              classification using NLP.</p>
+          </div>
+
+          <!-- Right Column: Stacked Cards -->
+          <div class="flex flex-col gap-4">
+            <div class="bg-dark-700 rounded-xl p-6 border border-white/5 flex-1">
+              <h4 class="font-semibold text-white">Summer Space School</h4>
+              <p class="text-gray-500 text-sm">Samara University • 2024</p>
+              <p class="text-gray-400 text-xs mt-2">Two-week introduction course about CubeSats in Samara, Russia. <a
+                  href="https://blog.matxspace.com/2025-05-14-mi-aventura-espacial-de-m%C3%A9xico-a-samara/"
+                  target="_blank" class="text-white hover:underline">Read more</a></p>
+            </div>
+            <div class="bg-dark-700 rounded-xl p-6 border border-white/5 flex-1 flex flex-col justify-center">
+              <h4 class="font-semibold text-white">Data Engineering Bootcamp</h4>
+              <p class="text-gray-500 text-sm">Wizeline Academy • Oct — Dec 2021</p>
             </div>
           </div>
-          <p class="text-gray-500">Aug 2013 — Jun 2018</p>
-          <p class="text-gray-400 mt-4">Terminal Project: News scraper for Mexican news websites with violence
-            classification using NLP.</p>
         </div>
 
-        <!-- Additional Training -->
-        <div class="space-y-4">
-          <div class="bg-dark-700 rounded-xl p-6 border border-white/5">
-            <h4 class="font-semibold text-white">Data Engineering Bootcamp</h4>
-            <p class="text-gray-500 text-sm">Wizeline Academy • Oct — Dec 2021</p>
-          </div>
+        <!-- Bottom Row: Three Equal Cards -->
+        <div class="grid md:grid-cols-3 gap-8">
           <div class="bg-dark-700 rounded-xl p-6 border border-white/5">
             <h4 class="font-semibold text-white">Deep Learning</h4>
             <p class="text-gray-500 text-sm">Saturdays.AI • May — Jul 2021</p>
@@ -749,14 +774,14 @@
   <section class="py-32 bg-dark-800 relative">
     <div class="max-w-6xl mx-auto px-6">
       <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">TALKS</h2>
-      <p class="text-gray-500 text-center mb-20">Sharing knowledge with the community</p>
+      <p class="text-gray-500 text-center mb-20">Sharing knowledge with the community, <i>in Spanish</i></p>
 
       <div class="grid md:grid-cols-2 gap-8">
         <a href="https://www.youtube.com/watch?v=o75pGPjBqmU" target="_blank" rel="noopener"
           class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 group">
-          <div class="flex items-center gap-4 mb-4">
+          <div class="flex items-center gap-4">
             <div
-              class="w-12 h-12 rounded-xl bg-netflix-red/20 flex items-center justify-center group-hover:bg-netflix-red transition-colors">
+              class="w-12 h-12 flex-shrink-0 rounded-xl bg-netflix-red/20 flex items-center justify-center group-hover:bg-netflix-red transition-colors">
               <svg class="w-6 h-6 text-netflix-red group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path
                   d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
@@ -771,16 +796,51 @@
 
         <a href="https://www.youtube.com/watch?v=YpFuzEAWjJM" target="_blank" rel="noopener"
           class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 group">
-          <div class="flex items-center gap-4 mb-4">
+          <div class="flex items-center gap-4">
             <div
-              class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
-              <svg class="w-6 h-6 text-blue-400 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+              class="w-12 h-12 flex-shrink-0 rounded-xl bg-netflix-red/20 flex items-center justify-center group-hover:bg-netflix-red transition-colors">
+              <svg class="w-6 h-6 text-netflix-red group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path
                   d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
               </svg>
             </div>
             <div>
-              <h3 class="text-xl font-semibold group-hover:text-blue-400 transition-colors">Go Concurrency Patterns</h3>
+              <h3 class="text-xl font-semibold group-hover:text-netflix-red transition-colors">Go Concurrency Patterns
+              </h3>
+            </div>
+          </div>
+        </a>
+
+        <a href="https://open.spotify.com/episode/7InqS8nts57eJIwAMeCdBk" target="_blank" rel="noopener"
+          class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 group">
+          <div class="flex items-center gap-4">
+            <div
+              class="w-12 h-12 flex-shrink-0 rounded-xl bg-green-500/20 flex items-center justify-center group-hover:bg-green-500 transition-colors">
+              <svg class="w-6 h-6 text-green-400 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold group-hover:text-green-400 transition-colors">Detecting Hate Speech with
+                AI</h3>
+            </div>
+          </div>
+        </a>
+
+        <a href="https://open.spotify.com/episode/0IQna0wz6CNVALdQgy2CmV" target="_blank" rel="noopener"
+          class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 group">
+          <div class="flex items-center gap-4">
+            <div
+              class="w-12 h-12 flex-shrink-0 rounded-xl bg-green-500/20 flex items-center justify-center group-hover:bg-green-500 transition-colors">
+              <svg class="w-6 h-6 text-green-400 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold group-hover:text-green-400 transition-colors">AI Against Gender Violence
+              </h3>
             </div>
           </div>
         </a>
@@ -795,28 +855,63 @@
       <p class="text-gray-500 text-center mb-20">Recognition & achievements</p>
 
       <div class="grid md:grid-cols-3 gap-6">
-        <div
-          class="bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-colors">
+        <a href="https://forbes.com.mx/musk-llevara-un-experimento-mexicano-al-espacio-en-octubre/" target="_blank"
+          rel="noopener"
+          class="bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-all block group cursor-pointer">
           <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
-            <svg class="w-6 h-6 text-netflix-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            <svg class="w-6 h-6 text-netflix-red" viewBox="0 0 152 152" fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M85.2634 101.955L83.0496 100.156C79.208 103.601 75.4249 107.033 71.5951 110.412C69.7141 112.071 67.8074 113.713 65.8017 115.215C63.1986 117.165 61.5591 116.959 59.2507 114.585C58.4297 113.741 57.6847 112.822 56.6641 111.663C56.3176 114.759 56.139 117.521 55.6796 120.234C54.783 125.656 52.3996 130.723 48.7946 134.871C45.0535 139.214 42.2431 139.489 38.0018 135.793C35.2833 133.425 32.6494 130.96 29.9669 128.549C29.7058 128.403 29.4267 128.293 29.1366 128.221C27.0554 129.936 24.222 130.887 23.9647 134.563C23.8092 136.787 21.7581 137.963 19.497 138.23C18.2936 138.377 17.0747 138.137 16.0166 137.546C14.9584 136.954 14.116 136.041 13.611 134.939C12.6061 132.788 12.637 130.683 14.2253 128.805C14.627 128.332 15.345 127.722 15.834 127.788C19.8751 128.338 21.3965 125.004 23.8288 122.872C22.3337 121.339 20.8432 119.935 19.497 118.404C17.0613 115.631 14.646 112.836 12.3521 109.947C10.9896 108.23 11.6689 106.377 12.6488 104.731C16.5868 98.1197 22.4827 93.9598 29.7136 91.7532C32.4754 90.9105 35.469 90.8264 38.5085 90.3749C38.2979 89.867 38.0518 89.3747 37.7721 88.9014C34.8074 84.4278 34.9918 83.1526 39.0191 79.4502C43.7566 75.0954 48.4553 70.6979 53.196 66.2978C52.3717 64.3826 51.4042 64.5775 50.1342 65.604C48.6342 66.8746 47.0458 68.0371 45.381 69.0827C42.4334 70.8357 40.6016 70.6231 38.0176 68.3371C34.6702 65.3776 31.3275 62.4097 28.1023 59.3203C19.6574 51.2316 11.2506 43.1039 2.88182 34.9373C-0.451717 31.6924 -0.486506 30.8937 2.3049 27.2201C3.13561 26.2079 4.01895 25.2399 4.95126 24.3204C11.6879 17.1663 18.4718 10.0588 25.1507 2.85816C28.2204 -0.452408 29.7398 -1.02605 33.1954 1.87037C40.0529 7.61792 46.6084 13.7271 53.2538 19.7227C58.9298 24.8454 64.5198 30.0634 70.2181 35.1612C73.8175 38.3818 74.0663 39.7798 71.391 43.7303C70.7202 44.72 70.2483 45.8548 69.5152 46.7895C68.6783 47.7362 67.7847 48.6314 66.8393 49.4699L68.8123 52.3578C70.4137 51.0629 71.9259 49.8821 73.3929 48.6476C78.4847 44.361 83.5825 40.0804 88.6343 35.7472C91.3575 33.4107 92.808 33.3673 96.79 35.9533C97.6629 35.4007 98.6402 34.7549 99.6431 34.151C109.016 28.5157 121.122 33.2171 123.454 43.4933C124.694 48.9619 122.651 53.6068 119.062 57.6046C117.735 59.0814 117.017 60.3271 117.452 62.4838C118.062 65.5029 115.892 67.4917 113.938 69.4732C109.491 73.9829 105.115 78.5635 100.472 83.3619L102.473 85.8416C103.705 84.3576 105.016 82.9416 106.401 81.5996C109.686 78.7432 112.587 78.8338 115.625 81.8622C126.073 92.2809 136.643 102.583 146.852 113.235C153.659 120.336 153.11 121.913 146.614 128.922C138.8 137.212 129.686 144.172 119.631 149.526C113.889 152.641 111.367 152.069 107.072 147.254C98.0521 137.147 88.952 127.105 79.8906 117.035C79.2953 116.392 78.7416 115.713 78.2327 115C76.1849 112.042 76.2597 111.138 78.8142 108.49C80.8548 106.376 82.9413 104.305 85.2634 101.955ZM64.1989 108.997C80.7438 94.5308 94.9582 78.4262 110.113 63.209L91.6771 42.199C74.7003 55.7458 58.4323 69.993 42.9847 85.9112L64.1989 108.997ZM43.5426 131.492C47.7195 125.895 51.3563 116.462 49.9209 110.342C48.3719 103.741 43.9719 99.9718 38.6083 99.8163C32.4472 99.6384 24.3992 102.174 20.2308 106.367C27.507 114.546 36.2934 123.341 43.5426 131.492ZM96.3778 99.9876C92.0657 103.713 87.8907 107.318 83.4808 111.128L93.8168 120.316L105.417 110.415L96.3778 99.9876ZM120.737 96.8845L111.745 86.3247L100.644 96.112L110.756 105.923L120.737 96.8845ZM16.6905 20.3942L5.85372 30.1355L16.5842 39.3787L26.0105 29.2626L16.6905 20.3942ZM30.5596 7.58576L20.2315 17.2602L29.9026 25.3252L38.6083 16.3413L30.5596 7.58576ZM143.816 121.506L136.465 114.602L124.254 123.508L131.843 132.606L143.816 121.506ZM124.54 101.225L113.813 110.237L121.37 119.455C125.177 116.252 128.805 113.198 132.659 109.954L124.54 101.225ZM41.779 45.1453L33.3221 54.1103L43.1015 63.1415L50.3088 54.8027L41.779 45.1453ZM115.848 123.914L108.67 114.446C104.704 117.728 101.114 120.694 97.4995 123.685L105.742 131.795L115.848 123.914ZM116.287 144.611L126.281 137.33L118.501 127.98C114.903 130.503 111.584 132.829 108.262 135.158L116.287 144.611ZM54.8887 33.2164L46.5624 41.2821L56.0058 49.8848L63.4467 41.2211L54.8887 33.2164ZM21.2396 43.3897L27.7432 49.1785L37.1499 41.0446C34.8173 38.5918 32.5903 36.2487 30.3384 33.88L21.2396 43.3897ZM43.8373 21.4063L34.6525 29.9537L41.8296 36.6267L50.4742 28.5407L43.8373 21.4063ZM111.938 52.965C116.007 47.6939 116.256 43.7539 112.972 40.7302C109.688 37.7064 104.4 37.8134 100.737 41.2283L111.938 52.965ZM96.3351 88.0186L88.3232 95.2863L90.1826 97.8256L98.2996 89.286L96.3351 88.0186ZM62.0041 54.5014C56.3819 59.5618 56.3819 59.5618 58.257 61.6168L64.4142 56.1291L62.0041 54.5014Z" />
             </svg>
           </div>
-          <h3 class="font-semibold text-white">Premio Ceneval</h3>
-          <p class="text-gray-500 text-sm">Excellence Award EGEL • 2018</p>
-        </div>
+          <h3 class="font-semibold text-white">MCB-1 Space Experiment</h3>
+          <p class="text-gray-500 text-sm">SpaceX Mission CRS-31 • Nov 2024</p>
+          <p class="text-netflix-red text-xs mt-2 group-hover:underline">Featured in Forbes Mexico →</p>
+        </a>
 
         <div
           class="bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-colors">
           <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
             <svg class="w-6 h-6 text-netflix-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h3 class="font-semibold text-white">3rd Place</h3>
-          <p class="text-gray-500 text-sm">Social Data Challenge • 2020</p>
+          <h3 class="font-semibold text-white">IAC Research Papers</h3>
+          <p class="text-gray-500 text-sm">IAC '23 (Baku) & IAC '24 (Milan)</p>
+          <p class="text-gray-400 text-xs mt-2">Presented with Mat X Space</p>
+        </div>
+
+        <a href="https://www.matxspace.com/" target="_blank" rel="noopener"
+          class="bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-all block group cursor-pointer">
+          <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-netflix-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-white">1st Place</h3>
+          <p class="text-gray-500 text-sm">International Air & Space Program • Nov 2022</p>
+          <p class="text-netflix-red text-xs mt-2 group-hover:underline">Mat X Space was born here →</p>
+        </a>
+
+        <div
+          class="bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-colors">
+          <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-netflix-red" viewBox="0 0 24 24" fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg">
+              <!-- Ribbon straps -->
+              <path d="M7 1v7l5 4 5-4V1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <!-- Medal circle -->
+              <circle cx="12" cy="17" r="5" stroke="currentColor" stroke-width="1.5" />
+              <!-- Number 1 in center -->
+              <text x="12" y="19" font-size="6" text-anchor="middle" fill="currentColor" font-weight="bold">1</text>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-white">Premio Ceneval</h3>
+          <p class="text-gray-500 text-sm">Excellence Award EGEL • 2018</p>
         </div>
 
         <div
@@ -955,6 +1050,12 @@
       };
 
       window.addEventListener('scroll', handleScroll);
+
+      // Calculate years of experience from August 2018
+      const startDate = new Date(2018, 7, 1); // August 2018 (month is 0-indexed)
+      const now = new Date();
+      const years = Math.floor((now - startDate) / (365.25 * 24 * 60 * 60 * 1000));
+      document.getElementById('years-experience').textContent = years;
     });
   </script>
 </body>
