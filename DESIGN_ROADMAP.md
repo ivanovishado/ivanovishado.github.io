@@ -52,8 +52,8 @@
 - [ ] Consider a page entrance animation
 
 #### 6. Contact Section Polish
-- [ ] Add a Calendly/booking link to lower friction
-- [ ] Add quick stats in the footer: `6+ years | 3 companies | 200M+ users impacted`
+- [x] Add a Calendly/booking link to lower friction
+- [x] Add quick stats in the footer: `7+ years | 3 companies | 10M+ users impacted`
 
 ---
 
