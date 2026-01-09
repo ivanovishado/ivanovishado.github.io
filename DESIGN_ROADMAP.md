@@ -32,24 +32,23 @@
 - [ ] Link to live demos, GitHub repos, or press coverage where applicable
 
 #### 3. Hero Section Enhancement
-- [ ] Add a signature motion design moment (animated gradient, subtle mesh, geometric shapes)
-- [ ] Make your name *dominate* — larger, more dramatic
-- [ ] Consider a rotating tagline: "Building at Scale • Leading Teams • Shipping Impact"
+- [x] Add a signature motion design moment (animated gradient, subtle mesh, geometric shapes)
+- [x] Make your name *dominate* — larger, more dramatic
+- [x] Consider a rotating tagline: "Building at Scale • Shipping Impact • Mentoring Others"
+- [ ] Add cursor-tracking glow effect on desktop
 
 ---
 
 ### 🟠 Medium Priority
 
 #### 4. Elevate Social Proof
-- [ ] Add testimonials section with quotes from colleagues, managers, or mentees
-- [ ] Embed the Forbes article as a rich media card with thumbnail
-- [ ] Display LinkedIn recommendation snippets
+- [x] Embed the Forbes article as a rich media card with thumbnail
 
 #### 5. Motion Design & Micro-Interactions
-- [ ] Add scroll-triggered animations (elements revealing as you scroll, parallax)
-- [ ] Animate skill tags or make them interactive
-- [ ] Add magnetic hover effects on buttons
-- [ ] Consider a page entrance animation
+- [x] Add scroll-triggered animations (elements revealing as you scroll, parallax)
+- [x] Animate skill tags or make them interactive
+- [x] Add magnetic hover effects on buttons
+- [x] Consider a page entrance animation
 
 #### 6. Contact Section Polish
 - [x] Add a Calendly/booking link to lower friction
