@@ -94,7 +94,7 @@ ____________________________________________________________________
 |        I V A N                                                   |
 |        G A L A V I Z          [CABINET GROTESK BOLD]             |
 |                                                                  |
-|        .     * |
+|        .     *                                                   |
 |   * > System Orchestrator // Distributed Engineer                |
 |  .      .      .    * .     .                                    |
 |    .       * .     ~ drift ~  .   .                              |
@@ -185,7 +185,7 @@ ____________________________________________________________________
 |  [ T E C H _ S T A C K ]                                         |
 |                                                                  |
 |  > const core_skills = {                                         |
-|  >    languages: ["Java" / "Go" / "Clojure"],  (Cycling)        |
+|  >    languages: ["Java" / "Go" / "Clojure"],  (Cycling)         |
 |  >    orchestration: ["Kubernetes", "Docker"],                   |
 |  >    messaging: ["Kafka", "RabbitMQ"],                          |
 |  > };                                                            |
