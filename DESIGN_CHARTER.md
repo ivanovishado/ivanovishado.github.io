@@ -57,12 +57,12 @@
 #### **Mission 02: SAMARA CUBESAT SCHOOL (The Journey)**
 
 * **Visual:** **3D Wireframe CubeSat** (Three.js) slowly rotating.
-* **Background:** Faint dotted map trajectory: `GDL -> BCN -> DXB -> KUF`.
+* **Background:** Faint dotted map trajectory: `MEX -> BCN -> DXB -> KUF`.
 * **The "Glitch":** Text labels occasionally flicker into Cyrillic (e.g., `SYSTEM` ↔ `СИСТЕМА`) before stabilizing.
 * **Data HUD:**
 * `> LOCATION: SAMARA UNIVERSITY [53.2° N, 50.1° E]`
 * `> OBJECTIVE: HURRICANE PREDICTION ALGORITHMS`
-* `> TECH: MATLAB, ADCS, TELEMETRY`
+* `> TECH: C Programming, ADCS, TELEMETRY`
 
 
 * **Action:** `[ READ FIELD REPORT ]` (Links to MatXSpace Blog).
@@ -128,10 +128,12 @@ ____________________________________________________________________
 |                                                                  |
 |  ( TRANSITION: FADE TO BLACK )                                   |
 |                                                                  |
-|  ==============================================================  |
-|  > PROJECT: MISSE-FF / CRS-31 FLIGHT                             |
-|  > STATUS: RETURNED TO EARTH (6 MONTHS ORBIT)                    |
-|  ==============================================================  |
+| ==============================================================   |
+|  > FLIGHT LOGS: SELECT MISSION ARCHIVE                           |
+| ==============================================================   |
+|                                                                  |
+|  [ 01: MISSE-FF (DEPLOYED) ]       [ 02: SAMARA-CS (TRAINING) ]  | <-- (Interactive Tabs)
+|  ^ (Active)                                                      |
 |                                                                  |
 |        +-----------------------------------------+               |
 |        | TECHNICAL SCHEMATIC: COMPLIANT MECHANISM|               |
@@ -144,12 +146,13 @@ ____________________________________________________________________
 |    |  BASE    |   \ ( )/ \ ( )/       |  MOUNT   |               |
 |    +----------+-----------------------+----------+               |
 |                                                                  |
-|        SURVIVING THE VACUUM       [CABINET GROTESK]              |
-|        > An experiment in compliant structures                   |
-|          aboard the ISS.                                         |
+|  > MISSION: "Surviving the Vacuum"                               |
+|  > OBJECTIVE: Test materials in Low Earth Orbit (LEO)            |
+|                                                                  |
+|  > MEDIA_UPLINK:  [ READ: FORBES ]    [ READ: EL PAIS ]          | <-- (New Press Buttons)
+|                                                                  |
 |                                                                  |
 | ( If Tab 02 is selected: )                                       |
-|                                                                  |
 |                                                                  |
 |  > LOCATION: SAMARA, RUSSIA [53.21° N, 50.10° E]                 |
 |  > FACILITY: SAMARA UNIVERSITY (KUIBYSHEV INSTITUTE)             |
@@ -203,23 +206,23 @@ ____________________________________________________________________
 |      v                                                           |
 | [ CURRENT ORBIT ] ----------------------------------------+      |
 |      |                                                    |      |
-|    (O)  NETFLIX                       [ ACTIVE SIGNAL ]   |      |
-|     |   > Senior Software Engineer                        |      |
-|     |   > 202X - Present                                  |      |
-|     |                                                     |      |
-|     |   > Users: 200M+                                    |      |
-|     |   > RPS: High Scale                                 |      |
-|     |                                                     |      |
+|     (O)  NETFLIX                       [ ACTIVE SIGNAL ]  |      |
+|      |   > Senior Software Engineer                       |      |
+|      |   > 202X - Present                                 |      |
+|      |                                                    |      |
+|      |   > Users: 200M+                                   |      |
+|      |   > RPS: High Scale                                |      |
+|      |                                                    |      |
 |     +-----------------------------------------------------+      |
 |      |                                                           |
 | [ PREVIOUS DEPLOYMENTS ]                                         |
 |      |                                                           |
-|     o   NUBANK                                                   |
-|     |   > Software Engineer                                      |
-|     |   > "Building financial infrastructure..."                 |
-|     |                                                            |
-|     o   WIZELINE                                                 |
-|         > Software Engineer                                      |
+|      o   NUBANK                                                  |
+|      |   > Software Engineer                                     |
+|      |   > "Building financial infrastructure..."                |
+|      |                                                           |
+|      o   WIZELINE                                                |
+|      |   > Software Engineer                                     |
 |__________________________________________________________________|
 |                                                                  |
 |  ( TRANSITION: THE TERMINAL )                                    |
