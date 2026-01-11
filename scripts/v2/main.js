@@ -6,6 +6,7 @@ import { TextScramble } from './utils/TextScramble.js';
 import { HeroParticles } from './components/HeroParticles.js';
 import { MagneticHover } from './components/MagneticHover.js';
 import { ResponsiveNav } from './components/ResponsiveNav.js';
+import { FlightLogEngine } from './components/FlightLogEngine.js';
 
 // ============================================================================
 // LENIS SMOOTH SCROLLING
@@ -153,6 +154,10 @@ function init() {
     // Animations
     initHeroAnimations();
     initScrollIndicator();
+
+    // Flight Logs Engine (3D artifact rendering)
+    const flightLogs = new FlightLogEngine();
+    flightLogs.init();
 
     console.log('🚀 Orbital Orchestrator V2 initialized');
 }

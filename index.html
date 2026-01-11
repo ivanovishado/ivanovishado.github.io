@@ -28,7 +28,8 @@
   <script type="importmap">
     {
       "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.min.js"
+        "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/"
       }
     }
   </script>
@@ -133,11 +134,100 @@
     </div>
   </section>
 
-  <!-- About Section (placeholder) -->
-  <section id="about" class="min-h-screen bg-surface-1 py-32 px-6">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="font-display text-5xl md:text-6xl mb-8">ABOUT</h2>
-      <p class="text-starlight/60">Section content coming in later phases...</p>
+  <!-- Flight Logs Section -->
+  <section id="flight-logs" class="relative min-h-screen bg-surface-1 py-12 px-6 border-b border-white/10">
+    <div class="max-w-7xl mx-auto flex flex-col items-center">
+
+      <!-- Section Header -->
+      <div class="w-full border-b border-white/10 pb-4 mb-8 flex justify-between items-end">
+        <h2 class="font-display text-xs md:text-sm tracking-[0.2em] text-starlight/50">
+          > MISSION_ARCHIVE // FLIGHT_LOGS
+        </h2>
+        <div class="flex gap-4">
+          <!-- Interactive Tabs -->
+          <button
+            class="mission-tab active text-xs font-mono px-4 py-2 border border-signal/50 bg-signal/10 text-signal transition-all hover:bg-signal/20"
+            data-mission="misse-ff" aria-selected="true">
+            [ 01: MISSE-FF ]
+          </button>
+          <button
+            class="mission-tab text-xs font-mono px-4 py-2 border border-white/10 text-starlight/50 transition-all hover:border-white/30 hover:text-starlight"
+            data-mission="samara-cs" aria-selected="false">
+            [ 02: SAMARA-CS ]
+          </button>
+        </div>
+      </div>
+
+      <!-- Dual-Slot Container -->
+      <div
+        class="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 min-h-[60vh] p-6 lg:p-12 border border-white/10 bg-surface-2/30 rounded-2xl relative overflow-hidden">
+
+        <!-- Decorative Corners for the main container -->
+        <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-signal/50 rounded-tl-lg"></div>
+        <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-signal/50 rounded-tr-lg"></div>
+        <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-signal/50 rounded-bl-lg"></div>
+        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-signal/50 rounded-br-lg"></div>
+
+        <!-- Slot A: Visual Artifact (The "Specimen") -->
+        <div
+          class="relative order-1 flex items-center justify-center bg-void border border-white/5 rounded-lg overflow-hidden group h-[400px] lg:h-auto">
+          <!-- Background Grid (Decoration) -->
+          <div class="absolute inset-0 z-0 opacity-20"
+            style="background-image: linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px); background-size: 20px 20px;">
+          </div>
+
+          <!-- Crosshairs -->
+          <div class="absolute inset-0 z-10 pointer-events-none">
+            <div class="absolute top-4 left-4 w-4 h-4 border-t border-l border-white/30"></div>
+            <div class="absolute top-4 right-4 w-4 h-4 border-t border-r border-white/30"></div>
+            <div class="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-white/30"></div>
+            <div class="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-white/30"></div>
+          </div>
+
+          <!-- Visual Placeholder (3D Canvas) -->
+          <div id="mission-visual" class="relative z-20 w-full h-full flex items-center justify-center">
+            <span class="font-mono text-xs text-signal/50 tracking-widest animate-pulse">[ INITIALIZING_SENSOR_ARRAY...
+              ]</span>
+          </div>
+        </div>
+
+        <!-- Slot B: Data Readout -->
+        <div
+          class="flex flex-col justify-center gap-6 order-2 bg-surface-1/50 p-6 md:p-8 rounded-xl border border-white/5">
+          <!-- Status Line -->
+          <div class="font-mono text-sm text-signal animate-pulse" id="mission-status">
+            > STATUS: INITIALIZING...
+          </div>
+
+          <!-- Mission Title -->
+          <h3 class="font-display text-3xl md:text-5xl font-bold leading-none uppercase text-white" id="mission-title">
+            Loading_Data...
+          </h3>
+
+          <!-- Stats Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-b border-white/10 py-6" id="mission-stats">
+            <!-- Stats inserted via JS -->
+          </div>
+
+          <!-- Description -->
+          <div class="relative pl-4 border-l-2 border-horizon">
+            <p class="text-starlight/80 text-base md:text-lg leading-relaxed" id="mission-desc">
+              Retrieving mission parameters from archive...
+            </p>
+          </div>
+
+          <!-- Action Links -->
+          <div class="flex flex-wrap gap-4 mt-4" id="mission-links">
+            <!-- Links inserted via JS -->
+          </div>
+        </div>
+
+      </div>
+      <span class="font-mono text-xs text-signal/50 tracking-widest">[ ARTIFACT_CONTAINER ]</span>
+    </div>
+    </div>
+
+    </div>
     </div>
   </section>
 
