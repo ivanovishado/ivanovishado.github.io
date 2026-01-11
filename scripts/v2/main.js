@@ -2,6 +2,11 @@
    Orbital Orchestrator V2 — Main Application
    ========================================================================== */
 
+import { TextScramble } from './utils/TextScramble.js';
+import { HeroParticles } from './components/HeroParticles.js';
+import { MagneticHover } from './components/MagneticHover.js';
+import { ResponsiveNav } from './components/ResponsiveNav.js';
+
 // ============================================================================
 // LENIS SMOOTH SCROLLING
 // ============================================================================
@@ -39,73 +44,6 @@ function initGSAP() {
     ScrollTrigger.defaults({
         scroller: document.body,
     });
-}
-
-// ============================================================================
-// TEXT SCRAMBLE EFFECT
-// ============================================================================
-
-class TextScramble {
-    constructor(el) {
-        this.el = el;
-        this.chars = '!<>-_\\/[]{}—=+*^?#_ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        this.update = this.update.bind(this);
-    }
-
-    setText(newText) {
-        const oldText = this.el.innerText;
-        const length = Math.max(oldText.length, newText.length);
-        const promise = new Promise((resolve) => this.resolve = resolve);
-        this.queue = [];
-
-        for (let i = 0; i < length; i++) {
-            const from = oldText[i] || '';
-            const to = newText[i] || '';
-            const start = Math.floor(Math.random() * 40);
-            const end = start + Math.floor(Math.random() * 40);
-            this.queue.push({ from, to, start, end });
-        }
-
-        cancelAnimationFrame(this.frameRequest);
-        this.frame = 0;
-        this.update();
-        return promise;
-    }
-
-    update() {
-        let output = '';
-        let complete = 0;
-
-        for (let i = 0, n = this.queue.length; i < n; i++) {
-            let { from, to, start, end, char } = this.queue[i];
-
-            if (this.frame >= end) {
-                complete++;
-                output += to;
-            } else if (this.frame >= start) {
-                if (!char || Math.random() < 0.28) {
-                    char = this.randomChar();
-                    this.queue[i].char = char;
-                }
-                output += `<span class="text-signal/60">${char}</span>`;
-            } else {
-                output += from;
-            }
-        }
-
-        this.el.innerHTML = output;
-
-        if (complete === this.queue.length) {
-            this.resolve();
-        } else {
-            this.frameRequest = requestAnimationFrame(this.update);
-            this.frame++;
-        }
-    }
-
-    randomChar() {
-        return this.chars[Math.floor(Math.random() * this.chars.length)];
-    }
 }
 
 // ============================================================================
@@ -200,23 +138,17 @@ function init() {
     initLenis();
 
     // Three.js particles
-    if (window.HeroParticles) {
-        window.heroParticles = new HeroParticles('hero-canvas');
-    }
+    new HeroParticles('hero-canvas');
 
     // Magnetic hover on social links
-    if (window.MagneticHover) {
-        window.magneticHover = new MagneticHover('[data-magnetic]', {
-            strength: 0.4,
-            radius: 80,
-            ease: 0.12
-        });
-    }
+    new MagneticHover('[data-magnetic]', {
+        strength: 0.4,
+        radius: 80,
+        ease: 0.12
+    });
 
     // Responsive navigation (hamburger menu)
-    if (window.ResponsiveNav) {
-        window.responsiveNav = new ResponsiveNav();
-    }
+    new ResponsiveNav();
 
     // Animations
     initHeroAnimations();

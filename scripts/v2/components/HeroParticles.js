@@ -16,7 +16,7 @@ import {
     CanvasTexture
 } from 'three';
 
-class HeroParticles {
+export class HeroParticles {
     constructor(containerId) {
         this.container = document.getElementById(containerId);
         if (!this.container) {
@@ -229,6 +229,3 @@ class HeroParticles {
         }
     }
 }
-
-// Export for use
-window.HeroParticles = HeroParticles;
