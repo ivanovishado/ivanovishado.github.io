@@ -75,17 +75,18 @@ ivanovishado.github.io/
 
 ## 🎨 Implementation Phases
 
-### Phase 1: Foundation
+### Phase 1: Foundation ✅
 > Setup, core structure, and smooth scrolling
+> **Completed:** 2026-01-10
 
-- [ ] Refactor CSS into modular files
-- [ ] Implement new color palette ("Event Horizon")
-- [ ] Integrate Lenis smooth scrolling
-- [ ] Setup GSAP + ScrollTrigger base configuration
-- [ ] Implement new typography (Cabinet Grotesk + JetBrains Mono)
-- [ ] Create responsive breakpoint system
+- [x] Refactor CSS into modular files (`styles/design-tokens.css`)
+- [x] Implement new color palette ("Event Horizon")
+- [x] Integrate Lenis smooth scrolling
+- [x] Setup GSAP + ScrollTrigger base configuration
+- [x] Implement new typography (Cabinet Grotesk + JetBrains Mono)
+- [x] Create responsive breakpoint system
 
-**Deliverable:** Site with new visual style + buttery scrolling
+**Deliverable:** Site with new visual style + buttery scrolling ✅
 
 ---
 

@@ -1,0 +1,220 @@
+/* ==========================================================================
+   Orbital Orchestrator — Design Tokens
+   Event Horizon Color Palette + Typography System
+   ========================================================================== */
+
+/* Cabinet Grotesk is loaded via Fontshare CDN in index.html */
+
+
+/* --------------------------------------------------------------------------
+   CSS Custom Properties — Event Horizon Palette
+   -------------------------------------------------------------------------- */
+:root {
+    /* ========== EVENT HORIZON COLOR PALETTE ========== */
+
+    /* Primary Colors */
+    --color-void: #030305;
+    /* Deep warm charcoal/black background */
+    --color-starlight: #E2E8F0;
+    /* Primary text/Silver */
+    --color-event-horizon: #6366F1;
+    /* Indigo - Brands & "Classical" elements */
+    --color-active-signal: #00F0FF;
+    /* Cyan - Cursors, active states, "Jazz" spikes */
+    --color-alert: #FF9F1C;
+    /* Orange - Critical data points */
+
+    /* Surface Colors (derived from Void) */
+    --color-surface-1: #0a0a0c;
+    /* Slightly lighter than void */
+    --color-surface-2: #14141a;
+    /* Card backgrounds */
+    --color-surface-3: #1e1e28;
+    /* Elevated elements */
+    --color-surface-4: #2a2a36;
+    /* Hover states */
+
+    /* Text Colors */
+    --color-text-primary: var(--color-starlight);
+    --color-text-secondary: #94A3B8;
+    /* Muted text */
+    --color-text-tertiary: #64748B;
+    /* Very muted */
+
+    /* Border Colors */
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-border-hover: rgba(99, 102, 241, 0.4);
+
+    /* ========== TYPOGRAPHY ========== */
+
+    /* Font Families */
+    --font-display: 'Cabinet Grotesk', system-ui, sans-serif;
+    --font-technical: 'JetBrains Mono', 'Fira Code', monospace;
+
+    /* Fluid Typography Scale */
+    --text-hero: clamp(4rem, 12vw, 13rem);
+    --text-h1: clamp(2.5rem, 6vw, 4rem);
+    --text-h2: clamp(2rem, 4vw, 3rem);
+    --text-h3: clamp(1.25rem, 2vw, 1.5rem);
+    --text-body: clamp(0.875rem, 1.2vw, 1rem);
+    --text-small: clamp(0.75rem, 1vw, 0.875rem);
+    --text-xs: 0.75rem;
+
+    /* ========== SPACING ========== */
+    --space-section: clamp(4rem, 10vw, 8rem);
+    --space-container: clamp(1rem, 5vw, 6rem);
+
+    /* ========== RESPONSIVE BREAKPOINTS ========== */
+    --bp-sm: 640px;
+    --bp-md: 768px;
+    --bp-lg: 1024px;
+    --bp-xl: 1280px;
+    --bp-2xl: 1536px;
+
+    /* ========== ANIMATION CURVES ========== */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+    /* ========== EFFECTS ========== */
+    --glow-event-horizon: 0 0 40px rgba(99, 102, 241, 0.3);
+    --glow-active-signal: 0 0 30px rgba(0, 240, 255, 0.4);
+    --glow-alert: 0 0 30px rgba(255, 159, 28, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   Base Resets with New Typography
+   -------------------------------------------------------------------------- */
+body {
+    font-family: var(--font-technical);
+    background: var(--color-void);
+    color: var(--color-text-primary);
+}
+
+/* Display headings use Cabinet Grotesk */
+h1,
+h2,
+h3,
+.font-display {
+    font-family: var(--font-display);
+}
+
+/* Technical / code elements */
+code,
+pre,
+.font-mono,
+.font-technical {
+    font-family: var(--font-technical);
+}
+
+/* --------------------------------------------------------------------------
+   Gradient Text Utility (Event Horizon theme)
+   -------------------------------------------------------------------------- */
+.gradient-text-orbital {
+    background: linear-gradient(135deg, var(--color-starlight) 0%, var(--color-event-horizon) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Hero-specific gradient (more dramatic) */
+.gradient-text-hero {
+    background: linear-gradient(135deg,
+            var(--color-starlight) 0%,
+            var(--color-event-horizon) 50%,
+            var(--color-active-signal) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 8s ease-in-out infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Glow Effects (Event Horizon theme)
+   -------------------------------------------------------------------------- */
+.glow-event-horizon {
+    box-shadow: var(--glow-event-horizon);
+}
+
+.glow-active-signal {
+    box-shadow: var(--glow-active-signal);
+}
+
+/* Hover glow for interactive elements */
+.hover-glow-orbital {
+    transition: box-shadow 0.3s var(--ease-out-quart);
+}
+
+.hover-glow-orbital:hover {
+    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   Border Accent Utilities
+   -------------------------------------------------------------------------- */
+.border-orbital {
+    border-color: var(--color-event-horizon) !important;
+}
+
+.border-glow {
+    position: relative;
+}
+
+.border-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--color-event-horizon), transparent, var(--color-active-signal));
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out-quart);
+    z-index: -1;
+}
+
+.border-glow:hover::before {
+    opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Active State Pulse (for current role indicators)
+   -------------------------------------------------------------------------- */
+@keyframes pulse-orbital {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+    }
+}
+
+.pulse-active {
+    animation: pulse-orbital 2s ease-in-out infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Lenis Smooth Scroll Preparation
+   -------------------------------------------------------------------------- */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
