@@ -92,14 +92,14 @@ interface AIChatRequest {
 ### Phase 1: Foundation (Completed ✅)
 *   [x] Setup Tailwind v4, Fonts (Cabinet/JetBrains), Lenis Scroll.
 
-### Phase 1.5: Component Refactor (Active)
-*   [ ] **Module System**: Convert `window.HeroParticles` patterns to `export class HeroParticles` (ES Modules).
+### Phase 1.5: Component Refactor (Completed ✅)
+*   [x] **Module System**: Convert `window.HeroParticles` patterns to `export class HeroParticles` (ES Modules).
     *   `scripts/v2/utils/TextScramble.js`
     *   `scripts/v2/components/HeroParticles.js`
     *   `scripts/v2/components/MagneticHover.js`
     *   `scripts/v2/main.js` (Import entry point)
-*   [ ] **HTML Update**: Update `<script>` tags to `type="module"`.
-*   [ ] **Cleanup**: Remove global namespace pollution.
+*   [x] **HTML Update**: Update `<script>` tags to `type="module"`.
+*   [x] **Cleanup**: Remove global namespace pollution.
 
 ### Phase 2: The "Flight Logs" Engine (Next)
 *   [ ] **HTML**: Structure the "Dual-Slot" container with "Cartridge" slots.

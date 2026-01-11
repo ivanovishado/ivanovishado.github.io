@@ -3,7 +3,7 @@
    Hamburger menu with scroll-triggered desktop transformation
    ========================================================================== */
 
-class ResponsiveNav {
+export class ResponsiveNav {
     constructor() {
         this.nav = document.getElementById('main-nav');
         this.hamburger = document.getElementById('hamburger-btn');
@@ -139,6 +139,3 @@ class ResponsiveNav {
         });
     }
 }
-
-// Export for use
-window.ResponsiveNav = ResponsiveNav;

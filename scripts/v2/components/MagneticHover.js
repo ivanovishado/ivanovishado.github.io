@@ -3,7 +3,7 @@
    Creates a "magnetic" pull effect on elements when cursor approaches
    ========================================================================== */
 
-class MagneticHover {
+export class MagneticHover {
     constructor(selector, options = {}) {
         this.elements = document.querySelectorAll(selector);
         this.options = {
@@ -91,6 +91,3 @@ class MagneticHover {
         requestAnimationFrame(() => this.animate());
     }
 }
-
-// Export for use
-window.MagneticHover = MagneticHover;
