@@ -1,8 +1,11 @@
 # 📜 Master Design Charter: The "Orbital Orchestrator"
 
 **Project:** Ivan Galaviz Portfolio Rebrand
+
 **Core Metaphor:** "Invisible Systems, Visible Impact."
+
 **Archetype:** The Architect (Structure) meets The Improviser (Adaptability).
+
 **Vibe:** Cinematic, Technical, Vast, Fluid.
 
 ---
@@ -43,26 +46,31 @@
 * **Structure:** A "Dual-Slot" Interface. The user toggles between two data cartridges.
 * **Transition Effect:** "Scanline Wipe" – The screen briefly fuzzes with static when switching missions.
 
-#### **Mission 01: MISSE-FF / CRS-31 (The Result)**
+#### **Mission 01: MISSE-FF / CRS-31 (The Artifact)**
 
-* **Visual:** **Animated Technical Blueprint (SVG)** of the Compliant Mechanism.
-* **Animation:** Lines draw -> Mechanism renders -> Flexure joint bends.
+* **Visual:** **3D Specimen Container** (Three.js).
+  * **Geometry:** A sleek, metallic square frame (Aluminum/Titanium texture).
+  * **The Core:** A central pane of **Tinted/Tempered Glass** or exposed material sample.
+  * **Lighting:** The glass catches reflections (HDRI environment map of Earth/Space).
+  * **Interaction:** Gently rotates on hover. The glass has refractive properties (transmission, roughness).
+
+* **Context:** "Materials Science in Microgravity."
+
 * **Data HUD:**
-* `> STATUS: RETURNED TO EARTH`
-* `> DURATION: 6 MONTHS IN ORBIT`
-* `> INTEGRITY: 100%`
+  * `> STATUS: RETURNED TO EARTH`
+  * `> DURATION: 6 MONTHS IN ORBIT`
 
 
-
-#### **Mission 02: SAMARA CUBESAT SCHOOL (The Journey)**
+#### **Mission 02: SAMARA CUBESAT SUMMER SCHOOL (The Journey)**
 
 * **Visual:** **3D Wireframe CubeSat** (Three.js) slowly rotating.
-* **Background:** Faint dotted map trajectory: `MEX -> BCN -> DXB -> KUF`.
-* **The "Glitch":** Text labels occasionally flicker into Cyrillic (e.g., `SYSTEM` ↔ `СИСТЕМА`) before stabilizing.
+  * **Background:** Faint dotted map trajectory: `MEX -> BCN -> DXB -> KUF`.
+  * **The "Glitch":** Text labels occasionally flicker into Cyrillic (e.g., `SYSTEM` ↔ `СИСТЕМА`) before stabilizing.
+
 * **Data HUD:**
-* `> LOCATION: SAMARA UNIVERSITY [53.2° N, 50.1° E]`
-* `> OBJECTIVE: HURRICANE PREDICTION ALGORITHMS`
-* `> TECH: C Programming, ADCS, TELEMETRY`
+  * `> LOCATION: SAMARA UNIVERSITY [53.2° N, 50.1° E]`
+  * `> OBJECTIVE: HURRICANE PREDICTION ALGORITHMS`
+  * `> TECH: C Programming, ADCS, TELEMETRY`
 
 
 * **Action:** `[ READ FIELD REPORT ]` (Links to MatXSpace Blog).
@@ -78,9 +86,9 @@
 * **Visual:** A glowing "Data Pipe" connecting career nodes.
 * **Behavior:** A pulse of light travels down the pipe as you scroll.
 * **Content:**
-* **Netflix:** Active/Pulsing node.
-* **Nubank/Wizeline:** Previous mission nodes.
-* **Data:** RPS, Users, Uptime metrics instead of generic bullet points.
+  * **Netflix:** Active/Pulsing node.
+  * **Nubank/Wizeline:** Previous mission nodes.
+  * **Data:** RPS, Users, Uptime metrics instead of generic bullet points.
 
 
 
@@ -94,9 +102,9 @@
 
 * **Location:** "Based in Mexico."
 * **Actions:**
-* **[ BOOK MENTORING ]** (Cal.com).
-* **[ PDF RESUME ]** (Direct render).
-* Magnetic Social Links.
+  * **[ BOOK MENTORING ]** (Cal.com).
+  * **[ PDF RESUME ]** (Direct render).
+  * Magnetic Social Links.
 
 
 
@@ -135,22 +143,24 @@ ____________________________________________________________________
 |  [ 01: MISSE-FF (DEPLOYED) ]       [ 02: SAMARA-CS (TRAINING) ]  | <-- (Interactive Tabs)
 |  ^ (Active)                                                      |
 |                                                                  |
-|        +-----------------------------------------+               |
-|        | TECHNICAL SCHEMATIC: COMPLIANT MECHANISM|               |
-|        +-----------------------------------------+               |
-|               |          (Animates)                              |
-|      [A] ---> +---( FLEXURE JOINT )---+ <--- [B]                 |
-|               |          |            |                          |
-|    +----------+----------+------------+----------+               |
-|    |  RIGID   |  | ( ) | | ( ) |      |  RIGID   |               |
-|    |  BASE    |   \ ( )/ \ ( )/       |  MOUNT   |               |
-|    +----------+-----------------------+----------+               |
+|  > PROJECT: MISSE-FF / CRS-31 FLIGHT                             |
+|  > STATUS: RETURNED TO EARTH (6 MONTHS ORBIT)                    |
+|                                                                  |
+|             .           .                                        |
+|                   +-----------+   (Rotates Slowly)               |
+|               .   |  ///////  |  .                               |
+|            .      | ///////   |      .                           |
+|                   |///[ ]///  |                                  |
+|              +----|///[+]///  |----+                             |
+|              |    | ///////   |    |                             |
+|              |    |  ///////  |    |                             |
+|              |    +-----------+    |                             |
+|              |                     |                             |
 |                                                                  |
 |  > MISSION: "Surviving the Vacuum"                               |
-|  > OBJECTIVE: Test materials in Low Earth Orbit (LEO)            |
+|  > ARTIFACT: Material Specimen Container (MISSE)                 |
 |                                                                  |
-|  > MEDIA_UPLINK:  [ READ: FORBES ]    [ READ: EL PAIS ]          | <-- (New Press Buttons)
-|                                                                  |
+|  > MEDIA_UPLINK:  [ READ: FORBES ]    [ READ: EL PAIS ]          |
 |                                                                  |
 | ( If Tab 02 is selected: )                                       |
 |                                                                  |
