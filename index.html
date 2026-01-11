@@ -6,13 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ivan Galaviz | System Orchestrator & Distributed Engineer</title>
   <meta name="description"
-    content="System Orchestrator at Netflix. Building scalable distributed systems and solving challenging problems. Previously at Nubank and Wizeline.">
-  <meta property="og:title" content="Ivan Galaviz | System Orchestrator">
-  <meta property="og:description"
     content="System Orchestrator at Netflix. Building scalable distributed systems and solving challenging problems.">
-  <meta property="og:type" content="website">
 
-  <!-- Fonts: Cabinet Grotesk (Fontshare CDN) + JetBrains Mono (Google) -->
+  <!-- Fonts: Cabinet Grotesk + JetBrains Mono -->
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@variable&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,869 +23,137 @@
   <script src="https://unpkg.com/lenis@1.2.3/dist/lenis.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14/dist/TextPlugin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.min.js"></script>
 
+  <!-- Three.js Core (ES Module) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.min.js"
+      }
+    }
+  </script>
+
+  <!-- Tailwind Theme Configuration -->
   <style type="text/tailwindcss">
     @theme {
-      /* Typography - Orbital Orchestrator */
+      /* Typography */
       --font-display: 'Cabinet Grotesk', system-ui, sans-serif;
-      --font-body: 'JetBrains Mono', monospace;
+      --font-mono: 'JetBrains Mono', monospace;
       
-      /* Event Horizon Color Palette */
+      /* Event Horizon Palette */
       --color-void: #030305;
       --color-starlight: #E2E8F0;
-      --color-event-horizon: #6366F1;
-      --color-active-signal: #00F0FF;
+      --color-horizon: #6366F1;
+      --color-signal: #00F0FF;
       --color-alert: #FF9F1C;
       
-      /* Surface colors */
-      --color-dark-900: #0a0a0c;
-      --color-dark-800: #14141a;
-      --color-dark-700: #1e1e28;
-      --color-dark-600: #2a2a36;
-      
-      /* Legacy aliases (for backward compatibility during transition) */
-      --color-netflix-red: #6366F1;
-      --color-netflix-red-dark: #4F46E5;
-      --color-accent: #6366F1;
+      /* Surfaces */
+      --color-surface-1: #0a0a0c;
+      --color-surface-2: #14141a;
+      --color-surface-3: #1e1e28;
     }
   </style>
 
-  <!-- Design Tokens (CSS Custom Properties) -->
-  <link rel="stylesheet" href="styles/design-tokens.css">
-
-  <!-- Custom Styles (existing) -->
-  <link rel="stylesheet" href="styles.css">
+  <!-- V2 Styles -->
+  <link rel="stylesheet" href="styles/v2/main.css">
 </head>
 
-<body class="bg-dark-900 text-white min-h-screen">
-  <!-- Grain overlay -->
+<body class="bg-void text-starlight font-mono antialiased">
+  <!-- Grain Overlay -->
   <div class="grain"></div>
 
-  <!-- Mobile Menu Overlay -->
-  <div id="mobileMenu" class="mobile-menu">
-    <a href="#experience" onclick="closeMobileMenu()">Experience</a>
-    <a href="#skills" onclick="closeMobileMenu()">Skills</a>
-    <a href="#education" onclick="closeMobileMenu()">Education</a>
-    <a href="#volunteering" onclick="closeMobileMenu()">Volunteering</a>
-    <a href="#press" onclick="closeMobileMenu()">Press</a>
-    <a href="#awards" onclick="closeMobileMenu()">Awards</a>
-    <a href="#contact" onclick="closeMobileMenu()"
-      class="!text-white px-6 py-3 bg-netflix-red hover:bg-netflix-red-dark rounded-lg transition-colors">Contact</a>
-  </div>
-
-  <!-- Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-dark-900/80 backdrop-blur-md border-b border-white/5">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="#"
-        class="font-display text-2xl tracking-wider text-white hover:text-netflix-red transition-colors">IG</a>
-
-      <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center gap-6">
-        <a href="#experience" class="text-sm text-gray-400 hover:text-white transition-colors">Experience</a>
-        <a href="#skills" class="text-sm text-gray-400 hover:text-white transition-colors">Skills</a>
-        <a href="#education" class="text-sm text-gray-400 hover:text-white transition-colors">Education</a>
-        <a href="#volunteering" class="text-sm text-gray-400 hover:text-white transition-colors">Volunteering</a>
-        <a href="#press" class="text-sm text-gray-400 hover:text-white transition-colors">Press</a>
-        <a href="#awards" class="text-sm text-gray-400 hover:text-white transition-colors">Awards</a>
-        <a href="#contact"
-          class="text-sm px-4 py-2 bg-netflix-red hover:bg-netflix-red-dark rounded transition-colors">Contact</a>
-      </div>
-
-      <!-- Mobile Hamburger -->
-      <div id="hamburger" class="hamburger md:hidden" onclick="toggleMobileMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  </nav>
-
   <!-- Hero Section -->
-  <section id="hero" class="hero-gradient min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-    <!-- Animated floating shapes -->
-    <div class="absolute inset-0 overflow-hidden">
-      <div class="floating-shape floating-shape-1"></div>
-      <div class="floating-shape floating-shape-2"></div>
-      <div class="floating-shape floating-shape-3"></div>
-      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-netflix-red/10 rounded-full blur-3xl"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-netflix-red/5 rounded-full blur-3xl"></div>
+  <section id="hero" class="relative h-screen w-full overflow-hidden">
+    <!-- Three.js Canvas Container -->
+    <div id="hero-canvas" class="absolute inset-0 z-0"></div>
+
+    <!-- Gradient Overlay for text readability -->
+    <div class="absolute inset-0 z-1 bg-gradient-to-b from-void/30 via-transparent to-void/60"></div>
+
+    <!-- Top Navigation -->
+    <nav id="main-nav" class="absolute top-0 left-0 right-0 z-20 px-6 py-8 md:p-12 flex justify-end items-center">
+      <!-- Hamburger Button -->
+      <button id="hamburger-btn" class="hamburger-btn" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <!-- Navigation Items -->
+      <div id="nav-links" class="nav-links">
+        <a href="#about" class="nav-box nav-link">[ ABOUT ]</a>
+        <a href="#work" class="nav-box nav-link">[ WORK ]</a>
+        <a href="#contact" class="nav-box nav-link">[ CONTACT ]</a>
+      </div>
+    </nav>
+
+    <!-- Bottom Left Social Stack -->
+    <div class="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-20 flex flex-col gap-4">
+      <a href="https://github.com/ivanovishado" target="_blank" rel="noopener" class="social-icon" data-magnetic
+        aria-label="GitHub">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+        </svg>
+      </a>
+      <a href="https://linkedin.com/in/ivanovishado" target="_blank" rel="noopener" class="social-icon" data-magnetic
+        aria-label="LinkedIn">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+        </svg>
+      </a>
+      <a href="mailto:galavizivan23@gmail.com" class="social-icon" data-magnetic aria-label="Email">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      </a>
     </div>
 
-    <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-      <!-- Profile Picture -->
-      <div id="hero-profile-pic" class="mb-6 opacity-0 animate-fade-in-up">
-        <img src="https://github.com/ivanovishado.png" alt="Ivan Galaviz"
-          class="w-28 h-28 md:w-36 md:h-36 rounded-full mx-auto border-2 border-netflix-red/50 profile-glow object-cover">
-      </div>
-      <p
-        class="text-netflix-red font-medium tracking-widest uppercase mb-4 opacity-0 animate-fade-in-up animate-delay-100">
-        Software Engineer</p>
-
-      <!-- Dramatically larger name -->
-      <h1 class="font-display text-8xl md:text-[11rem] lg:text-[13rem] tracking-wide mb-4 leading-none hero-name">
+    <!-- Hero Content -->
+    <div class="absolute inset-0 z-10 flex flex-col items-center justify-center px-6">
+      <!-- Main Title -->
+      <h1 id="hero-name"
+        class="font-display text-4xl sm:text-6xl md:text-8xl lg:text-[10rem] xl:text-[12rem] font-bold tracking-tight text-center leading-none">
         <span class="gradient-text">IVAN GALAVIZ</span>
       </h1>
 
-      <p
-        class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-6 opacity-0 animate-fade-in-up animate-delay-200">
-        Powering marketing campaigns for titles worldwide at <span class="text-white font-semibold">Netflix</span>.
+      <!-- Subtitle -->
+      <p class="mt-4 md:mt-6 text-sm md:text-lg text-starlight/70 tracking-wider text-center">
+        <span class="text-signal">></span> System Orchestrator // Distributed Engineer
       </p>
+    </div>
 
-      <!-- Rotating tagline -->
-      <div class="rotating-tagline-container mb-8 opacity-0 animate-fade-in-up animate-delay-300">
-        <span class="rotating-tagline text-gray-500 font-medium tracking-wide">Building at Scale</span>
-        <span class="rotating-tagline text-gray-500 font-medium tracking-wide">Shipping Impact</span>
-        <span class="rotating-tagline text-gray-500 font-medium tracking-wide">Mentoring Others</span>
-      </div>
 
-      <div class="flex items-center justify-center gap-4 opacity-0 animate-fade-in-up animate-delay-300">
-        <span class="flex items-center gap-2 text-gray-500">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          Mexico
-        </span>
-      </div>
 
-      <!-- Social Links with magnetic effect -->
-      <div class="flex items-center justify-center gap-6 mt-12 opacity-0 animate-fade-in-up animate-delay-400">
-        <a href="https://github.com/ivanovishado" target="_blank" rel="noopener"
-          class="magnetic-btn w-12 h-12 flex items-center justify-center rounded-full bg-dark-700 hover:bg-netflix-red transition-colors group">
-          <svg class="w-5 h-5 text-gray-400 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-          </svg>
-        </a>
-        <a href="https://linkedin.com/in/ivanovishado" target="_blank" rel="noopener"
-          class="magnetic-btn w-12 h-12 flex items-center justify-center rounded-full bg-dark-700 hover:bg-netflix-red transition-colors group">
-          <svg class="w-5 h-5 text-gray-400 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-          </svg>
-        </a>
-        <a href="mailto:galavizivan23@gmail.com"
-          class="magnetic-btn w-12 h-12 flex items-center justify-center rounded-full bg-dark-700 hover:bg-netflix-red transition-colors group">
-          <svg class="w-5 h-5 text-gray-400 group-hover:text-white" fill="none" stroke="currentColor"
-            viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-        </a>
-      </div>
-
-      <!-- Scroll indicator -->
-      <div id="scrollIndicator"
-        class="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in-up animate-delay-500 scroll-indicator">
-        <div class="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center pt-2">
-          <div class="w-1 h-2 bg-netflix-red rounded-full animate-bounce"></div>
-        </div>
-      </div>
+    <!-- Scroll Indicator -->
+    <div id="scroll-indicator" class="absolute bottom-24 left-1/2 -translate-x-1/2 z-20">
+      <span class="text-xs tracking-widest text-starlight/50 font-mono">[ SCROLL TO INITIATE ]</span>
     </div>
   </section>
 
-  <!-- Experience Section -->
-  <section id="experience" class="py-32 bg-dark-800 relative">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">EXPERIENCE</h2>
-      <p class="text-gray-500 text-center mb-20"><span id="years-experience"></span>+ years building scalable systems
-      </p>
-
-      <div class="space-y-12">
-        <!-- Netflix -->
-        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 glow-border">
-          <div class="flex flex-col md:flex-row md:items-start gap-6">
-            <div class="flex-shrink-0">
-              <div id="logo-netflix"
-                class="w-16 h-16 rounded-xl bg-black flex items-center justify-center overflow-hidden border border-white/10">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Netflix_2016_N_logo.svg"
-                  alt="Netflix Logo" class="w-12 h-12 object-contain">
-              </div>
-            </div>
-            <div class="flex-1">
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                <div>
-                  <h3 class="text-2xl font-semibold">Software Engineer</h3>
-                  <p class="text-netflix-red font-medium">Netflix</p>
-                </div>
-                <span class="text-gray-500 mt-2 md:mt-0">Apr 2023 — Present</span>
-              </div>
-              <p class="text-gray-400 leading-relaxed">
-                Building a Digital Asset Management (DAM) System that powers marketing campaigns for Netflix titles.
-                Collaborating with cross-functional teams to deliver scalable solutions that reach our users
-                worldwide.
-              </p>
-              <div class="flex flex-wrap gap-2 mt-4">
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">AI: LLMs & Emerging Tech</span>
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Distributed Systems</span>
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Java</span>
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Microservices</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Nubank -->
-        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
-          <div class="flex flex-col md:flex-row md:items-start gap-6">
-            <div class="flex-shrink-0">
-              <div id="logo-nubank"
-                class="w-16 h-16 rounded-xl bg-white flex items-center justify-center overflow-hidden">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Nubank_logo_2021.svg" alt="Nubank Logo"
-                  class="w-12 h-12 object-contain">
-              </div>
-            </div>
-            <div class="flex-1">
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                <div>
-                  <h3 class="text-2xl font-semibold">Senior Software Engineer</h3>
-                  <p class="text-purple-400 font-medium">Nubank</p>
-                </div>
-                <span class="text-gray-500 mt-2 md:mt-0">Aug 2021 — Apr 2023</span>
-              </div>
-              <ul class="text-gray-400 space-y-2">
-                <li class="flex items-start gap-2">
-                  <span class="text-purple-400 mt-1">▸</span>
-                  Led the design, implementation, and monitoring of critical projects to enhance the experience of
-                  people applying for Nubank's products
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-purple-400 mt-1">▸</span>
-                  Mentored mid-level engineers to empower them to own essential tasks and projects
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-purple-400 mt-1">▸</span>
-                  Interviewed dozens of candidates across all hiring pipeline stages
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-purple-400 mt-1">▸</span>
-                  Organized and executed initiatives to increase brand awareness (Building Nu MX Meetups)
-                </li>
-              </ul>
-              <div class="flex flex-wrap gap-2 mt-4">
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Clojure</span>
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Datomic</span>
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Event-Driven</span>
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Functional Programming</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Wizeline -->
-        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
-          <div class="flex flex-col md:flex-row md:items-start gap-6">
-            <div class="flex-shrink-0">
-              <div id="logo-wizeline"
-                class="w-16 h-16 rounded-xl bg-white flex items-center justify-center overflow-hidden">
-                <img src="https://github.com/wizeline.png" alt="Wizeline Logo" class="w-full h-full object-cover">
-              </div>
-            </div>
-            <div class="flex-1">
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                <div>
-                  <h3 class="text-2xl font-semibold">Software Engineer I → III</h3>
-                  <p class="text-blue-400 font-medium">Wizeline</p>
-                </div>
-                <span class="text-gray-500 mt-2 md:mt-0">Aug 2018 — Jul 2021</span>
-              </div>
-              <ul class="text-gray-400 space-y-2">
-                <li class="flex items-start gap-2">
-                  <span class="text-blue-400 mt-1">▸</span>
-                  Worked on a platform processing hundreds of billions of events monthly for major US broadcasting
-                  companies
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-blue-400 mt-1">▸</span>
-                  Built Authorization/Identity flows for one of the biggest entertainment companies in the US
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-blue-400 mt-1">▸</span>
-                  Developed a chatbot for the largest real estate company in the US
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-blue-400 mt-1">▸</span>
-                  Promoted from Trainee to full-time in 2 months; progressed to SE III in 3 years
-                </li>
-              </ul>
-              <div class="flex flex-wrap gap-2 mt-4">
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Go</span>
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">Python</span>
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">AWS</span>
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">gRPC</span>
-                <span class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full">React</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- About Section (placeholder) -->
+  <section id="about" class="min-h-screen bg-surface-1 py-32 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="font-display text-5xl md:text-6xl mb-8">ABOUT</h2>
+      <p class="text-starlight/60">Section content coming in later phases...</p>
     </div>
   </section>
 
-  <!-- Skills Section -->
-  <section id="skills" class="py-32 bg-dark-900 relative">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">SKILLS</h2>
-      <p class="text-gray-500 text-center mb-20">Technologies I work with</p>
+  <!-- Floating Sound Toggle (fixed, always on top) -->
+  <button id="sound-toggle"
+    class="fixed bottom-6 right-6 z-50 nav-box flex items-center gap-2 opacity-70 hover:opacity-100 transition-all hover:scale-105 backdrop-blur-sm bg-void/50">
+    <span class="text-xs tracking-widest">SOUND:</span>
+    <span class="text-signal text-xs">ON</span>
+    <span class="w-2 h-2 rounded-full bg-signal animate-pulse"></span>
+  </button>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 reveal-stagger">
-        <div
-          class="skill-tag bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors col-span-2 md:col-span-4">
-          <p class="font-semibold text-white">AI & Emerging Tech</p>
-          <p class="text-gray-400 text-sm mt-2">Vibe Coding, LLM Orchestration, Sub-Agent Workflows, Context
-            Engineering, MCP Server Management, Skill Creation, AI-Powered Development</p>
-          <p class="text-gray-500 text-xs mt-2 italic">This entire site was vibe coded ✨</p>
-        </div>
-        <div
-          class="skill-tag bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors flex flex-col justify-center">
-          <p class="font-semibold text-white">Programming Languages</p>
-          <p class="text-gray-400 text-sm mt-2">Java, Python, Go, Clojure, TypeScript</p>
-        </div>
-        <div
-          class="skill-tag bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors flex flex-col justify-center">
-          <p class="font-semibold text-white">Cloud</p>
-          <p class="text-gray-400 text-sm mt-2">AWS, GCP, Azure</p>
-        </div>
-        <div
-          class="skill-tag bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors flex flex-col justify-center">
-          <p class="font-semibold text-white">Databases</p>
-          <p class="text-gray-400 text-sm mt-2">Datomic, DynamoDB, Elasticsearch, MySQL</p>
-        </div>
-        <div
-          class="skill-tag bg-dark-700 rounded-xl p-6 text-center border border-white/5 hover:border-netflix-red/30 transition-colors flex flex-col justify-center">
-          <p class="font-semibold text-white">Paradigms</p>
-          <p class="text-gray-400 text-sm mt-2">Distributed Systems, Event-Driven, Functional</p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Education Section -->
-  <section id="education" class="py-32 bg-dark-800 relative">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">EDUCATION</h2>
-      <p class="text-gray-500 text-center mb-20">Academic background & continuous learning</p>
-
-      <div class="space-y-8">
-        <!-- Top Row: Main Education + Stacked Cards -->
-        <div class="grid md:grid-cols-2 gap-8">
-          <!-- Main Education -->
-          <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
-            <div class="flex items-center gap-4 mb-6">
-              <div id="logo-udeg"
-                class="w-16 h-16 rounded-xl bg-white/10 flex items-center justify-center overflow-hidden p-2">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Escudo_UdeG.svg" alt="UdeG Logo"
-                  class="w-full h-full object-contain">
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold">B.E. Computer Engineering</h3>
-                <p class="text-yellow-400">Universidad de Guadalajara</p>
-              </div>
-            </div>
-            <p class="text-gray-500">Aug 2013 — Jun 2018</p>
-            <p class="text-gray-400 mt-4">Terminal Project: News scraper for Mexican news websites with violence
-              classification using NLP.</p>
-          </div>
-
-          <!-- Right Column: Stacked Cards -->
-          <div class="flex flex-col gap-4">
-            <div class="bg-dark-700 rounded-xl p-6 border border-white/5 flex-1">
-              <h4 class="font-semibold text-white">Summer Space School</h4>
-              <p class="text-gray-500 text-sm">Samara University • 2024</p>
-              <p class="text-gray-400 text-xs mt-2">Two-week introduction course about CubeSats in Samara, Russia. <a
-                  href="https://blog.matxspace.com/2025-05-14-mi-aventura-espacial-de-m%C3%A9xico-a-samara/"
-                  target="_blank" class="text-white hover:underline">Read more</a></p>
-            </div>
-            <div class="bg-dark-700 rounded-xl p-6 border border-white/5 flex-1 flex flex-col justify-center">
-              <h4 class="font-semibold text-white">Data Engineering Bootcamp</h4>
-              <p class="text-gray-500 text-sm">Wizeline Academy • Oct — Dec 2021</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bottom Row: Three Equal Cards -->
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="bg-dark-700 rounded-xl p-6 border border-white/5">
-            <h4 class="font-semibold text-white">Deep Learning</h4>
-            <p class="text-gray-500 text-sm">Saturdays.AI • May — Jul 2021</p>
-          </div>
-          <div class="bg-dark-700 rounded-xl p-6 border border-white/5">
-            <h4 class="font-semibold text-white">Machine Learning</h4>
-            <p class="text-gray-500 text-sm">Saturdays.AI • Mar — Jun 2020</p>
-          </div>
-          <div class="bg-dark-700 rounded-xl p-6 border border-white/5">
-            <h4 class="font-semibold text-white">ELP English Language Program</h4>
-            <p class="text-gray-500 text-sm">University of Toronto • 2015</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Volunteering Section -->
-  <section id="volunteering" class="py-32 bg-dark-900 relative">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">VOLUNTEERING</h2>
-      <p class="text-gray-500 text-center mb-20">Giving back to the community</p>
-
-      <div class="space-y-12">
-        <!-- Mat X Space -->
-        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
-          <div class="flex flex-col md:flex-row md:items-start gap-6">
-            <div class="flex-shrink-0">
-              <div id="icon-matxspace"
-                class="w-16 h-16 rounded-xl bg-green-500/20 flex items-center justify-center text-3xl">
-                👽
-              </div>
-            </div>
-            <div class="flex-1">
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                <div>
-                  <h3 class="text-2xl font-semibold">Marketing Team Member</h3>
-                  <p class="text-green-400 font-medium">Mat X Space</p>
-                </div>
-                <span class="text-gray-500 mt-2 md:mt-0">Nov 2022 — Present</span>
-              </div>
-              <p class="text-gray-400 mb-4">I've been a key Marketing Team member for Mat X Space, focusing on web
-                presence and content strategy.</p>
-              <ul class="text-gray-400 space-y-2">
-                <li class="flex items-start gap-2">
-                  <span class="text-green-400 mt-1">▸</span>
-                  Developed the official webpage: <a href="https://matxspace.com" target="_blank"
-                    class="text-white hover:underline">matxspace.com</a>
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-green-400 mt-1">▸</span>
-                  Developed the blog: <a href="https://blog.matxspace.com" target="_blank"
-                    class="text-white hover:underline">blog.matxspace.com</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Technovation -->
-        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
-          <div class="flex flex-col md:flex-row md:items-start gap-6">
-            <div class="flex-shrink-0">
-              <div id="icon-technovation"
-                class="w-16 h-16 rounded-xl bg-teal-500/20 flex items-center justify-center text-3xl">
-                👩‍💻
-              </div>
-            </div>
-            <div class="flex-1">
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                <div>
-                  <h3 class="text-2xl font-semibold">Mentor & Judge</h3>
-                  <p class="text-teal-400 font-medium">Technovation Girls</p>
-                </div>
-                <span class="text-gray-500 mt-2 md:mt-0">2019 • 2020 • 2021 • 2025</span>
-              </div>
-              <p class="text-gray-400">
-                Served as a Mentor and Judge for Technovation competitions, empowering girls to become tech
-                entrepreneurs and leaders. Supported teams in identifying problems in their community and creating
-                mobile app solutions.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Wizeline Academy -->
-        <div class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5">
-          <div class="flex flex-col md:flex-row md:items-start gap-6">
-            <div class="flex-shrink-0">
-              <div id="icon-wizeline-academy"
-                class="w-16 h-16 rounded-xl bg-blue-500/20 flex items-center justify-center text-3xl">
-                🎓
-              </div>
-            </div>
-            <div class="flex-1">
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                <div>
-                  <h3 class="text-2xl font-semibold">Course Designer, Speaker & Mentor</h3>
-                  <p class="text-blue-400 font-medium">Wizeline Academy</p>
-                </div>
-                <span class="text-gray-500 mt-2 md:mt-0">2018 — 2021</span>
-              </div>
-              <p class="text-gray-400 mb-4">Significant participation in Wizeline Academy initiatives to foster talent
-                development.</p>
-              <div class="grid md:grid-cols-2 gap-4">
-                <ul class="text-gray-400 space-y-2">
-                  <li class="flex items-start gap-2">
-                    <span class="text-blue-400 mt-1">▸</span>
-                    Creating and implementing chatbots
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-blue-400 mt-1">▸</span>
-                    Teaching JavaScript to complete beginners
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-blue-400 mt-1">▸</span>
-                    Teaching Go to mid-advanced programmers
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-blue-400 mt-1">▸</span>
-                    Giving talks about concurrency in Go
-                  </li>
-                </ul>
-                <ul class="text-gray-400 space-y-2">
-                  <li class="flex items-start gap-2">
-                    <span class="text-blue-400 mt-1">▸</span>
-                    Implementing a project to translate spoken English to ASL
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-blue-400 mt-1">▸</span>
-                    Developing both soft and hard skills for junior engineers
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-blue-400 mt-1">▸</span>
-                    Developing hard skills for senior engineers
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Presentations Section -->
-  <section class="py-32 bg-dark-800 relative">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">TALKS</h2>
-      <p class="text-gray-500 text-center mb-20">Sharing knowledge with the community, <i>in Spanish</i></p>
-
-      <div class="grid md:grid-cols-2 gap-8">
-        <a href="https://www.youtube.com/watch?v=o75pGPjBqmU" target="_blank" rel="noopener"
-          class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 group">
-          <div class="flex items-center gap-4">
-            <div
-              class="w-12 h-12 flex-shrink-0 rounded-xl bg-netflix-red/20 flex items-center justify-center group-hover:bg-netflix-red transition-colors">
-              <svg class="w-6 h-6 text-netflix-red group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold group-hover:text-netflix-red transition-colors">Engineering Principles at
-                Nubank</h3>
-            </div>
-          </div>
-        </a>
-
-        <a href="https://www.youtube.com/watch?v=YpFuzEAWjJM" target="_blank" rel="noopener"
-          class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 group">
-          <div class="flex items-center gap-4">
-            <div
-              class="w-12 h-12 flex-shrink-0 rounded-xl bg-netflix-red/20 flex items-center justify-center group-hover:bg-netflix-red transition-colors">
-              <svg class="w-6 h-6 text-netflix-red group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold group-hover:text-netflix-red transition-colors">Go Concurrency Patterns
-              </h3>
-            </div>
-          </div>
-        </a>
-
-        <a href="https://open.spotify.com/episode/7InqS8nts57eJIwAMeCdBk" target="_blank" rel="noopener"
-          class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 group">
-          <div class="flex items-center gap-4">
-            <div
-              class="w-12 h-12 flex-shrink-0 rounded-xl bg-green-500/20 flex items-center justify-center group-hover:bg-green-500 transition-colors">
-              <svg class="w-6 h-6 text-green-400 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold group-hover:text-green-400 transition-colors">Detecting Hate Speech with
-                AI</h3>
-            </div>
-          </div>
-        </a>
-
-        <a href="https://open.spotify.com/episode/0IQna0wz6CNVALdQgy2CmV" target="_blank" rel="noopener"
-          class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 group">
-          <div class="flex items-center gap-4">
-            <div
-              class="w-12 h-12 flex-shrink-0 rounded-xl bg-green-500/20 flex items-center justify-center group-hover:bg-green-500 transition-colors">
-              <svg class="w-6 h-6 text-green-400 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold group-hover:text-green-400 transition-colors">AI Against Gender Violence
-              </h3>
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Press Coverage Section -->
-  <section id="press" class="py-32 bg-dark-900 relative">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">FEATURED IN</h2>
-      <p class="text-gray-500 text-center mb-20">Press coverage & publications</p>
-
-      <div class="grid md:grid-cols-3 gap-8 reveal-stagger">
-        <!-- Forbes Mexico -->
-        <a href="https://forbes.com.mx/musk-llevara-un-experimento-mexicano-al-espacio-en-octubre/" target="_blank"
-          rel="noopener"
-          class="featured-article-card bg-dark-700 rounded-2xl overflow-hidden border border-white/5 block group">
-          <!-- Rich media header -->
-          <div
-            class="h-24 bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] flex items-center justify-center border-b border-white/5 relative overflow-hidden">
-            <div class="absolute inset-0 bg-netflix-red/5"></div>
-            <span
-              class="font-display text-3xl tracking-wider text-white relative z-10 opacity-90 group-hover:opacity-100 transition-opacity">Forbes
-              México</span>
-          </div>
-          <div class="p-6">
-            <div class="flex items-center gap-2 mb-4">
-              <span class="text-gray-500 text-xs">Oct 2024</span>
-              <span class="text-gray-600">•</span>
-              <span class="text-netflix-red/70 text-xs">In Spanish</span>
-            </div>
-            <h3
-              class="text-lg font-semibold text-white mb-3 leading-snug group-hover:text-netflix-red transition-colors">
-              Musk Will Carry a Mexican Experiment to Space in October
-            </h3>
-            <p class="text-gray-400 text-sm mb-4 line-clamp-2">
-              MCB-1 Space Experiment featured on SpaceX Mission CRS-31
-            </p>
-            <span class="text-netflix-red text-sm font-medium group-hover:underline flex items-center gap-1">
-              Read article
-              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- El País -->
-        <a href="https://elpais.com/mexico/2024-12-02/los-chicos-que-sonaban-con-las-estrellas-la-historia-detras-del-ultimo-experimento-de-mexico-en-el-espacio.html"
-          target="_blank" rel="noopener"
-          class="featured-article-card bg-dark-700 rounded-2xl overflow-hidden border border-white/5 block group">
-          <!-- Rich media header -->
-          <div
-            class="h-24 bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] flex items-center justify-center border-b border-white/5 relative overflow-hidden">
-            <div class="absolute inset-0 bg-blue-500/5"></div>
-            <span
-              class="font-serif text-2xl italic text-white relative z-10 opacity-90 group-hover:opacity-100 transition-opacity"
-              style="font-family: 'Times New Roman', serif;">EL PAÍS</span>
-          </div>
-          <div class="p-6">
-            <div class="flex items-center gap-2 mb-4">
-              <span class="text-gray-500 text-xs">Dec 2024</span>
-              <span class="text-gray-600">•</span>
-              <span class="text-blue-400/70 text-xs">In Spanish</span>
-            </div>
-            <h3 class="text-lg font-semibold text-white mb-3 leading-snug group-hover:text-blue-400 transition-colors">
-              The Kids Who Dreamed of the Stars
-            </h3>
-            <p class="text-gray-400 text-sm mb-4 line-clamp-2">
-              The story behind Mexico's latest space experiment
-            </p>
-            <span class="text-blue-400 text-sm font-medium group-hover:underline flex items-center gap-1">
-              Read article
-              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Mat X Space Blog -->
-        <a href="https://blog.matxspace.com/2025-05-14-mi-aventura-espacial-de-m%C3%A9xico-a-samara/" target="_blank"
-          rel="noopener" class="featured-article-card bg-dark-700 rounded-2xl p-8 border border-white/5 block group">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="article-logo w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
-              <span class="text-2xl">👽</span>
-            </div>
-            <div>
-              <p class="text-white font-semibold text-sm">Mat X Space Blog</p>
-              <p class="text-gray-500 text-xs">May 2025</p>
-            </div>
-          </div>
-          <h3 class="text-lg font-semibold text-white mb-3 leading-snug group-hover:text-green-400 transition-colors">
-            My Space Adventure: From Mexico to Samara
-          </h3>
-          <p class="text-gray-400 text-sm mb-4 line-clamp-2">
-            Two-week Summer Space School experience at Samara University, Russia
-          </p>
-          <span class="text-green-400 text-sm font-medium group-hover:underline flex items-center gap-1">
-            Read article
-            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Awards Section -->
-  <section id="awards" class="py-32 bg-dark-800 relative">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide">AWARDS</h2>
-      <p class="text-gray-500 text-center mb-20">Recognition & achievements</p>
-
-      <div class="flex flex-wrap justify-center gap-6">
-        <a href="https://forbes.com.mx/musk-llevara-un-experimento-mexicano-al-espacio-en-octubre/" target="_blank"
-          rel="noopener"
-          class="w-full md:w-80 bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-all block group cursor-pointer">
-          <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
-            <svg class="w-6 h-6 text-netflix-red" viewBox="0 0 152 152" fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M85.2634 101.955L83.0496 100.156C79.208 103.601 75.4249 107.033 71.5951 110.412C69.7141 112.071 67.8074 113.713 65.8017 115.215C63.1986 117.165 61.5591 116.959 59.2507 114.585C58.4297 113.741 57.6847 112.822 56.6641 111.663C56.3176 114.759 56.139 117.521 55.6796 120.234C54.783 125.656 52.3996 130.723 48.7946 134.871C45.0535 139.214 42.2431 139.489 38.0018 135.793C35.2833 133.425 32.6494 130.96 29.9669 128.549C29.7058 128.403 29.4267 128.293 29.1366 128.221C27.0554 129.936 24.222 130.887 23.9647 134.563C23.8092 136.787 21.7581 137.963 19.497 138.23C18.2936 138.377 17.0747 138.137 16.0166 137.546C14.9584 136.954 14.116 136.041 13.611 134.939C12.6061 132.788 12.637 130.683 14.2253 128.805C14.627 128.332 15.345 127.722 15.834 127.788C19.8751 128.338 21.3965 125.004 23.8288 122.872C22.3337 121.339 20.8432 119.935 19.497 118.404C17.0613 115.631 14.646 112.836 12.3521 109.947C10.9896 108.23 11.6689 106.377 12.6488 104.731C16.5868 98.1197 22.4827 93.9598 29.7136 91.7532C32.4754 90.9105 35.469 90.8264 38.5085 90.3749C38.2979 89.867 38.0518 89.3747 37.7721 88.9014C34.8074 84.4278 34.9918 83.1526 39.0191 79.4502C43.7566 75.0954 48.4553 70.6979 53.196 66.2978C52.3717 64.3826 51.4042 64.5775 50.1342 65.604C48.6342 66.8746 47.0458 68.0371 45.381 69.0827C42.4334 70.8357 40.6016 70.6231 38.0176 68.3371C34.6702 65.3776 31.3275 62.4097 28.1023 59.3203C19.6574 51.2316 11.2506 43.1039 2.88182 34.9373C-0.451717 31.6924 -0.486506 30.8937 2.3049 27.2201C3.13561 26.2079 4.01895 25.2399 4.95126 24.3204C11.6879 17.1663 18.4718 10.0588 25.1507 2.85816C28.2204 -0.452408 29.7398 -1.02605 33.1954 1.87037C40.0529 7.61792 46.6084 13.7271 53.2538 19.7227C58.9298 24.8454 64.5198 30.0634 70.2181 35.1612C73.8175 38.3818 74.0663 39.7798 71.391 43.7303C70.7202 44.72 70.2483 45.8548 69.5152 46.7895C68.6783 47.7362 67.7847 48.6314 66.8393 49.4699L68.8123 52.3578C70.4137 51.0629 71.9259 49.8821 73.3929 48.6476C78.4847 44.361 83.5825 40.0804 88.6343 35.7472C91.3575 33.4107 92.808 33.3673 96.79 35.9533C97.6629 35.4007 98.6402 34.7549 99.6431 34.151C109.016 28.5157 121.122 33.2171 123.454 43.4933C124.694 48.9619 122.651 53.6068 119.062 57.6046C117.735 59.0814 117.017 60.3271 117.452 62.4838C118.062 65.5029 115.892 67.4917 113.938 69.4732C109.491 73.9829 105.115 78.5635 100.472 83.3619L102.473 85.8416C103.705 84.3576 105.016 82.9416 106.401 81.5996C109.686 78.7432 112.587 78.8338 115.625 81.8622C126.073 92.2809 136.643 102.583 146.852 113.235C153.659 120.336 153.11 121.913 146.614 128.922C138.8 137.212 129.686 144.172 119.631 149.526C113.889 152.641 111.367 152.069 107.072 147.254C98.0521 137.147 88.952 127.105 79.8906 117.035C79.2953 116.392 78.7416 115.713 78.2327 115C76.1849 112.042 76.2597 111.138 78.8142 108.49C80.8548 106.376 82.9413 104.305 85.2634 101.955ZM64.1989 108.997C80.7438 94.5308 94.9582 78.4262 110.113 63.209L91.6771 42.199C74.7003 55.7458 58.4323 69.993 42.9847 85.9112L64.1989 108.997ZM43.5426 131.492C47.7195 125.895 51.3563 116.462 49.9209 110.342C48.3719 103.741 43.9719 99.9718 38.6083 99.8163C32.4472 99.6384 24.3992 102.174 20.2308 106.367C27.507 114.546 36.2934 123.341 43.5426 131.492ZM96.3778 99.9876C92.0657 103.713 87.8907 107.318 83.4808 111.128L93.8168 120.316L105.417 110.415L96.3778 99.9876ZM120.737 96.8845L111.745 86.3247L100.644 96.112L110.756 105.923L120.737 96.8845ZM16.6905 20.3942L5.85372 30.1355L16.5842 39.3787L26.0105 29.2626L16.6905 20.3942ZM30.5596 7.58576L20.2315 17.2602L29.9026 25.3252L38.6083 16.3413L30.5596 7.58576ZM143.816 121.506L136.465 114.602L124.254 123.508L131.843 132.606L143.816 121.506ZM124.54 101.225L113.813 110.237L121.37 119.455C125.177 116.252 128.805 113.198 132.659 109.954L124.54 101.225ZM41.779 45.1453L33.3221 54.1103L43.1015 63.1415L50.3088 54.8027L41.779 45.1453ZM115.848 123.914L108.67 114.446C104.704 117.728 101.114 120.694 97.4995 123.685L105.742 131.795L115.848 123.914ZM116.287 144.611L126.281 137.33L118.501 127.98C114.903 130.503 111.584 132.829 108.262 135.158L116.287 144.611ZM54.8887 33.2164L46.5624 41.2821L56.0058 49.8848L63.4467 41.2211L54.8887 33.2164ZM21.2396 43.3897L27.7432 49.1785L37.1499 41.0446C34.8173 38.5918 32.5903 36.2487 30.3384 33.88L21.2396 43.3897ZM43.8373 21.4063L34.6525 29.9537L41.8296 36.6267L50.4742 28.5407L43.8373 21.4063ZM111.938 52.965C116.007 47.6939 116.256 43.7539 112.972 40.7302C109.688 37.7064 104.4 37.8134 100.737 41.2283L111.938 52.965ZM96.3351 88.0186L88.3232 95.2863L90.1826 97.8256L98.2996 89.286L96.3351 88.0186ZM62.0041 54.5014C56.3819 59.5618 56.3819 59.5618 58.257 61.6168L64.4142 56.1291L62.0041 54.5014Z" />
-            </svg>
-          </div>
-          <h3 class="font-semibold text-white">MCB-1 Space Experiment</h3>
-          <p class="text-gray-500 text-sm">SpaceX Mission CRS-31 • Nov 2024</p>
-          <p class="text-netflix-red text-xs mt-2 group-hover:underline">Featured in Forbes Mexico →</p>
-        </a>
-
-        <div
-          class="w-full md:w-80 bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-colors">
-          <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
-            <svg class="w-6 h-6 text-netflix-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <h3 class="font-semibold text-white">IAC Research Papers</h3>
-          <p class="text-gray-500 text-sm">IAC '23 (Baku) & IAC '24 (Milan)</p>
-          <p class="text-gray-400 text-xs mt-2">Presented with Mat X Space</p>
-        </div>
-
-        <a href="https://www.matxspace.com/" target="_blank" rel="noopener"
-          class="w-full md:w-80 bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-all block group cursor-pointer">
-          <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
-            <svg class="w-6 h-6 text-netflix-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-            </svg>
-          </div>
-          <h3 class="font-semibold text-white">1st Place</h3>
-          <p class="text-gray-500 text-sm">International Air & Space Program • Nov 2022</p>
-          <p class="text-netflix-red text-xs mt-2 group-hover:underline">Mat X Space was born here →</p>
-        </a>
-
-        <div
-          class="w-full md:w-80 bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-colors">
-          <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
-            <svg class="w-6 h-6 text-netflix-red" viewBox="0 0 24 24" fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg">
-              <!-- Ribbon straps -->
-              <path d="M7 1v7l5 4 5-4V1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-              <!-- Medal circle -->
-              <circle cx="12" cy="17" r="5" stroke="currentColor" stroke-width="1.5" />
-              <!-- Number 1 in center -->
-              <text x="12" y="19" font-size="6" text-anchor="middle" fill="currentColor" font-weight="bold">1</text>
-            </svg>
-          </div>
-          <h3 class="font-semibold text-white">Premio Ceneval</h3>
-          <p class="text-gray-500 text-sm">Excellence Award EGEL • 2018</p>
-        </div>
-
-        <div
-          class="w-full md:w-80 bg-dark-700 rounded-xl p-6 border border-white/5 text-center hover:border-netflix-red/30 transition-colors">
-          <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-netflix-red/20 flex items-center justify-center">
-            <svg class="w-6 h-6 text-netflix-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-            </svg>
-          </div>
-          <h3 class="font-semibold text-white">Research Scholarships</h3>
-          <p class="text-gray-500 text-sm">Programa Delfín • 2017, 2018</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="py-32 bg-dark-900 relative">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-      <h2 class="font-display text-5xl md:text-6xl mb-4 tracking-wide">LET'S CONNECT</h2>
-      <p class="text-gray-400 text-lg mb-12 max-w-xl mx-auto">
-        I'm always open to discussing new opportunities, interesting projects, or ways to collaborate.
-      </p>
-
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 flex-wrap">
-        <a href="https://cal.com/ivan-galaviz-qtcayv/mentoring" target="_blank" rel="noopener"
-          class="w-full sm:w-auto px-8 py-4 bg-netflix-red hover:bg-netflix-red-dark rounded-xl font-semibold transition-colors flex items-center justify-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          Book a Mentoring Session
-        </a>
-        <a href="mailto:galavizivan23@gmail.com"
-          class="w-full sm:w-auto px-8 py-4 bg-dark-700 hover:bg-dark-600 border border-white/10 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-          Email Me
-        </a>
-        <a href="https://linkedin.com/in/ivanovishado" target="_blank" rel="noopener"
-          class="w-full sm:w-auto px-8 py-4 bg-dark-700 hover:bg-dark-600 border border-white/10 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-          </svg>
-          LinkedIn
-        </a>
-        <a href="https://github.com/ivanovishado" target="_blank" rel="noopener"
-          class="w-full sm:w-auto px-8 py-4 bg-dark-700 hover:bg-dark-600 border border-white/10 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-          </svg>
-          GitHub
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="py-8 bg-dark-900 border-t border-white/5">
-    <div
-      class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-      <p class="text-gray-500 text-sm">© Ivan Galaviz. All rights reserved.</p>
-      <p class="text-gray-400 text-sm font-medium"><span id="footer-years"></span>+ years · 3 companies · 10M+ users
-        impacted</p>
-      <div class="flex items-center justify-center gap-2 text-gray-500 text-sm">
-        <span>Built with</span>
-        <svg class="w-4 h-4 text-netflix-red" fill="currentColor" viewBox="0 0 24 24">
-          <path
-            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-        </svg>
-        <span>using Tailwind CSS</span>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Orbital Orchestrator JS -->
-  <script src="scripts/main.js"></script>
+  <!-- Scripts -->
+  <script type="module" src="scripts/v2/animations/hero-particles.js"></script>
+  <script src="scripts/v2/animations/magnetic.js"></script>
+  <script src="scripts/v2/navigation.js"></script>
+  <script src="scripts/v2/main.js"></script>
 </body>
 
 </html>

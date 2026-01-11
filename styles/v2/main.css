@@ -1,0 +1,393 @@
+/* ==========================================================================
+   Orbital Orchestrator V2 — Styles
+   Event Horizon Theme | Cabinet Grotesk + JetBrains Mono
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CSS Custom Properties
+   -------------------------------------------------------------------------- */
+:root {
+    /* Event Horizon Palette */
+    --void: #030305;
+    --starlight: #E2E8F0;
+    --horizon: #6366F1;
+    --signal: #00F0FF;
+    --alert: #FF9F1C;
+
+    /* Surfaces */
+    --surface-1: #0a0a0c;
+    --surface-2: #14141a;
+    --surface-3: #1e1e28;
+
+    /* Typography */
+    --font-display: 'Cabinet Grotesk', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Animation */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: auto;
+    /* Lenis handles smooth scroll */
+}
+
+body {
+    background: var(--void);
+    color: var(--starlight);
+    font-family: var(--font-mono);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Lenis integration */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+/* --------------------------------------------------------------------------
+   Typography
+   -------------------------------------------------------------------------- */
+.font-display {
+    font-family: var(--font-display);
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+/* Gradient text - animating Event Horizon colors */
+.gradient-text {
+    background: linear-gradient(135deg,
+            var(--starlight) 0%,
+            var(--horizon) 50%,
+            var(--signal) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 8s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Grain Overlay
+   -------------------------------------------------------------------------- */
+.grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    z-index: 1000;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   Navigation
+   -------------------------------------------------------------------------- */
+.nav-box {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+    color: var(--starlight);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s var(--ease-out-expo);
+    text-decoration: none;
+}
+
+.nav-box:hover {
+    border-color: var(--signal);
+    color: var(--signal);
+    background: rgba(0, 240, 255, 0.05);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+}
+
+/* --------------------------------------------------------------------------
+   Social Icons
+   -------------------------------------------------------------------------- */
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--starlight);
+    opacity: 0.6;
+    transition: all 0.3s var(--ease-out-expo);
+}
+
+.social-icon:hover {
+    opacity: 1;
+    border-color: var(--signal);
+    color: var(--signal);
+    background: rgba(0, 240, 255, 0.05);
+    transform: scale(1.1);
+}
+
+/* --------------------------------------------------------------------------
+   Hero Canvas
+   -------------------------------------------------------------------------- */
+#hero-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+#hero-canvas canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Scroll Indicator
+   -------------------------------------------------------------------------- */
+#scroll-indicator {
+    opacity: 0.5;
+    animation: fade-pulse 3s ease-in-out infinite;
+}
+
+@keyframes fade-pulse {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Hide after scroll */
+#scroll-indicator.hidden {
+    opacity: 0 !important;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .gradient-text {
+        animation: none;
+    }
+
+    #scroll-indicator {
+        animation: none;
+        opacity: 0.5;
+    }
+
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Magnetic Hover Effect
+   -------------------------------------------------------------------------- */
+.magnetic-element {
+    will-change: transform;
+}
+
+.magnetic-active {
+    transition: none !important;
+}
+
+.social-icon.magnetic-element:hover {
+    transform: none;
+    /* Override default transform, let JS handle it */
+}
+
+/* --------------------------------------------------------------------------
+   Hamburger Menu
+   -------------------------------------------------------------------------- */
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    z-index: 51;
+    transition: border-color 0.3s var(--ease-out-expo);
+}
+
+.hamburger-btn:hover {
+    border-color: var(--signal);
+}
+
+.hamburger-line {
+    width: 20px;
+    height: 2px;
+    background: var(--starlight);
+    transition: all 0.3s var(--ease-out-expo);
+    transform-origin: center;
+}
+
+/* Hamburger to X animation */
+.hamburger-open .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-open .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.hamburger-open .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Nav Links Container */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Compact (hamburger) mode */
+.nav-compact {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* Ensure it stays on top */
+    z-index: 50;
+    /* Remove padding to position button correctly if needed, or keep it */
+    pointer-events: none;
+    /* Let clicks pass through the empty nav container */
+}
+
+.nav-compact .hamburger-btn {
+    display: flex;
+    pointer-events: auto;
+    /* Re-enable clicks for the button */
+}
+
+.nav-compact .nav-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: rgba(3, 3, 5, 0.95);
+    backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.4s var(--ease-out-expo);
+    z-index: 50;
+}
+
+.nav-compact .nav-links-open {
+    transform: translateX(0);
+}
+
+/* Nav link animation in menu */
+.nav-compact .nav-link {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, transform 0.3s var(--ease-out-expo);
+}
+
+.nav-compact .nav-link-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Full nav visible on desktop in hero */
+#main-nav:not(.nav-compact) .nav-links {
+    display: flex;
+}
+
+#main-nav:not(.nav-compact) .hamburger-btn {
+    display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+
+    /* Always hamburger on mobile */
+    .nav-compact .nav-links,
+    #main-nav .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 280px;
+        height: 100vh;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding: 2rem;
+        background: rgba(3, 3, 5, 0.95);
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        transform: translateX(100%);
+        transition: transform 0.4s var(--ease-out-expo);
+        z-index: 50;
+    }
+
+    #main-nav .hamburger-btn {
+        display: flex;
+    }
+
+    .nav-links-open {
+        transform: translateX(0) !important;
+    }
+
+    /* Adjust hero title size */
+    #hero-name {
+        font-size: 3rem;
+    }
+
+    /* Move social icons to bottom */
+    .social-icon {
+        width: 40px;
+        height: 40px;
+    }
+}
