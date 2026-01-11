@@ -101,8 +101,8 @@ export class FlightLogEngine {
         if (this.dom.content.links) {
             this.dom.content.links.innerHTML = data.mediaLinks
                 .map(link => `
-                    <a href="${link.url}" class="nav-box text-xs group" target="_blank" rel="noopener">
-                        [ ${link.label} ] <span class="group-hover:text-signal transition-colors">↗</span>
+                    <a href="${link.url}" class="nav-box text-sm px-4 py-2 group border-signal/50 hover:bg-signal/10" target="_blank" rel="noopener">
+                        [ READ: ${link.label} ]
                     </a>
                 `).join('');
         }

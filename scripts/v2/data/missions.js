@@ -29,8 +29,8 @@ export const MISSIONS = {
     'samara-cs': {
         id: 'samara-cs',
         title: 'SAMARA CUBESAT',
-        status: 'TRAINING SIMULATION',
-        description: 'Design of Hurricane Prediction Algorithms using CubeSat telemetry. Implementation of ADCS and power budgeting subsystems.',
+        status: 'TRAINING COMPLETED',
+        description: 'Design of a 6U CubeSat for hurricane monitoring. Implementation of ADCS and power budgeting subsystems.',
         stats: {
             'LOCATION': 'SAMARA, RUSSIA',
             'COORDS': '53.2° N, 50.1° E',
