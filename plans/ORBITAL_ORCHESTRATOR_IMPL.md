@@ -103,9 +103,9 @@ ivanovishado.github.io/
 > **Note:** User has a UI mock for particle inspiration. Final decision TBD based on visual exploration.
 
 #### Option A: Three.js Particles
-- [ ] Create Three.js canvas for particle field
-- [ ] Implement drifting "space dust" particles
-- [ ] Add parallax response to scroll
+- [x] Create Three.js canvas for particle field
+- [x] Implement drifting "space dust" particles
+- [x] Add parallax response to scroll
 
 ```javascript
 // Particle field pseudo-code
@@ -116,7 +116,7 @@ const positions = new Float32Array(particleCount * 3);
 // Apply subtle drift animation in render loop
 ```
 
-#### Option B: Background Video
+#### Option B: Background Video (De-prioritized)
 - [ ] Source or create ambient space/tech video loop
 - [ ] Implement `<video>` with autoplay, muted, loop
 - [ ] Add overlay gradient for text readability
@@ -129,9 +129,9 @@ const positions = new Float32Array(particleCount * 3);
 ```
 
 #### Common Hero Elements
-- [ ] Implement text scramble effect on name
-- [ ] Add optional ambient sound toggle
-- [ ] Magnetic hover on social links
+- [x] Implement text scramble effect on name
+- [x] Add optional ambient sound toggle
+- [x] Magnetic hover on social links
 
 **Deliverable:** Immersive hero with animated background
 
