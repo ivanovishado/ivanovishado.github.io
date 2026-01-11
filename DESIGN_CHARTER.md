@@ -38,11 +38,34 @@
 * **Action:** Particles drift with fluid inertia (parallax).
 * **Sound:** Optional low-frequency ambient hum toggle.
 
-### II. Feature Project: MISSE-FF / CRS-31
+### II. Flight Logs (Mission Archive)
 
-* **Visual:** **Animated Technical Blueprint (SVG)**.
+* **Structure:** A "Dual-Slot" Interface. The user toggles between two data cartridges.
+* **Transition Effect:** "Scanline Wipe" – The screen briefly fuzzes with static when switching missions.
+
+#### **Mission 01: MISSE-FF / CRS-31 (The Result)**
+
+* **Visual:** **Animated Technical Blueprint (SVG)** of the Compliant Mechanism.
 * **Animation:** Lines draw -> Mechanism renders -> Flexure joint bends.
-* **Context:** "Tested on the ISS. Returned to Earth."
+* **Data HUD:**
+* `> STATUS: RETURNED TO EARTH`
+* `> DURATION: 6 MONTHS IN ORBIT`
+* `> INTEGRITY: 100%`
+
+
+
+#### **Mission 02: SAMARA CUBESAT SCHOOL (The Journey)**
+
+* **Visual:** **3D Wireframe CubeSat** (Three.js) slowly rotating.
+* **Background:** Faint dotted map trajectory: `GDL -> BCN -> DXB -> KUF`.
+* **The "Glitch":** Text labels occasionally flicker into Cyrillic (e.g., `SYSTEM` ↔ `СИСТЕМА`) before stabilizing.
+* **Data HUD:**
+* `> LOCATION: SAMARA UNIVERSITY [53.2° N, 50.1° E]`
+* `> OBJECTIVE: HURRICANE PREDICTION ALGORITHMS`
+* `> TECH: MATLAB, ADCS, TELEMETRY`
+
+
+* **Action:** `[ READ FIELD REPORT ]` (Links to MatXSpace Blog).
 
 ### III. The Orchestrator (Architecture)
 
@@ -124,6 +147,29 @@ ____________________________________________________________________
 |        SURVIVING THE VACUUM       [CABINET GROTESK]              |
 |        > An experiment in compliant structures                   |
 |          aboard the ISS.                                         |
+|                                                                  |
+| ( If Tab 02 is selected: )                                       |
+|                                                                  |
+|                                                                  |
+|  > LOCATION: SAMARA, RUSSIA [53.21° N, 50.10° E]                 |
+|  > FACILITY: SAMARA UNIVERSITY (KUIBYSHEV INSTITUTE)             |
+|                                                                  |
+|       +---------------------------------------------+            |
+|       |   CUBESAT TELEMETRY: HURRICANE TRACKER      |            |
+|       +---------------------------------------------+            |
+|             .       /---\       .                                |
+|          .  |      (  O  )      |  .   (Wireframe                |
+|       --+---+-------+---+-------+---    Satellite                |
+|         |   |    [=======]      |       Spins)                   |
+|         |   |    [=======]      |                                |
+|       --+---+-------------------+---                             |
+|             '                   '                                |
+|                                                                  |
+|  > MISSION: "From Mexico to Samara"                              |
+|  > OBJECTIVE: Design Hurricane Prediction Algorithms             |
+|  > SUBSYSTEMS: ADCS, Telemetry, Power Budgeting                  |
+|                                                                  |
+|  [ READ FIELD REPORT (BLOG) ] -> (External Link)                 |
 |__________________________________________________________________|
 |                                                                  |
 |  ( TRANSITION: GRID LINES APPEAR )                               |
