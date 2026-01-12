@@ -34,7 +34,22 @@ const CONFIG = {
     },
 
     // Model scale
-    modelScale: 2.5
+    modelScale: 2.5,
+
+    // Background/environment texture (for glass transmission)
+    background: {
+        texturePath: 'assets/img/section2/backgrounds/mechanism.png'
+    },
+
+    // Glass material settings (Option B: transmission with IOR)
+    glass: {
+        transmission: 1.0,       // Full transmission for refraction
+        thickness: 1.5,          // Thicker glass = more distortion
+        ior: 1.45,               // Index of refraction (glass ~1.45-1.52)
+        roughness: 0.05,         // Slight roughness for realism
+        attenuationColor: 0x6366F1, // Horizon purple tint
+        attenuationDistance: 0.8    // How far light travels before tinting
+    }
 };
 // ============================================================================
 
@@ -62,9 +77,9 @@ export class FlightLogVisuals {
     init() {
         if (!this.container) return;
 
-        // 1. Setup Scene
+        // 1. Setup Scene with dark background (required for transmission)
         this.scene = new THREE.Scene();
-        // Transparent background to show CSS background through
+        this.scene.background = new THREE.Color(0x030305); // --color-void
 
         // 2. Setup Camera
         this.width = this.container.clientWidth;
@@ -73,9 +88,9 @@ export class FlightLogVisuals {
         this.camera.position.z = CONFIG.camera.posZ;
         this.camera.position.y = CONFIG.camera.posY;
 
-        // 3. Setup Renderer with transparency
+        // 3. Setup Renderer (opaque for transmission to work)
         this.renderer = new THREE.WebGLRenderer({
-            alpha: true,
+            alpha: false,  // Opaque - background is inside the scene now
             antialias: true,
             powerPreference: "high-performance"
         });
@@ -95,13 +110,16 @@ export class FlightLogVisuals {
         // 5. Setup Environment for glass reflections
         this.setupEnvironment();
 
-        // 6. Load the GLB Model
+        // 6. Load the background texture (for scene background and glass environment)
+        this.loadSceneBackground();
+
+        // 7. Load the GLB Model
         this.loadMisseArtifact();
 
-        // 7. Start Loop
+        // 8. Start Loop
         this.animate();
 
-        // 8. Resize Handler
+        // 9. Resize Handler
         window.addEventListener('resize', () => this.handleResize());
     }
 
@@ -154,6 +172,32 @@ export class FlightLogVisuals {
         pmremGenerator.dispose();
     }
 
+    loadSceneBackground() {
+        const textureLoader = new THREE.TextureLoader();
+        textureLoader.load(
+            CONFIG.background.texturePath,
+            (texture) => {
+                texture.colorSpace = THREE.SRGBColorSpace;
+
+                // Set as scene background (what you see)
+                this.scene.background = texture;
+
+                // CRITICAL: Also set as scene.environment - this is what transmission samples from!
+                // Transmission looks at scene.environment, not scene.background
+                texture.mapping = THREE.EquirectangularReflectionMapping;
+                this.scene.environment = texture;
+
+                console.log('[FlightLogVisuals] Background texture set as scene.background AND scene.environment:', CONFIG.background.texturePath);
+            },
+            undefined,
+            (error) => {
+                console.error('[FlightLogVisuals] Error loading background texture:', error);
+                // Fallback to solid color
+                this.scene.background = new THREE.Color(0x030305);
+            }
+        );
+    }
+
     loadMisseArtifact() {
         // Setup loaders
         const dracoLoader = new DRACOLoader();
@@ -167,30 +211,49 @@ export class FlightLogVisuals {
             (gltf) => {
                 const model = gltf.scene;
 
-                // Configure materials for glass transparency
+                // Configure materials for glass transmission (Option B)
                 model.traverse((child) => {
                     if (child.isMesh) {
                         const material = child.material;
+                        const meshName = child.name || '';
+                        const materialName = material.name || '';
 
-                        // Check if this is the glass material
-                        if (material.name && material.name.toLowerCase().includes('glass')) {
-                            // Enhance glass material for Three.js rendering
+                        // Debug: Log all material names
+                        console.log(`[FlightLogVisuals] Mesh: "${meshName}", Material: "${materialName}"`);
+
+                        // Check if this is the glass material (by material name OR mesh name)
+                        const isGlass = materialName.toLowerCase().includes('glass') ||
+                            meshName.toLowerCase().includes('glass');
+
+                        if (isGlass) {
+                            // Enhanced glass material with proper transmission/refraction
                             child.material = new THREE.MeshPhysicalMaterial({
                                 color: new THREE.Color(0x1a2530),
                                 metalness: 0.0,
-                                roughness: 0.05,
-                                transmission: 0.95,  // High transparency
-                                thickness: 0.5,
-                                ior: 1.45,
+                                roughness: CONFIG.glass.roughness,
+
+                                // Transmission (enables refraction)
+                                transmission: CONFIG.glass.transmission,
+                                thickness: CONFIG.glass.thickness,
+                                ior: CONFIG.glass.ior,
+
+                                // Attenuation (tints light passing through)
+                                attenuationColor: new THREE.Color(CONFIG.glass.attenuationColor),
+                                attenuationDistance: CONFIG.glass.attenuationDistance,
+
+                                // Additional properties - per docs: when transmission > 0, set opacity to 1
                                 transparent: true,
-                                opacity: 0.9,
-                                envMap: this.envMap,
-                                envMapIntensity: 1.5,
-                                clearcoat: 1.0,
-                                clearcoatRoughness: 0.05,
-                                side: THREE.DoubleSide,
-                                depthWrite: false
+                                opacity: 1.0,
+                                envMapIntensity: 1.0,
+                                clearcoat: 0.5,
+                                clearcoatRoughness: 0.1,
+                                side: THREE.DoubleSide
                             });
+
+                            // Set render order to render after background plane
+                            child.renderOrder = 1;
+
+                            console.log('[FlightLogVisuals] Glass material configured with transmission');
                         } else {
                             // Metal frame - enhance reflections
                             if (material.isMeshStandardMaterial || material.isMeshPhysicalMaterial) {
@@ -276,5 +339,6 @@ export class FlightLogVisuals {
         if (this.envMap) {
             this.envMap.dispose();
         }
+        // Note: scene.background and scene.environment textures are managed by Three.js
     }
 }
