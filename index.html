@@ -138,24 +138,30 @@
   <section id="flight-logs" class="relative min-h-screen bg-surface-1 py-12 px-6 border-b border-white/10">
     <div class="max-w-7xl mx-auto flex flex-col items-center">
 
-      <!-- Section Header -->
-      <div class="w-full border-b border-white/10 pb-4 mb-8 flex justify-between items-end">
-        <h2 class="font-display text-xs md:text-sm tracking-[0.2em] text-starlight/50">
-          > MISSION_ARCHIVE // FLIGHT_LOGS
+      <!-- Section Header with decorative borders -->
+      <div class="w-full text-center mb-8">
+        <h2 class="font-mono text-sm md:text-base tracking-[0.15em] text-starlight/70">
+          ========================= > FLIGHT LOGS: SELECT MISSION ARCHIVE =========================
         </h2>
-        <div class="flex gap-4">
-          <!-- Interactive Tabs -->
-          <button
-            class="mission-tab active text-sm font-mono px-6 py-3 border border-signal/50 bg-signal/10 text-signal transition-all hover:bg-signal/20"
-            data-mission="misse-ff" aria-selected="true">
-            [ 01: MISSE-FF (DEPLOYED) ]
-          </button>
-          <button
-            class="mission-tab text-sm font-mono px-6 py-3 border border-white/10 text-starlight/50 transition-all hover:border-white/30 hover:text-starlight"
-            data-mission="samara-cs" aria-selected="false">
-            [ 02: SAMARA-CS (TRAINING) ]
-          </button>
-        </div>
+      </div>
+
+      <!-- Mission Tabs (Centered) -->
+      <div class="flex justify-center gap-4 mb-8 relative">
+        <button
+          class="mission-tab active text-sm font-mono px-6 py-3 border border-signal/50 bg-signal/10 text-signal transition-all hover:bg-signal/20 relative"
+          data-mission="misse-ff" aria-selected="true">
+          [ 01: MISSE-FF (DEPLOYED) ]
+          <!-- Active Tab Arrow Indicator -->
+          <span
+            class="mission-tab-arrow absolute -bottom-3 left-1/2 -translate-x-1/2 text-signal text-lg hidden">^</span>
+        </button>
+        <button
+          class="mission-tab text-sm font-mono px-6 py-3 border border-white/20 text-starlight/60 transition-all hover:border-white/40 hover:text-starlight relative"
+          data-mission="samara-cs" aria-selected="false">
+          [ 02: SAMARA-CS (TRAINING) ]
+          <span
+            class="mission-tab-arrow absolute -bottom-3 left-1/2 -translate-x-1/2 text-signal text-lg hidden">^</span>
+        </button>
       </div>
 
       <!-- Dual-Slot Container -->
@@ -193,32 +199,25 @@
 
         <!-- Slot B: Data Readout -->
         <div
-          class="flex flex-col justify-center gap-6 order-2 bg-surface-1/50 p-6 md:p-8 rounded-xl border border-white/5">
-          <!-- Status Line -->
-          <div class="font-mono text-sm text-signal animate-pulse" id="mission-status">
-            > STATUS: INITIALIZING...
+          class="flex flex-col justify-start gap-5 order-2 bg-surface-1/50 p-6 md:p-8 rounded-xl border border-white/5">
+
+          <!-- Project & Status (Top of panel) -->
+          <div class="font-mono text-sm leading-relaxed" id="mission-header">
+            <div class="text-starlight" id="mission-project">> PROJECT: Loading...</div>
+            <div class="text-starlight/70" id="mission-status">> STATUS: INITIALIZING...</div>
           </div>
 
-          <!-- Mission Title -->
-          <h3 class="font-display text-3xl md:text-5xl font-bold leading-none uppercase text-white" id="mission-title">
-            Loading_Data...
-          </h3>
-
-          <!-- Stats Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-b border-white/10 py-6" id="mission-stats">
-            <!-- Stats inserted via JS -->
+          <!-- Mission Details Section (MISSION, ARTIFACT, OBJECTIVE) -->
+          <div class="font-mono text-sm leading-loose space-y-2 border-l-2 border-white/10 pl-4" id="mission-details">
+            <!-- Details inserted via JS -->
           </div>
 
-          <!-- Description -->
-          <div class="relative pl-4 border-l-2 border-horizon">
-            <p class="text-starlight/80 text-base md:text-lg leading-relaxed" id="mission-desc">
-              Retrieving mission parameters from archive...
-            </p>
-          </div>
-
-          <!-- Action Links -->
-          <div class="flex flex-wrap gap-4 mt-4" id="mission-links">
-            <!-- Links inserted via JS -->
+          <!-- MEDIA_UPLINK Label & Action Links -->
+          <div class="mt-auto">
+            <div class="font-mono text-sm text-starlight/50 mb-3">> MEDIA_UPLINK:</div>
+            <div class="flex flex-wrap gap-4" id="mission-links">
+              <!-- Links inserted via JS -->
+            </div>
           </div>
         </div>
 

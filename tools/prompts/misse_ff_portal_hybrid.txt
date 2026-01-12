@@ -1,0 +1,41 @@
+A high-fidelity screenshot of a dark, cinematic and minimalist "FLIGHT LOGS" section from a premium portfolio website. 16:9 aspect ratio, 1024x576 resolution. Shot on a 35mm anamorphic lens, sharp focus on UI elements.
+
+DESIGN SYSTEM "EVENT HORIZON":
+- Background: Deep warm charcoal void (#030305) with clear, crisp star dust particles.
+- Primary accent: Indigo (#6366F1) for structural elements.
+- Active signal: Cyan (#00F0FF) for interactive states.
+
+LAYOUT - DUAL-SLOT INTERFACE:
+Header bar at top: "> FLIGHT LOGS: SELECT MISSION ARCHIVE" in monospace, flanked by thin horizontal scanlines.
+Two mission tabs below header: "[ 01: MISSE-FF (DEPLOYED) ]" (active, glowing indigo underline with downward arrow) and "[ 02: SAMARA-CS (TRAINING) ]" (inactive, dimmed).
+
+LEFT SLOT - EXPANDED DATA PANEL:
+A large, prominent frosted aerogel glass card (2px rounded corners, subtle indigo inner glow, 15% transparency).
+- HEADER: "PROJECT: MISSE-FF / CRS-31 FLIGHT" in large Cabinet Grotesk variable font (bold).
+- CONTENT (Monospace):
+  > STATUS: RETURNED TO EARTH
+  > DURATION: 6 MONTHS IN ORBIT
+  > MISSION: "Surviving the Vacuum"
+  > ARTIFACT: Material Specimen Container
+  > MEDIA_UPLINK:
+    [ READ: FORBES ]  [ READ: EL PAIS ]
+- NO "DATA READOUT PANEL" label below.
+
+RIGHT SLOT - 3D ARTIFACT SHOWCASE WITH CIRCULAR PORTAL:
+A dedicated open space containing a CIRCULAR GLASS PORTAL behind the 3D artifact.
+- PORTAL: A sleek, thin cyan/indigo glowing ring framing a view of SPACE and EARTH.
+- BACKGROUND INSIDE PORTAL: Crisp view of Earth's horizon (blue marble) + starfield. NO volumetric clouds/fog inside.
+- ARTIFACT: A translucent ghost-like metallic container floating in front of the circular portal.
+- BACKGROUND OUTSIDE PORTAL: Deep warm charcoal void (#030305), clean.
+- NO "3D ARTIFACT ZONE" label below.
+
+FOOTER:
+Clean empty space at bottom. NO status/telemetry bar.
+
+LIGHTING & ATMOSPHERE:
+- Clean, studio-like darkness.
+- NO lens flares or lighting effects stemming from borders.
+- Soft localized glow from UI elements only.
+- Sharp, crisp UI edges.
+
+AESTHETIC: Maximalist information in a Minimalist void. High-end sci-fi data terminal. Clean, readable, distraction-free. The circular portal acts as a "window" to the mission context.

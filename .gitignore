@@ -1,0 +1,16 @@
+# ========================
+# Development Tools
+# ========================
+
+# Virtual environments
+tools/venv/
+
+# API keys and secrets
+tools/.env
+
+# Generated images (don't commit these to repo)
+tools/generated_images/
+
+# Python cache
+tools/__pycache__/
+*.pyc

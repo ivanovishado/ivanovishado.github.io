@@ -9,10 +9,9 @@ export class FlightLogEngine {
             container: null,
             tabs: null,
             content: {
-                title: null,
+                project: null,
                 status: null,
-                description: null,
-                stats: null,
+                details: null,
                 links: null
             },
             visualContainer: null
@@ -36,10 +35,9 @@ export class FlightLogEngine {
         if (!this.dom.container) return;
 
         this.dom.tabs = document.querySelectorAll('.mission-tab');
-        this.dom.content.title = document.querySelector('#mission-title');
+        this.dom.content.project = document.querySelector('#mission-project');
         this.dom.content.status = document.querySelector('#mission-status');
-        this.dom.content.description = document.querySelector('#mission-desc');
-        this.dom.content.stats = document.querySelector('#mission-stats');
+        this.dom.content.details = document.querySelector('#mission-details');
         this.dom.content.links = document.querySelector('#mission-links');
         this.dom.visualContainer = document.querySelector('#mission-visual');
     }
@@ -65,14 +63,17 @@ export class FlightLogEngine {
             this.renderMission(missionId);
         });
 
-        // 4. Update Tab Styling
+        // 4. Update Tab Styling & Arrow Indicator
         this.dom.tabs.forEach(tab => {
+            const arrow = tab.querySelector('.mission-tab-arrow');
             if (tab.dataset.mission === missionId) {
                 tab.classList.add('active');
                 tab.setAttribute('aria-selected', 'true');
+                if (arrow) arrow.classList.remove('hidden');
             } else {
                 tab.classList.remove('active');
                 tab.setAttribute('aria-selected', 'false');
+                if (arrow) arrow.classList.add('hidden');
             }
         });
     }
@@ -81,20 +82,22 @@ export class FlightLogEngine {
         const data = MISSIONS[missionId];
         if (!data) return;
 
-        // Text Updates
-        if (this.dom.content.title) this.dom.content.title.textContent = data.title;
-        if (this.dom.content.status) this.dom.content.status.textContent = `> STATUS: ${data.status}`;
-        if (this.dom.content.description) this.dom.content.description.textContent = data.description;
+        // Project & Status Updates
+        if (this.dom.content.project) {
+            this.dom.content.project.textContent = `> PROJECT: ${data.title}`;
+        }
+        if (this.dom.content.status) {
+            this.dom.content.status.textContent = `> STATUS: ${data.status}`;
+        }
 
-        // Stats Rendering
-        if (this.dom.content.stats) {
-            this.dom.content.stats.innerHTML = Object.entries(data.stats)
-                .map(([key, value]) => `
-                    <div class="stat-item">
-                        <span class="text-xs text-starlight/50 block mb-1">${key}</span>
-                        <span class="text-sm text-signal font-mono">${value}</span>
-                    </div>
-                `).join('');
+        // Mission Details Rendering (MISSION, ARTIFACT, OBJECTIVE)
+        if (this.dom.content.details && data.details) {
+            this.dom.content.details.innerHTML = `
+                <div class="text-starlight/80">> MISSION:</div>
+                <div class="text-starlight ml-4">${data.details.mission}</div>
+                <div class="text-starlight/80 mt-2">> ARTIFACT: <span class="text-starlight">${data.details.artifact}</span></div>
+                <div class="text-starlight/80">> OBJECTIVE: <span class="text-starlight">${data.details.objective}</span></div>
+            `;
         }
 
         // Links Rendering
@@ -107,8 +110,13 @@ export class FlightLogEngine {
                 `).join('');
         }
 
-        // Trigger text scramble effect if available (optional enhancement)
-        // if (window.ScrambleText) ...
+        // Show arrow on active tab on initial load
+        this.dom.tabs.forEach(tab => {
+            const arrow = tab.querySelector('.mission-tab-arrow');
+            if (tab.dataset.mission === missionId && arrow) {
+                arrow.classList.remove('hidden');
+            }
+        });
     }
 
     animateTransition(onComplete) {

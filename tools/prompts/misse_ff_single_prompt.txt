@@ -1,0 +1,43 @@
+A high-fidelity screenshot of a dark, cinematic "FLIGHT LOGS" section from a premium portfolio website. 16:9 aspect ratio, 1920x1080 resolution. Shot on a 35mm anamorphic lens with subtle lens flares and chromatic aberration at edges.
+
+DESIGN SYSTEM "EVENT HORIZON":
+- Background: Deep warm charcoal void (#030305) with subtle drifting star dust particles
+- Primary accent: Indigo (#6366F1) for structural elements and "classical" design
+- Active signal: Cyan (#00F0FF) for interactive states and "jazz" accents
+- Text: Starlight silver (#E2E8F0) in JetBrains Mono for data, Cabinet Grotesk for headers
+
+LAYOUT - DUAL-SLOT INTERFACE:
+Header bar at top: "> FLIGHT LOGS: SELECT MISSION ARCHIVE" in monospace, flanked by thin horizontal scanlines
+Two mission tabs below header: "[ 01: MISSE-FF (DEPLOYED) ]" (active, glowing indigo underline with downward arrow) and "[ 02: SAMARA-CS (TRAINING) ]" (inactive, dimmed)
+
+LEFT SLOT - DATA READOUT PANEL:
+A frosted aerogel glass card (2px rounded corners, subtle indigo inner glow, 15% transparency revealing depth). Contains mission telemetry in monospace:
+> PROJECT: MISSE-FF / CRS-31 FLIGHT
+> STATUS: RETURNED TO EARTH ✓
+> DURATION: 6 MONTHS IN ORBIT
+[horizontal divider line]
+> MISSION: "Surviving the Vacuum"
+> ARTIFACT: Material Specimen Container (MISSE)
+[horizontal divider line]
+> MEDIA_UPLINK:
+  [ READ: FORBES ]  [ READ: EL PAIS ]
+Action buttons have magnetic hover glow effect. Text labels in silver, values in bright white.
+
+RIGHT SLOT - 3D ARTIFACT ZONE:
+A large empty dark space designated for the 3D rotating artifact. This zone should be clearly defined but EMPTY or showing only a subtle placeholder glow/silhouette. The background here shows:
+- Faint HDRI reflection of Earth's blue marble visible on imaginary glass surface
+- Volumetric fog drifting slowly
+- Subtle rim lighting from upper right (cyan edge light)
+- Star field visible through the transparency
+
+FOOTER:
+Thin status bar: "SYSTEM: NOMINAL | TELEMETRY: ACTIVE" in small monospace
+
+MATERIALS & LIGHTING:
+- UI cards: Frosted glass with subsurface scattering, smoked gradient texture
+- Borders: Chrome finish with fresnel reflections
+- Three-point cinematic lighting: cool white key (upper right), soft indigo ambient fill, sharp cyan rim light
+- Volumetric light shafts cutting diagonally across frame
+- Scanline texture overlay at 5% opacity for CRT authenticity
+
+AESTHETIC: Future-Industrial. Linear meets Interstellar. NASA mission control meets luxury car dashboard. Awwwards-featured quality. Premium, tactile, weightless. The interface should feel alive with data.

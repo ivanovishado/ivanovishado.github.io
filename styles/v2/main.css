@@ -406,7 +406,8 @@ html.lenis body {
 }
 
 .mission-tab.active {
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+    border-color: var(--signal);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
 }
 
 .mission-tab.active::after {
@@ -418,6 +419,11 @@ html.lenis body {
     height: 2px;
     background: var(--signal);
     box-shadow: 0 0 10px var(--signal);
+}
+
+/* Show arrow indicator on active tab */
+.mission-tab.active .mission-tab-arrow {
+    display: block !important;
 }
 
 #mission-visual {

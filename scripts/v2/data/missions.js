@@ -5,6 +5,7 @@
  * @property {string} status - Mission status
  * @property {string} description - Brief description
  * @property {Object} stats - Key-value pairs for statistics
+ * @property {Object} details - MISSION, ARTIFACT, OBJECTIVE info
  * @property {Array<{label: string, url: string}>} mediaLinks - Related links
  * @property {string} visualType - 'artifact' | 'satellite'
  */
@@ -12,9 +13,14 @@
 export const MISSIONS = {
     'misse-ff': {
         id: 'misse-ff',
-        title: 'MISSE-FF / CRS-31',
-        status: 'RETURNED TO EARTH',
+        title: 'MISSE-FF / CRS-31 FLIGHT',
+        status: 'RETURNED TO EARTH (6 MONTHS ORBIT)',
         description: 'Materials Science in Microgravity. Investigating the durability of polymers and composites in the harsh environment of Low Earth Orbit.',
+        details: {
+            mission: '"Surviving the Vacuum"',
+            artifact: 'Material Specimen Container (MISSE)',
+            objective: 'Test materials in LEO environment'
+        },
         stats: {
             'DURATION': '6 MONTHS',
             'ORBIT': 'LEO (ISS)',
@@ -31,6 +37,11 @@ export const MISSIONS = {
         title: 'SAMARA CUBESAT',
         status: 'TRAINING COMPLETED',
         description: 'Design of a 6U CubeSat for hurricane monitoring. Implementation of ADCS and power budgeting subsystems.',
+        details: {
+            mission: '"From Mexico to Samara"',
+            artifact: '6U CubeSat Platform',
+            objective: 'Hurricane Monitoring Cubesat'
+        },
         stats: {
             'LOCATION': 'SAMARA, RUSSIA',
             'COORDS': '53.2° N, 50.1° E',
