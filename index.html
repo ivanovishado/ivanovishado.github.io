@@ -135,98 +135,88 @@
   </section>
 
   <!-- Flight Logs Section -->
-  <section id="flight-logs" class="relative min-h-screen bg-surface-1 py-12 px-6 border-b border-white/10">
+  <section id="flight-logs" class="relative min-h-screen bg-surface-1 py-12 md:py-16 px-4 md:px-6">
     <div class="max-w-7xl mx-auto flex flex-col items-center">
 
-      <!-- Section Header with decorative borders -->
-      <div class="w-full text-center mb-8">
-        <h2 class="font-mono text-sm md:text-base tracking-[0.15em] text-starlight/70">
-          ========================= > FLIGHT LOGS: SELECT MISSION ARCHIVE =========================
+      <!-- Section Header -->
+      <header class="flight-logs-header w-full text-center mb-6 md:mb-10">
+        <h2 class="font-mono text-xs md:text-sm tracking-[0.2em] text-starlight/60 uppercase">
+          <span class="text-signal">&gt;</span> FLIGHT LOGS<span class="hidden md:inline">: SELECT MISSION
+            ARCHIVE</span>
         </h2>
-      </div>
+      </header>
 
-      <!-- Mission Tabs (Centered) -->
-      <div class="flex justify-center gap-4 mb-8 relative">
-        <button
-          class="mission-tab active text-sm font-mono px-6 py-3 border border-signal/50 bg-signal/10 text-signal transition-all hover:bg-signal/20 relative"
-          data-mission="misse-ff" aria-selected="true">
-          [ 01: MISSE-FF (DEPLOYED) ]
-          <!-- Active Tab Arrow Indicator -->
-          <span
-            class="mission-tab-arrow absolute -bottom-3 left-1/2 -translate-x-1/2 text-signal text-lg hidden">^</span>
+      <!-- Mission Tabs -->
+      <nav class="flight-logs-tabs flex justify-center gap-3 md:gap-4 mb-8 md:mb-10" role="tablist"
+        aria-label="Mission selection">
+        <button class="mission-tab active" data-mission="misse-ff" role="tab" aria-selected="true"
+          aria-controls="flight-log-content">
+          <span class="tab-number">[ 01 ]</span>
+          <span class="tab-label">: MISSE-FF (DEPLOYED)</span>
         </button>
-        <button
-          class="mission-tab text-sm font-mono px-6 py-3 border border-white/20 text-starlight/60 transition-all hover:border-white/40 hover:text-starlight relative"
-          data-mission="samara-cs" aria-selected="false">
-          [ 02: SAMARA-CS (TRAINING) ]
-          <span
-            class="mission-tab-arrow absolute -bottom-3 left-1/2 -translate-x-1/2 text-signal text-lg hidden">^</span>
+        <button class="mission-tab" data-mission="samara-cs" role="tab" aria-selected="false"
+          aria-controls="flight-log-content">
+          <span class="tab-number">[ 02 ]</span>
+          <span class="tab-label">: SAMARA-CS (TRAINING)</span>
         </button>
-      </div>
+      </nav>
 
-      <!-- Dual-Slot Container -->
-      <div
-        class="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 min-h-[60vh] p-6 lg:p-12 border border-white/10 bg-surface-2/30 rounded-2xl relative overflow-hidden">
+      <!-- Main Content Container -->
+      <div id="flight-log-content"
+        class="flight-log-container w-full flex flex-col lg:flex-row-reverse gap-6 lg:gap-10 items-center lg:items-stretch"
+        role="tabpanel">
 
-        <!-- Decorative Corners for the main container -->
-        <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-signal/50 rounded-tl-lg"></div>
-        <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-signal/50 rounded-tr-lg"></div>
-        <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-signal/50 rounded-bl-lg"></div>
-        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-signal/50 rounded-br-lg"></div>
-
-        <!-- Slot A: Visual Artifact (The "Specimen") -->
-        <div
-          class="relative order-1 flex items-center justify-center bg-void border border-white/5 rounded-lg overflow-hidden group h-[400px] lg:h-auto">
-          <!-- Background Grid (Decoration) -->
-          <div class="absolute inset-0 z-0 opacity-20"
-            style="background-image: linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px); background-size: 20px 20px;">
-          </div>
-
-          <!-- Crosshairs -->
-          <div class="absolute inset-0 z-10 pointer-events-none">
-            <div class="absolute top-4 left-4 w-4 h-4 border-t border-l border-white/30"></div>
-            <div class="absolute top-4 right-4 w-4 h-4 border-t border-r border-white/30"></div>
-            <div class="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-white/30"></div>
-            <div class="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-white/30"></div>
-          </div>
-
-          <!-- Visual Placeholder (3D Canvas) -->
-          <div id="mission-visual" class="relative z-20 w-full h-full flex items-center justify-center">
-            <span class="font-mono text-xs text-signal/50 tracking-widest animate-pulse">[ INITIALIZING_SENSOR_ARRAY...
-              ]</span>
+        <!-- Artifact Display (Circular Glass Frame) -->
+        <div class="artifact-display flex items-center justify-center lg:flex-1">
+          <div class="glass-circle-frame">
+            <!-- Glassmorphism overlay for particle fade effect -->
+            <div class="glass-overlay"></div>
+            <!-- Three.js canvas container -->
+            <div id="mission-visual" class="mission-visual-canvas"></div>
           </div>
         </div>
 
-        <!-- Slot B: Data Readout -->
-        <div
-          class="flex flex-col justify-start gap-5 order-2 bg-surface-1/50 p-6 md:p-8 rounded-xl border border-white/5">
+        <!-- Data Readout Panel (Glassmorphism) -->
+        <article class="flight-log-data-panel lg:flex-1 lg:max-w-md" id="data-panel">
+          <!-- Panel Header -->
+          <header class="panel-header">
+            <span class="panel-label font-mono text-xs text-starlight/50 tracking-wider">PROJECT:</span>
+            <h3 class="panel-title font-display text-2xl md:text-3xl font-bold text-starlight mt-1" id="mission-title">
+              MISSE-FF
+            </h3>
+          </header>
 
-          <!-- Project & Status (Top of panel) -->
-          <div class="font-mono text-sm leading-relaxed" id="mission-header">
-            <div class="text-starlight" id="mission-project">> PROJECT: Loading...</div>
-            <div class="text-starlight/70" id="mission-status">> STATUS: INITIALIZING...</div>
-          </div>
-
-          <!-- Mission Details Section (MISSION, ARTIFACT, OBJECTIVE) -->
-          <div class="font-mono text-sm leading-loose space-y-2 border-l-2 border-white/10 pl-4" id="mission-details">
-            <!-- Details inserted via JS -->
-          </div>
-
-          <!-- MEDIA_UPLINK Label & Action Links -->
-          <div class="mt-auto">
-            <div class="font-mono text-sm text-starlight/50 mb-3">> MEDIA_UPLINK:</div>
-            <div class="flex flex-wrap gap-4" id="mission-links">
-              <!-- Links inserted via JS -->
+          <!-- Mission Details -->
+          <dl class="panel-details" id="mission-details">
+            <div class="detail-row">
+              <dt>STATUS:</dt>
+              <dd id="detail-status">RETURNED TO EARTH</dd>
             </div>
-          </div>
-        </div>
+            <div class="detail-row">
+              <dt>DURATION:</dt>
+              <dd id="detail-duration">6 MONTHS IN ORBIT</dd>
+            </div>
+            <div class="detail-row">
+              <dt>MISSION:</dt>
+              <dd id="detail-mission">'Surviving the Vacuum'</dd>
+            </div>
+            <div class="detail-row">
+              <dt>ARTIFACT:</dt>
+              <dd id="detail-artifact">Material Specimen Container</dd>
+            </div>
+          </dl>
+
+          <!-- Media Uplink -->
+          <footer class="panel-footer">
+            <span class="uplink-label font-mono text-xs text-starlight/50 tracking-wider">MEDIA_UPLINK:</span>
+            <nav class="media-links" id="mission-links" aria-label="Related media">
+              <!-- Links inserted via JS -->
+            </nav>
+          </footer>
+        </article>
 
       </div>
-      <span class="font-mono text-xs text-signal/50 tracking-widest">[ ARTIFACT_CONTAINER ]</span>
-    </div>
-    </div>
 
-    </div>
     </div>
   </section>
 

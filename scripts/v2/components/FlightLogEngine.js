@@ -9,9 +9,11 @@ export class FlightLogEngine {
             container: null,
             tabs: null,
             content: {
-                project: null,
+                title: null,
                 status: null,
-                details: null,
+                duration: null,
+                mission: null,
+                artifact: null,
                 links: null
             },
             visualContainer: null
@@ -35,9 +37,11 @@ export class FlightLogEngine {
         if (!this.dom.container) return;
 
         this.dom.tabs = document.querySelectorAll('.mission-tab');
-        this.dom.content.project = document.querySelector('#mission-project');
-        this.dom.content.status = document.querySelector('#mission-status');
-        this.dom.content.details = document.querySelector('#mission-details');
+        this.dom.content.title = document.querySelector('#mission-title');
+        this.dom.content.status = document.querySelector('#detail-status');
+        this.dom.content.duration = document.querySelector('#detail-duration');
+        this.dom.content.mission = document.querySelector('#detail-mission');
+        this.dom.content.artifact = document.querySelector('#detail-artifact');
         this.dom.content.links = document.querySelector('#mission-links');
         this.dom.visualContainer = document.querySelector('#mission-visual');
     }
@@ -82,41 +86,40 @@ export class FlightLogEngine {
         const data = MISSIONS[missionId];
         if (!data) return;
 
-        // Project & Status Updates
-        if (this.dom.content.project) {
-            this.dom.content.project.textContent = `> PROJECT: ${data.title}`;
+        // Title Update (using shortTitle for cleaner display)
+        if (this.dom.content.title) {
+            this.dom.content.title.textContent = data.shortTitle || data.title;
         }
+
+        // Status Update
         if (this.dom.content.status) {
-            this.dom.content.status.textContent = `> STATUS: ${data.status}`;
+            this.dom.content.status.textContent = data.status;
         }
 
-        // Mission Details Rendering (MISSION, ARTIFACT, OBJECTIVE)
-        if (this.dom.content.details && data.details) {
-            this.dom.content.details.innerHTML = `
-                <div class="text-starlight/80">> MISSION:</div>
-                <div class="text-starlight ml-4">${data.details.mission}</div>
-                <div class="text-starlight/80 mt-2">> ARTIFACT: <span class="text-starlight">${data.details.artifact}</span></div>
-                <div class="text-starlight/80">> OBJECTIVE: <span class="text-starlight">${data.details.objective}</span></div>
-            `;
+        // Duration Update (or location for samara-cs)
+        if (this.dom.content.duration) {
+            this.dom.content.duration.textContent = data.duration || data.location || '';
         }
 
-        // Links Rendering
+        // Mission Details
+        if (this.dom.content.mission && data.details) {
+            this.dom.content.mission.textContent = data.details.mission;
+        }
+
+        // Artifact
+        if (this.dom.content.artifact && data.details) {
+            this.dom.content.artifact.textContent = data.details.artifact;
+        }
+
+        // Media Links Rendering
         if (this.dom.content.links) {
             this.dom.content.links.innerHTML = data.mediaLinks
                 .map(link => `
-                    <a href="${link.url}" class="nav-box text-sm px-4 py-2 group border-signal/50 hover:bg-signal/10" target="_blank" rel="noopener">
+                    <a href="${link.url}" target="_blank" rel="noopener">
                         [ READ: ${link.label} ]
                     </a>
                 `).join('');
         }
-
-        // Show arrow on active tab on initial load
-        this.dom.tabs.forEach(tab => {
-            const arrow = tab.querySelector('.mission-tab-arrow');
-            if (tab.dataset.mission === missionId && arrow) {
-                arrow.classList.remove('hidden');
-            }
-        });
     }
 
     animateTransition(onComplete) {

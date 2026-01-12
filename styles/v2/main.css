@@ -393,52 +393,305 @@ html.lenis body {
 }
 
 /* --------------------------------------------------------------------------
-   Flight Logs (Phase 2)
+   Flight Logs Section (Phase 2 Redesign)
    -------------------------------------------------------------------------- */
+
+/* Section container */
 #flight-logs {
     overflow: hidden;
-    /* Contain transitions */
+    background: linear-gradient(180deg, var(--surface-1) 0%, var(--void) 100%);
 }
 
+/* Section Header */
+.flight-logs-header h2 {
+    position: relative;
+    display: inline-block;
+}
+
+.flight-logs-header h2::before,
+.flight-logs-header h2::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: clamp(20px, 10vw, 100px);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--horizon));
+}
+
+.flight-logs-header h2::before {
+    right: calc(100% + 1rem);
+    background: linear-gradient(90deg, transparent, var(--horizon));
+}
+
+.flight-logs-header h2::after {
+    left: calc(100% + 1rem);
+    background: linear-gradient(90deg, var(--horizon), transparent);
+}
+
+/* Mission Tabs */
 .mission-tab {
     position: relative;
-    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--starlight);
+    opacity: 0.6;
+    cursor: pointer;
+    transition: all 0.3s var(--ease-out-expo);
+}
+
+.mission-tab:hover {
+    opacity: 0.8;
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .mission-tab.active {
+    opacity: 1;
     border-color: var(--signal);
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+    background: rgba(0, 240, 255, 0.08);
+    color: var(--signal);
+    box-shadow:
+        0 0 20px rgba(0, 240, 255, 0.15),
+        inset 0 1px 0 rgba(0, 240, 255, 0.2);
 }
 
 .mission-tab.active::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid var(--signal);
+    filter: drop-shadow(0 2px 4px rgba(0, 240, 255, 0.4));
+}
+
+/* Hide full labels on mobile, show only numbers */
+.mission-tab .tab-label {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .mission-tab .tab-label {
+        display: inline;
+    }
+}
+
+/* Main Content Container */
+.flight-log-container {
+    max-width: 1200px;
+}
+
+/* --------------------------------------------------------------------------
+   Circular Glass Frame (Artifact Display)
+   -------------------------------------------------------------------------- */
+.artifact-display {
     width: 100%;
-    height: 2px;
-    background: var(--signal);
-    box-shadow: 0 0 10px var(--signal);
+    max-width: 400px;
 }
 
-/* Show arrow indicator on active tab */
-.mission-tab.active .mission-tab-arrow {
-    display: block !important;
+.glass-circle-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+
+    /* Glass border effect */
+    border: 2px solid rgba(99, 102, 241, 0.4);
+
+    /* Glow effects */
+    box-shadow:
+        0 0 60px rgba(99, 102, 241, 0.2),
+        0 0 30px rgba(0, 240, 255, 0.1),
+        inset 0 0 40px rgba(0, 240, 255, 0.05);
 }
 
-#mission-visual {
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    /* Background is now handled by the Three.js scene */
-    border-radius: 0.5rem;
+/* Glassmorphism overlay - semi-transparent for particle fade effect */
+.glass-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(10, 10, 20, 0.1);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    pointer-events: none;
+    z-index: 10;
 }
 
-/* Mission visual container (parent of #mission-visual) */
-#flight-logs .order-1 {
-    background: linear-gradient(135deg, rgba(3, 3, 5, 0.8), rgba(10, 10, 12, 0.9));
+/* Three.js canvas container */
+.mission-visual-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
-/* Scanline Effect for Mission Swap */
+.mission-visual-canvas canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    border-radius: 50%;
+}
+
+/* --------------------------------------------------------------------------
+   Data Readout Panel (Glassmorphism)
+   -------------------------------------------------------------------------- */
+.flight-log-data-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem;
+
+    /* Glassmorphism effect */
+    background: rgba(10, 10, 20, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    /* Border with gradient hint */
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 12px;
+
+    /* Subtle inner glow */
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Corner accents */
+.flight-log-data-panel::before,
+.flight-log-data-panel::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: var(--signal);
+    opacity: 0.6;
+}
+
+.flight-log-data-panel::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+    border-top-left-radius: 12px;
+}
+
+.flight-log-data-panel::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+    border-bottom-right-radius: 12px;
+}
+
+/* Panel Header */
+.panel-header {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.panel-title {
+    background: linear-gradient(135deg, var(--starlight) 0%, var(--horizon) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Mission Details (dl/dt/dd) */
+.panel-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+}
+
+.detail-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.detail-row dt {
+    color: rgba(226, 232, 240, 0.5);
+    font-weight: 500;
+}
+
+.detail-row dd {
+    color: var(--starlight);
+    margin: 0;
+}
+
+/* Panel Footer (Media Links) */
+.panel-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.uplink-label {
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.media-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.media-links a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    color: var(--signal);
+    text-decoration: none;
+    transition: all 0.3s var(--ease-out-expo);
+}
+
+.media-links a:hover {
+    background: rgba(0, 240, 255, 0.1);
+    border-color: var(--signal);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Adjustments
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+    .flight-log-data-panel {
+        padding: 2rem;
+    }
+
+    .artifact-display {
+        max-width: 450px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .artifact-display {
+        max-width: 500px;
+    }
+
+    .flight-log-data-panel {
+        justify-content: center;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Scanline Effect for Mission Swap (kept for transitions)
+   -------------------------------------------------------------------------- */
 .scanline-active::before {
     content: " ";
     display: block;
