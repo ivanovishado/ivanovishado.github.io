@@ -85,6 +85,12 @@ export class ResponsiveNav {
                     // Force reflow
                     void this.navLinks.offsetWidth;
                     this.navLinks.style.transition = '';
+
+                    // Animate Hamburger In
+                    gsap.fromTo(this.hamburger,
+                        { scale: 0, opacity: 0, rotation: -90 },
+                        { scale: 1, opacity: 1, rotation: 0, duration: 0.4, ease: "back.out(2)", overwrite: true }
+                    );
                 }
             } else {
                 if (this.nav.classList.contains('nav-compact')) {
@@ -98,7 +104,17 @@ export class ResponsiveNav {
 
     updateNavState() {
         if (this.isMobile) {
-            this.nav.classList.add('nav-compact');
+            // Check if we are already in compact mode to prevent constant re-animation on resize
+            if (!this.nav.classList.contains('nav-compact')) {
+                this.nav.classList.add('nav-compact');
+
+                // Animate Hamburger In (Mobile Load / Resize to Mobile)
+                gsap.fromTo(this.hamburger,
+                    { scale: 0, opacity: 0, rotation: -90 },
+                    // Delay slightly to feel like part of the intro sequence
+                    { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(2)", delay: 1.0, overwrite: true }
+                );
+            }
         } else {
             const scrollY = window.lenis ? window.lenis.scroll : window.scrollY;
             this.handleScroll(scrollY);

@@ -60,13 +60,14 @@
 </head>
 
 <body class="bg-void text-starlight font-mono antialiased">
-  <!-- Grain Overlay -->
+  <!-- Grain Overlay (fixed) -->
   <div class="grain"></div>
+
+  <!-- Global Particles Background (fixed, spans all sections) -->
+  <div id="hero-canvas" class="particles-background"></div>
 
   <!-- Hero Section -->
   <section id="hero" class="relative h-screen w-full overflow-hidden">
-    <!-- Three.js Canvas Container -->
-    <div id="hero-canvas" class="absolute inset-0 z-0"></div>
 
     <!-- Gradient Overlay for text readability -->
     <div class="absolute inset-0 z-1 bg-gradient-to-b from-void/30 via-transparent to-void/60"></div>
@@ -134,88 +135,88 @@
     </div>
   </section>
 
-  <!-- Flight Logs Section -->
-  <section id="flight-logs" class="relative min-h-screen bg-surface-1 py-12 md:py-16 px-4 md:px-6">
-    <div class="max-w-7xl mx-auto flex flex-col items-center">
+  <!-- ========================================================================
+       FLIGHT LOGS SECTION (V2 - HUD Style per Implementation Guide)
+       ======================================================================== -->
+  <section id="flight-logs" class="flight-logs-section">
 
-      <!-- Section Header -->
-      <header class="flight-logs-header w-full text-center mb-6 md:mb-10">
-        <h2 class="font-mono text-xs md:text-sm tracking-[0.2em] text-starlight/60 uppercase">
-          <span class="text-signal">&gt;</span> FLIGHT LOGS<span class="hidden md:inline">: SELECT MISSION
-            ARCHIVE</span>
-        </h2>
-      </header>
+    <!-- HUD Top Bar with Striped Decoration -->
+    <header class="mission-header">
+      <div class="hud-top-bar">
+        <div class="hud-lines"></div>
+        <div class="hud-text">> FLIGHT LOGS<span class="hidden md:inline">: SELECT MISSION ARCHIVE</span></div>
+        <div class="hud-lines"></div>
+      </div>
 
-      <!-- Mission Tabs -->
-      <nav class="flight-logs-tabs flex justify-center gap-3 md:gap-4 mb-8 md:mb-10" role="tablist"
-        aria-label="Mission selection">
-        <button class="mission-tab active" data-mission="misse-ff" role="tab" aria-selected="true"
-          aria-controls="flight-log-content">
-          <span class="tab-number">[ 01 ]</span>
-          <span class="tab-label">: MISSE-FF (DEPLOYED)</span>
+      <!-- Mission Selector Tabs -->
+      <nav class="mission-selector" role="tablist" aria-label="Mission selection">
+        <button class="tab-btn active" data-mission="misse-ff" role="tab" aria-selected="true">
+          [ 01<span class="hidden md:inline">: MISSE-FF (DEPLOYED)</span> ]
+          <div class="active-indicator"></div>
         </button>
-        <button class="mission-tab" data-mission="samara-cs" role="tab" aria-selected="false"
-          aria-controls="flight-log-content">
-          <span class="tab-number">[ 02 ]</span>
-          <span class="tab-label">: SAMARA-CS (TRAINING)</span>
+        <button class="tab-btn" data-mission="samara-cs" role="tab" aria-selected="false">
+          [ 02<span class="hidden md:inline">: SAMARA-CS (TRAINING)</span> ]
+          <div class="active-indicator"></div>
         </button>
       </nav>
+    </header>
 
-      <!-- Main Content Container -->
-      <div id="flight-log-content"
-        class="flight-log-container w-full flex flex-col lg:flex-row-reverse gap-6 lg:gap-10 items-center lg:items-stretch"
-        role="tabpanel">
+    <!-- Main Grid: Info Panel + Circular Viewport -->
+    <div class="mission-display-grid">
 
-        <!-- Artifact Display (Circular Glass Frame) -->
-        <div class="artifact-display flex items-center justify-center lg:flex-1">
-          <div class="glass-circle-frame">
-            <!-- Glassmorphism overlay for particle fade effect -->
-            <div class="glass-overlay"></div>
-            <!-- Three.js canvas container -->
-            <div id="mission-visual" class="mission-visual-canvas"></div>
-          </div>
-        </div>
+      <!-- Info Panel (Glassmorphism) -->
+      <article class="info-card-container">
+        <div class="glass-panel" id="data-panel">
+          <h2 class="project-title">
+            <span class="label">PROJECT:</span><br>
+            <span id="mission-title">MISSE-FF / CRS-31 FLIGHT</span>
+          </h2>
 
-        <!-- Data Readout Panel (Glassmorphism) -->
-        <article class="flight-log-data-panel lg:flex-1 lg:max-w-md" id="data-panel">
-          <!-- Panel Header -->
-          <header class="panel-header">
-            <span class="panel-label font-mono text-xs text-starlight/50 tracking-wider">PROJECT:</span>
-            <h3 class="panel-title font-display text-2xl md:text-3xl font-bold text-starlight mt-1" id="mission-title">
-              MISSE-FF
-            </h3>
-          </header>
-
-          <!-- Mission Details -->
-          <dl class="panel-details" id="mission-details">
-            <div class="detail-row">
+          <dl class="mission-stats" id="mission-details">
+            <!-- STATUS Row -->
+            <div class="stat-row">
               <dt>STATUS:</dt>
-              <dd id="detail-status">RETURNED TO EARTH</dd>
+              <dd id="detail-status">
+                <span class="md:hidden">RETURNED</span>
+                <span class="hidden md:inline">RETURNED TO EARTH</span>
+              </dd>
             </div>
-            <div class="detail-row">
+
+            <!-- DURATION Row -->
+            <div class="stat-row">
               <dt>DURATION:</dt>
-              <dd id="detail-duration">6 MONTHS IN ORBIT</dd>
+              <dd id="detail-duration">
+                <span class="md:hidden">6 MOS.</span>
+                <span class="hidden md:inline">6 MONTHS IN ORBIT</span>
+              </dd>
             </div>
-            <div class="detail-row">
+
+            <!-- MISSION Row -->
+            <div class="stat-row !hidden md:!grid">
               <dt>MISSION:</dt>
               <dd id="detail-mission">'Surviving the Vacuum'</dd>
             </div>
-            <div class="detail-row">
-              <dt>ARTIFACT:</dt>
-              <dd id="detail-artifact">Material Specimen Container</dd>
-            </div>
           </dl>
 
-          <!-- Media Uplink -->
-          <footer class="panel-footer">
-            <span class="uplink-label font-mono text-xs text-starlight/50 tracking-wider">MEDIA_UPLINK:</span>
-            <nav class="media-links" id="mission-links" aria-label="Related media">
-              <!-- Links inserted via JS -->
+          <footer class="card-actions">
+            <span class="uplink-label !hidden md:!block">> MEDIA_UPLINK:</span>
+            <nav class="media-links md:flex-wrap overflow-x-auto md:overflow-visible no-scrollbar" id="mission-links"
+              aria-label="Related media">
+              <a href="#" class="btn-hud whitespace-nowrap">READ: FORBES</a>
+              <a href="#" class="btn-hud whitespace-nowrap">READ: EL PAIS</a>
             </nav>
           </footer>
-        </article>
+        </div>
+      </article>
 
-      </div>
+      <!-- Circular Viewport (Artifact Display) -->
+      <figure class="visual-viewport-container">
+        <div class="orbit-window-ring">
+          <div class="viewport-fill">
+            <!-- Solid cyan fill (alt: use #6366F1 for indigo/horizon) -->
+          </div>
+        </div>
+      </figure>
 
     </div>
   </section>

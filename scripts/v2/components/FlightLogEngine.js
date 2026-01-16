@@ -36,8 +36,9 @@ export class FlightLogEngine {
         this.dom.container = document.querySelector('#flight-logs');
         if (!this.dom.container) return;
 
-        this.dom.tabs = document.querySelectorAll('.mission-tab');
+        this.dom.tabs = document.querySelectorAll('.tab-btn');
         this.dom.content.title = document.querySelector('#mission-title');
+        this.dom.content.project = document.querySelector('#detail-project');
         this.dom.content.status = document.querySelector('#detail-status');
         this.dom.content.duration = document.querySelector('#detail-duration');
         this.dom.content.mission = document.querySelector('#detail-mission');
@@ -67,17 +68,14 @@ export class FlightLogEngine {
             this.renderMission(missionId);
         });
 
-        // 4. Update Tab Styling & Arrow Indicator
+        // 4. Update Tab Styling
         this.dom.tabs.forEach(tab => {
-            const arrow = tab.querySelector('.mission-tab-arrow');
             if (tab.dataset.mission === missionId) {
                 tab.classList.add('active');
                 tab.setAttribute('aria-selected', 'true');
-                if (arrow) arrow.classList.remove('hidden');
             } else {
                 tab.classList.remove('active');
                 tab.setAttribute('aria-selected', 'false');
-                if (arrow) arrow.classList.add('hidden');
             }
         });
     }
@@ -86,19 +84,46 @@ export class FlightLogEngine {
         const data = MISSIONS[missionId];
         if (!data) return;
 
-        // Title Update (using shortTitle for cleaner display)
+        // Header Title
         if (this.dom.content.title) {
-            this.dom.content.title.textContent = data.shortTitle || data.title;
+            if (data.shortTitle) {
+                this.dom.content.title.innerHTML = `
+                    <span class="md:hidden">${data.shortTitle}</span>
+                    <span class="hidden md:inline">${data.title}</span>
+                `;
+            } else {
+                this.dom.content.title.textContent = data.title;
+            }
+        }
+
+        // Project Row
+        if (this.dom.content.project) {
+            if (data.shortTitle) {
+                this.dom.content.project.innerHTML = `
+                     <span class="md:hidden">${data.shortTitle}</span>
+                     <span class="hidden md:inline">${data.title}</span>
+                 `;
+            } else {
+                this.dom.content.project.textContent = data.title;
+            }
         }
 
         // Status Update
         if (this.dom.content.status) {
-            this.dom.content.status.textContent = data.status;
+            this.dom.content.status.innerHTML = `
+                <span class="md:hidden">${data.shortStatus || data.status}</span>
+                <span class="hidden md:inline">${data.status}</span>
+            `;
         }
 
-        // Duration Update (or location for samara-cs)
+        // Duration Update
         if (this.dom.content.duration) {
-            this.dom.content.duration.textContent = data.duration || data.location || '';
+            const duration = data.duration || data.location || '';
+            const shortDuration = data.shortDuration || duration;
+            this.dom.content.duration.innerHTML = `
+                <span class="md:hidden">${shortDuration}</span>
+                <span class="hidden md:inline">${duration}</span>
+            `;
         }
 
         // Mission Details
@@ -113,10 +138,11 @@ export class FlightLogEngine {
 
         // Media Links Rendering
         if (this.dom.content.links) {
+            // Match classes from: <a class="btn-hud"> in index.html
             this.dom.content.links.innerHTML = data.mediaLinks
                 .map(link => `
-                    <a href="${link.url}" target="_blank" rel="noopener">
-                        [ READ: ${link.label} ]
+                    <a href="${link.url}" target="_blank" rel="noopener" class="btn-hud">
+                        READ: ${link.label}
                     </a>
                 `).join('');
         }

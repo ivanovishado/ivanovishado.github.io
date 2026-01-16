@@ -16,7 +16,9 @@ export const MISSIONS = {
         title: 'MISSE-FF / CRS-31 FLIGHT',
         shortTitle: 'MISSE-FF',
         status: 'RETURNED TO EARTH',
+        shortStatus: 'RETURNED',
         duration: '6 MONTHS IN ORBIT',
+        shortDuration: '6 MOS.',
         description: 'Materials Science in Microgravity. Investigating the durability of polymers and composites in the harsh environment of Low Earth Orbit.',
         details: {
             mission: "'Surviving the Vacuum'",
@@ -37,9 +39,10 @@ export const MISSIONS = {
     'samara-cs': {
         id: 'samara-cs',
         title: 'SAMARA CUBESAT',
-        shortTitle: 'SAMARA-CS',
         status: 'TRAINING COMPLETED',
-        duration: 'SUMMER 2019',
+        shortStatus: 'TRAINING',
+        duration: 'SUMMER 2024',
+        shortDuration: 'SUMMER \'24',
         location: 'SAMARA, RUSSIA',
         description: 'Design of a 6U CubeSat for hurricane monitoring. Implementation of ADCS and power budgeting subsystems.',
         details: {

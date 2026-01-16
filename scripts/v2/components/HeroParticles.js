@@ -35,9 +35,7 @@ export class HeroParticles {
         this.mouse = { x: 0, y: 0 };
         this.targetMouse = { x: 0, y: 0 };
 
-        // Scroll parallax
-        this.scrollY = 0;
-        this.targetScrollY = 0;
+
 
         // Initialize
         this.init();
@@ -165,10 +163,7 @@ export class HeroParticles {
             this.targetMouse.y = (e.clientY / window.innerHeight - 0.5) * 2;
         });
 
-        // Scroll
-        window.addEventListener('scroll', () => {
-            this.targetScrollY = window.scrollY;
-        });
+
 
         // Resize
         window.addEventListener('resize', () => {
@@ -187,20 +182,17 @@ export class HeroParticles {
         this.mouse.x += (this.targetMouse.x - this.mouse.x) * 0.05;
         this.mouse.y += (this.targetMouse.y - this.mouse.y) * 0.05;
 
-        // Smooth scroll interpolation
-        this.scrollY += (this.targetScrollY - this.scrollY) * 0.1;
-
         // Apply mouse parallax to particle group
         this.particles.rotation.x = this.mouse.y * 0.1;
         this.particles.rotation.y = this.mouse.x * 0.1;
-
-        // Scroll depth effect
-        this.particles.position.z = -this.scrollY * 0.5;
 
         // Drift particles if motion is allowed
         if (!this.reducedMotion) {
             const posAttr = this.particles.geometry.attributes.position;
             const positions = posAttr.array;
+
+            // Warp speed multiplier (default 1, increases with scroll)
+            const speedMult = 1 + (this.warpFactor || 0) * 20;
 
             for (let i = 0; i < this.particleCount; i++) {
                 const i3 = i * 3;
@@ -208,12 +200,23 @@ export class HeroParticles {
 
                 positions[i3] += vel.x;
                 positions[i3 + 1] += vel.y;
-                positions[i3 + 2] += vel.z;
+
+                // Enhance Z movement with warp speed
+                // Move towards camera (positive Z) for "warp" feel, or follow velocity direction
+                // Let's make them fly past the camera when warping
+                const zSpeed = Math.abs(vel.z) * speedMult;
+                positions[i3 + 2] += zSpeed;
 
                 // Wrap around bounds
                 if (Math.abs(positions[i3]) > 800) vel.x *= -1;
                 if (Math.abs(positions[i3 + 1]) > 600) vel.y *= -1;
-                if (Math.abs(positions[i3 + 2]) > 500) vel.z *= -1;
+
+                // Reset Z if it brings particle too close or too far
+                if (positions[i3 + 2] > 600) {
+                    positions[i3 + 2] = -600;
+                } else if (positions[i3 + 2] < -600) {
+                    positions[i3 + 2] = 600;
+                }
             }
 
             posAttr.needsUpdate = true;
@@ -227,5 +230,14 @@ export class HeroParticles {
             this.renderer.dispose();
             this.container.removeChild(this.renderer.domElement);
         }
+    }
+
+    setWarpSpeed(velocity) {
+        // Smoothly interpolate warp factor based on scroll velocity
+        // Velocity comes from Lenis (pixels per frame approx)
+        // We normalize it to a 0-1 range for the "warp" effect intensity
+        const targetWarp = Math.min(Math.abs(velocity) / 15, 5); // Cap at 5x speed
+        this.warpFactor = this.warpFactor || 0;
+        this.warpFactor += (targetWarp - this.warpFactor) * 0.1;
     }
 }
