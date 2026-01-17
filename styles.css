@@ -205,6 +205,23 @@ body {
   background: radial-gradient(ellipse at top, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
     radial-gradient(ellipse at bottom right, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
     linear-gradient(180deg, #030305 0%, #0a0a0c 100%);
+  /* Initial state for bootstrap animation */
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+/* System Boot Wireframe State */
+.boot-wireframe {
+  border: 1px solid rgba(99, 102, 241, 0.5);
+  background: transparent !important;
+  color: transparent !important;
+  box-shadow: none !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.boot-wireframe>* {
+  opacity: 0;
 }
 
 /* Floating geometric shapes - MORE VISIBLE */
@@ -560,16 +577,6 @@ body {
 
 .mobile-menu a:hover {
   color: white;
-}
-
-/* Scroll indicator */
-.scroll-indicator {
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.scroll-indicator.hidden {
-  opacity: 0 !important;
-  visibility: hidden;
 }
 
 /* --------------------------------------------------------------------------
