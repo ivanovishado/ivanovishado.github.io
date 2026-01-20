@@ -131,6 +131,10 @@ function initSystemBootstrap() {
 
   const tl = gsap.timeline({
     delay: 0.2,
+    onComplete: () => {
+      // Re-enable scrolling after bootstrap animation completes
+      document.body.style.overflow = '';
+    }
   });
 
   // Elements to animate
