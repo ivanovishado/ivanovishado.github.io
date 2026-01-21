@@ -1,0 +1,140 @@
+/* Hero Section Styles */
+.gradient-text {
+  background: linear-gradient(135deg, #e2e8f0 0%, #6366f1 60%, #00f0ff 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 8s ease-in-out infinite;
+}
+
+.hero-gradient {
+  background:
+    radial-gradient(
+      ellipse at top,
+      rgba(99, 102, 241, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at bottom right,
+      rgba(0, 240, 255, 0.08) 0%,
+      transparent 40%
+    ),
+    linear-gradient(180deg, #030305 0%, #0a0a0c 100%);
+  /* Initial state for bootstrap animation */
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+/* System Boot Wireframe State */
+.boot-wireframe {
+  border: 1px solid rgba(99, 102, 241, 0.5);
+  background: transparent !important;
+  color: transparent !important;
+  box-shadow: none !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.boot-wireframe > * {
+  opacity: 0;
+}
+
+/* Floating geometric shapes - OPTIMIZED FOR 60FPS */
+.floating-shape {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  /* Removed filter: blur(40px) for performance */
+  /* Using softer gradients implementation below instead */
+  will-change: transform; /* Hint to browser to promote to layer */
+}
+
+.floating-shape-1 {
+  width: 500px;
+  height: 500px;
+  /* Smoother gradient transition for fake blur effect */
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.15) 0%,
+    rgba(99, 102, 241, 0.05) 40%,
+    transparent 70%
+  );
+  top: 5%;
+  left: 5%;
+  animation: float-slow 25s ease-in-out infinite;
+}
+
+.floating-shape-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 240, 255, 0.1) 0%,
+    rgba(0, 240, 255, 0.03) 40%,
+    transparent 70%
+  );
+  bottom: 10%;
+  right: 10%;
+  animation: float-reverse 30s ease-in-out infinite;
+}
+
+.floating-shape-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.05) 0%,
+    transparent 60%
+  );
+  top: 50%;
+  right: 25%;
+  animation: float-diagonal 20s ease-in-out infinite;
+}
+
+/* Hero name dramatic styling */
+.hero-name {
+  animation: hero-name-reveal 1.2s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+/* Rotating tagline - FIXED */
+.rotating-tagline-container {
+  height: 28px;
+  overflow: hidden;
+  position: relative;
+}
+
+.rotating-tagline {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  opacity: 0;
+  animation: tagline-cycle 12s ease-in-out infinite;
+}
+
+.rotating-tagline:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.rotating-tagline:nth-child(2) {
+  animation-delay: 4s;
+}
+
+.rotating-tagline:nth-child(3) {
+  animation-delay: 8s;
+}
+
+/* Profile picture glow */
+.profile-glow {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.profile-glow:hover {
+  box-shadow: 0 0 50px rgba(99, 102, 241, 0.5);
+  transform: scale(1.05);
+}
