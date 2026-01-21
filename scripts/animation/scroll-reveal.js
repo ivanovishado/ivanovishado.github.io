@@ -20,7 +20,7 @@ export function initScrollRevealAnimations() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: section,
-          start: 'top 85%',
+          start: 'top 65%',
           once: true,
         }
       }
@@ -46,8 +46,32 @@ export function initScrollRevealAnimations() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: group,
-          start: 'top 80%',
+          start: 'top 75%',
           once: true,
+        }
+      }
+    );
+  });
+
+  // Special treatment for Section Headers (h2)
+  // Creates a sophisticated "leading" effect where the title reveals first
+  const sectionHeaders = document.querySelectorAll('section h2');
+  
+  sectionHeaders.forEach(header => {
+    gsap.fromTo(header, 
+      {
+        x: -30,
+        opacity: 0
+      },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: header,
+          start: 'top 60%',
+          once: true
         }
       }
     );

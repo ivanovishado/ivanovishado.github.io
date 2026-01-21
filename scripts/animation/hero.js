@@ -76,4 +76,34 @@ export function initSystemBootstrap() {
       gsap.fromTo(btn, { filter: 'brightness(2)' }, { filter: 'brightness(1)', duration: 0.5 });
     });
   }, '+=0.2');
+
+  // STEP 5: INTERACTIVE PARALLAX (Mouse movement)
+  // We use quickTo for performant 60fps mouse tracking
+  const shapes = document.querySelectorAll('.floating-shape');
+  
+  if (shapes.length === 0) return;
+
+  // Store tween references for performance
+  const shapeTweens = Array.from(shapes).map(shape => ({
+    x: gsap.quickTo(shape, "x", { duration: 1, ease: "power3.out" }),
+    y: gsap.quickTo(shape, "y", { duration: 1, ease: "power3.out" }),
+    // Varies speed based on "depth" (index)
+    factor: 0.05 + (Math.random() * 0.05) 
+  }));
+
+  window.addEventListener('mousemove', (e) => {
+    // Calculate normalized mouse position (-1 to 1)
+    const x = (e.clientX / window.innerWidth) * 2 - 1;
+    const y = (e.clientY / window.innerHeight) * 2 - 1;
+
+    shapeTweens.forEach((t, i) => {
+      // Deeper elements move slower (simulated depth)
+      // We flip direction for some to create chaotic flow
+      const direction = i % 2 === 0 ? 1 : -1; 
+      const moveAmount = 100 * t.factor * direction;
+      
+      t.x(x * moveAmount);
+      t.y(y * moveAmount);
+    });
+  });
 }

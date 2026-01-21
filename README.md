@@ -1,12 +1,12 @@
 # Ivan Galaviz - Personal Website
 
-A modern, responsive personal portfolio website showcasing my experience as a Software Engineer. Built with Vite, Tailwind CSS, and GSAP.
+A modern, responsive personal website showcasing my experience as a Software Engineer. Built with Vite, Tailwind CSS, and GSAP.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js v20 or higher (Recommended: use `nvm install 22` && `nvm use 22`)
+- Node.js v22 or higher (Recommended: use `nvm install 22` && `nvm use 22`)
 
 ### Installation
 
@@ -42,7 +42,7 @@ npm run preview
 ### Mobile Testing
 
 1. Ensure your mobile device is on the same WiFi network.
-2. Run `npm run dev -- --host`.
+2. Run `npm run dev -- --host` or `npm run dev-mobile`.
 3. Open the **Network** URL displayed (e.g., `http://192.168.x.x:5173`) on your mobile device.
 
 ## 🛠️ Tech Stack

@@ -1,11 +1,12 @@
 {
   "name": "ivanovishado.github.io",
   "version": "1.0.0",
-  "description": "A modern, responsive personal portfolio website showcasing my experience as a Software Engineer.",
+  "description": "A modern, responsive personal website showcasing my experience as a Software Engineer.",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
+    "dev-mobile": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
   },

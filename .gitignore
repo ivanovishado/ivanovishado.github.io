@@ -2,3 +2,5 @@ tools/.env
 tools/venv
 
 node_modules/
+
+dist/
