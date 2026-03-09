@@ -19,6 +19,7 @@
           <div class="order-2 md:order-1 text-center md:text-left">
             <p
               class="text-event-horizon font-medium tracking-widest uppercase mb-4 opacity-0 animate-fade-in-up animate-delay-100"
+              aria-hidden="true"
             >
               Software Engineer
             </p>
@@ -26,8 +27,9 @@
             <h1
               class="font-display text-hero tracking-wide mb-4 leading-[0.85] hero-name"
             >
-              <span class="gradient-text block">IVAN</span>
-              <span class="gradient-text block">GALAVIZ</span>
+              <span class="sr-only">Ivan Galaviz — Software Engineer</span>
+              <span class="gradient-text block" aria-hidden="true">IVAN</span>
+              <span class="gradient-text block" aria-hidden="true">GALAVIZ</span>
             </h1>
 
             <p
@@ -60,6 +62,7 @@
                 href="https://github.com/ivanovishado"
                 target="_blank"
                 rel="noopener"
+                aria-label="GitHub profile"
                 class="magnetic-btn w-12 h-12 flex items-center justify-center rounded-full border border-white/10 hover:border-event-horizon/50 hover:bg-event-horizon/10 transition-all group"
               >
                 <i class="ph ph-github-logo text-xl text-gray-400 group-hover:text-white transition-colors"></i>
@@ -68,12 +71,14 @@
                 href="https://linkedin.com/in/ivanovishado"
                 target="_blank"
                 rel="noopener"
+                aria-label="LinkedIn profile"
                 class="magnetic-btn w-12 h-12 flex items-center justify-center rounded-full border border-white/10 hover:border-event-horizon/50 hover:bg-event-horizon/10 transition-all group"
               >
                 <i class="ph ph-linkedin-logo text-xl text-gray-400 group-hover:text-white transition-colors"></i>
               </a>
               <a
                 href="mailto:me@ivanovishado.dev"
+                aria-label="Send email"
                 class="magnetic-btn w-12 h-12 flex items-center justify-center rounded-full border border-white/10 hover:border-event-horizon/50 hover:bg-event-horizon/10 transition-all group"
               >
                 <i class="ph ph-envelope text-xl text-gray-400 group-hover:text-white transition-colors"></i>
@@ -89,7 +94,7 @@
             <div id="hero-profile-pic" class="hero-portrait-wrapper opacity-0">
               <img
                 src="img/headshot.webp"
-                alt="Ivan Galaviz"
+                alt="Ivan Galaviz, Software Engineer at Netflix"
                 width="400"
                 height="500"
                 fetchpriority="high"
@@ -99,5 +104,15 @@
             </div>
           </div>
         </div>
+        <!-- Hidden bio for search engines and AI crawlers -->
+        <p class="sr-only">
+          Ivan Galaviz is a Software Engineer at Netflix, where he builds a Digital Asset
+          Management system for marketing campaigns. He has over 7 years of experience,
+          previously working as a Senior Software Engineer at Nubank and Software Engineer at
+          Wizeline. His expertise includes Java, Go, Clojure, Python, distributed systems, and
+          cloud platforms (AWS, GCP, Azure). He holds a B.E. in Computer Engineering from
+          Universidad de Guadalajara and is a member of Mat X Space, whose MCB-1 experiment
+          flew aboard SpaceX CRS-31 to the International Space Station.
+        </p>
       </div>
     </section>

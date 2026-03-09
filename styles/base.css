@@ -44,7 +44,7 @@ body {
 #experience,
 #spotlight,
 #skills,
-#formation,
+#education,
 #awards,
 #contact {
   content-visibility: auto;
@@ -54,6 +54,6 @@ body {
 #experience     { contain-intrinsic-size: auto 1100px; }
 #spotlight      { contain-intrinsic-size: auto 1500px; }
 #skills         { contain-intrinsic-size: auto 650px; }
-#formation      { contain-intrinsic-size: auto 800px; }
+#education      { contain-intrinsic-size: auto 800px; }
 #awards         { contain-intrinsic-size: auto 420px; }
 #contact        { contain-intrinsic-size: auto 550px; }

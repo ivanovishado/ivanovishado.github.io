@@ -6,14 +6,80 @@
     <title>Ivan Galaviz | Software Engineer</title>
     <meta
       name="description"
-      content="Software Engineer at Netflix. Building scalable distributed systems and solving challenging problems. Previously at Nubank and Wizeline."
+      content="Ivan Galaviz — Software Engineer at Netflix building scalable distributed systems. 7+ years with Java, Go, Clojure, Python & AWS. Previously Senior SWE at Nubank. Open to mentoring."
     />
+    <meta name="author" content="Ivan Galaviz" />
+    <meta name="theme-color" content="#2563EB" />
+    <link rel="canonical" href="https://www.ivanovishado.dev/" />
+
+    <!-- Open Graph -->
     <meta property="og:title" content="Ivan Galaviz | Software Engineer" />
     <meta
       property="og:description"
-      content="Software Engineer at Netflix. Building scalable distributed systems and solving challenging problems."
+      content="Ivan Galaviz — Software Engineer at Netflix building scalable distributed systems. 7+ years with Java, Go, Clojure, Python & AWS. Previously Senior SWE at Nubank. Open to mentoring."
     />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.ivanovishado.dev/" />
+    <meta property="og:site_name" content="Ivan Galaviz" />
+    <meta property="og:locale" content="en_US" />
+    <!-- TODO: Generate og-image.png (1200x630) and place in public/ -->
+    <meta property="og:image" content="https://www.ivanovishado.dev/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ivan Galaviz — Software Engineer at Netflix" />
+
+    <!-- Twitter/X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ivan Galaviz | Software Engineer" />
+    <meta name="twitter:description" content="Ivan Galaviz — Software Engineer at Netflix building scalable distributed systems. 7+ years with Java, Go, Clojure, Python & AWS." />
+    <meta name="twitter:image" content="https://www.ivanovishado.dev/og-image.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Ivan Galaviz",
+        "url": "https://www.ivanovishado.dev",
+        "image": "https://www.ivanovishado.dev/img/headshot.webp",
+        "jobTitle": "Software Engineer",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Netflix",
+          "url": "https://www.netflix.com"
+        },
+        "alumniOf": {
+          "@type": "EducationalOrganization",
+          "name": "Universidad de Guadalajara"
+        },
+        "knowsAbout": [
+          "Java", "Python", "Go", "Clojure", "TypeScript",
+          "Distributed Systems", "AWS", "GCP", "Azure",
+          "LLM Orchestration", "Microservices", "Event-Driven Architecture",
+          "Functional Programming"
+        ],
+        "sameAs": [
+          "https://github.com/ivanovishado",
+          "https://linkedin.com/in/ivanovishado"
+        ],
+        "email": "me@ivanovishado.dev",
+        "description": "Software Engineer at Netflix with 7+ years building scalable distributed systems. Previously Senior SWE at Nubank (Clojure) and SWE at Wizeline (Go, Python, AWS). MCB-1 space experiment team member."
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Ivan Galaviz — Software Engineer",
+        "url": "https://www.ivanovishado.dev",
+        "description": "Personal portfolio of Ivan Galaviz, Software Engineer at Netflix."
+      }
+    ]
+    </script>
 
     <!-- Prevent FOUC: hide body until stylesheets load -->
     <style>body { opacity: 0; }</style>
@@ -25,6 +91,9 @@
       type="text/css"
       href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css"
     />
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="img/headshot.webp" as="image" type="image/webp" />
 
     <!-- Fonts: Cabinet Grotesk (Fontshare CDN) + JetBrains Mono (Google) -->
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
@@ -50,29 +119,31 @@
     <!-- Navigation -->
     <load src="src/sections/navbar.html" />
 
-    <!-- Hero Section -->
-    <load src="src/sections/hero.html" />
+    <main>
+      <!-- Hero Section -->
+      <load src="src/sections/hero.html" />
 
-    <!-- Projects Showcase -->
-    <load src="src/sections/projects.html" />
+      <!-- Projects Showcase -->
+      <load src="src/sections/projects.html" />
 
-    <!-- Experience Section -->
-    <load src="src/sections/experience.html" />
+      <!-- Experience Section -->
+      <load src="src/sections/experience.html" />
 
-    <!-- In The Spotlight (Press + Talks) -->
-    <load src="src/sections/press.html" />
+      <!-- In The Spotlight (Press + Talks) -->
+      <load src="src/sections/press.html" />
 
-    <!-- Skills Section -->
-    <load src="src/sections/skills.html" />
+      <!-- Skills Section -->
+      <load src="src/sections/skills.html" />
 
-    <!-- Formation (Education + Volunteering) -->
-    <load src="src/sections/education.html" />
+      <!-- Education + Volunteering -->
+      <load src="src/sections/education.html" />
 
-    <!-- Awards Section -->
-    <load src="src/sections/awards.html" />
+      <!-- Awards Section -->
+      <load src="src/sections/awards.html" />
 
-    <!-- Contact Section -->
-    <load src="src/sections/contact.html" />
+      <!-- Contact Section -->
+      <load src="src/sections/contact.html" />
+    </main>
 
     <!-- Footer -->
     <load src="src/sections/footer.html" />
