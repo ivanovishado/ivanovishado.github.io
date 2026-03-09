@@ -146,13 +146,3 @@
   box-shadow: 0 15px 35px color-mix(in srgb, var(--color-event-horizon) 8%, transparent);
 }
 
-/* Photo placeholder slot */
-.photo-placeholder {
-  background: color-mix(in srgb, var(--color-dark-700) 50%, transparent);
-  border: 2px dashed rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 0.875rem;
-}

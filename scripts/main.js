@@ -12,6 +12,7 @@ import { initSystemBootstrap } from './animation/hero.js';
 import { initMagneticButtons } from './components/buttons.js';
 import { initMenu, initNavbar } from './components/menu.js';
 import { initYearsExperience } from './utils/data.js';
+import { initProjectsCarousel } from './components/projects-carousel.js';
 
 /**
  * Main initialization function
@@ -28,6 +29,7 @@ function init() {
   // Initialize animations
   initSystemBootstrap();
   initScrollRevealAnimations();
+  initProjectsCarousel();
   initMagneticButtons();
 
   // Initialize UI components

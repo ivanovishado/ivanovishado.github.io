@@ -1,0 +1,159 @@
+    <section id="projects" class="projects-section relative overflow-hidden" style="min-height: 40vh">
+      <!-- Glow element — animated via transform, not background-image -->
+      <div class="projects-glow"></div>
+
+      <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+        <!-- Section header row -->
+        <div class="flex items-end justify-between mb-12">
+          <h2
+            class="font-display text-4xl md:text-5xl tracking-wide leading-none text-white"
+          >
+            Projects
+          </h2>
+
+          <!-- Desktop tab navigation -->
+          <nav class="hidden md:flex items-center gap-8" aria-label="Project navigation">
+            <button
+              class="project-tab active"
+              data-slide="0"
+              type="button"
+            >
+              MCB-1
+              <span class="project-tab-line"></span>
+            </button>
+            <button
+              class="project-tab"
+              data-slide="1"
+              type="button"
+            >
+              Expo Playground
+              <span class="project-tab-line"></span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Carousel viewport -->
+        <div class="projects-carousel">
+          <!-- Slide 0: MCB-1 -->
+          <div
+            class="project-slide active"
+            data-project="0"
+          >
+            <div
+              class="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-8 md:gap-16 items-center"
+            >
+              <!-- Text -->
+              <div class="project-text">
+                <p
+                  class="text-event-horizon font-medium tracking-widest uppercase text-sm mb-3"
+                >
+                  Space Experiment
+                </p>
+                <h3
+                  class="font-display text-5xl md:text-7xl lg:text-8xl tracking-wide leading-none mb-4"
+                >
+                  <span class="text-white">MCB-1</span>
+                </h3>
+                <p class="text-gray-400 text-lg md:text-xl mb-2">
+                  Aboard SpaceX Mission CRS-31
+                </p>
+                <p class="text-gray-500 text-sm mb-6">November 2024</p>
+                <p class="text-gray-400 max-w-md">
+                  A Mexican space experiment launched to the International Space
+                  Station, studying microbial behavior in microgravity. Featured in
+                  <span class="text-white font-medium">Forbes Mexico</span> and
+                  <span class="text-white font-medium">El Pa&iacute;s</span>.
+                </p>
+              </div>
+
+              <!-- Image -->
+              <div class="relative flex items-center justify-center">
+                <div class="project-image rounded-2xl w-full max-w-[420px] aspect-[4/5] overflow-hidden">
+                  <img
+                    src="/img/space-experiment.jpeg"
+                    alt="Ivan Galaviz at NASA Kennedy Space Center with the Vehicle Assembly Building and Artemis program branding"
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 1: Expo Playground -->
+          <div
+            class="project-slide"
+            data-project="1"
+          >
+            <div
+              class="grid grid-cols-1 md:grid-cols-[2fr_3fr] gap-8 md:gap-16 items-center"
+            >
+              <!-- Text -->
+              <div class="project-text">
+                <p
+                  class="text-event-horizon font-medium tracking-widest uppercase text-sm mb-3"
+                >
+                  Educational Tool
+                </p>
+                <h3
+                  class="font-display text-5xl md:text-7xl lg:text-8xl tracking-wide leading-none mb-4"
+                >
+                  <span class="text-white">Expo Playground</span>
+                </h3>
+                <p class="text-gray-400 text-lg md:text-xl mb-2">
+                  Annotated Code Explorer
+                </p>
+                <p class="text-gray-500 text-sm mb-6">2026</p>
+                <p class="text-gray-400 max-w-md mb-4">
+                  Helps beginners understand LLM-generated Expo/React Native code
+                  via interactive highlights and inline annotations.
+                </p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="skill-tag-sm">Next.js</span>
+                  <span class="skill-tag-sm">TypeScript</span>
+                  <span class="skill-tag-sm">CodeMirror 6</span>
+                  <span class="skill-tag-sm">Babel AST</span>
+                  <span class="skill-tag-sm">Snack SDK</span>
+                </div>
+                <a
+                  href="https://www.ivanovishado.dev/expo-playground/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-sm text-event-horizon hover:text-white transition-colors"
+                >
+                  Visit Project
+                  <i class="ph ph-arrow-up-right text-sm"></i>
+                </a>
+              </div>
+
+              <!-- Image -->
+              <div class="relative flex items-center justify-center">
+                <div class="project-image project-image--landscape rounded-2xl w-full overflow-hidden">
+                  <img
+                    src="/img/expo-playground.png"
+                    alt="Expo Playground — annotated code explorer showing React Native code with inline explanations"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile dot navigation -->
+        <div class="flex md:hidden items-center justify-center gap-3 mt-8">
+          <button
+            class="project-dot active"
+            data-slide="0"
+            type="button"
+            aria-label="Show MCB-1 project"
+          ></button>
+          <button
+            class="project-dot"
+            data-slide="1"
+            type="button"
+            aria-label="Show Expo Playground project"
+          ></button>
+        </div>
+      </div>
+    </section>

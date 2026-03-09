@@ -1,0 +1,119 @@
+/* Projects Section */
+.projects-section {
+  background: var(--color-void);
+  border-top: 1px solid color-mix(in srgb, var(--color-event-horizon) 20%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-event-horizon) 20%, transparent);
+}
+
+/* Glow — separate div for GPU-accelerated transform animation */
+.projects-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 70% 50%,
+    color-mix(in srgb, var(--color-event-horizon) 8%, transparent),
+    transparent 60%
+  );
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Carousel container — grid stacking avoids position swapping reflows */
+.projects-carousel {
+  display: grid;
+  overflow: hidden;
+}
+
+/* Slides — all occupy the same grid cell */
+.project-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.project-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Project image — blue glow + border */
+.project-image {
+  box-shadow:
+    0 0 40px color-mix(in srgb, var(--color-event-horizon) 15%, transparent),
+    0 0 80px color-mix(in srgb, var(--color-event-horizon) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-event-horizon) 25%, transparent);
+}
+
+/* Landscape variant — deeper shadow for floating screen effect */
+.project-image--landscape {
+  box-shadow:
+    0 8px 60px color-mix(in srgb, var(--color-event-horizon) 20%, transparent),
+    0 0 100px color-mix(in srgb, var(--color-event-horizon) 8%, transparent);
+}
+
+/* Desktop tabs */
+.project-tab {
+  position: relative;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.875rem;
+  color: var(--color-text-tertiary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: color 0.3s ease;
+}
+
+.project-tab:hover {
+  color: var(--color-text-secondary);
+}
+
+.project-tab.active {
+  color: #fff;
+}
+
+.project-tab-line {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-event-horizon);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.project-tab.active .project-tab-line {
+  transform: scaleX(1);
+}
+
+/* Mobile dots */
+.project-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, white 20%, transparent);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.project-dot.active {
+  width: 24px;
+  background: var(--color-event-horizon);
+}
+
+/* Mobile breakpoint adjustments */
+@media (max-width: 767px) {
+  .project-image:not(.project-image--landscape) {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .project-image--landscape {
+    width: 100%;
+  }
+}

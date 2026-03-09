@@ -50,7 +50,7 @@ body {
   content-visibility: auto;
 }
 
-#projects       { contain-intrinsic-size: auto 450px; }
+#projects       { contain-intrinsic-size: auto 550px; }
 #experience     { contain-intrinsic-size: auto 1100px; }
 #spotlight      { contain-intrinsic-size: auto 1500px; }
 #skills         { contain-intrinsic-size: auto 650px; }

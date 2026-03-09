@@ -28,26 +28,26 @@ export function initScrollRevealAnimations() {
     );
   });
 
-  // Space banner — text slides from left, image fades in
-  const bannerText = document.querySelector('.space-banner-text');
-  const bannerPhoto = document.querySelector('.space-banner .photo-placeholder');
+  // Projects — first slide entrance (subsequent slides animate via carousel)
+  const projectText = document.querySelector('.project-slide[data-project="0"] .project-text');
+  const projectImage = document.querySelector('.project-slide[data-project="0"] .project-image');
 
-  if (bannerText) {
-    gsap.fromTo(bannerText,
+  if (projectText) {
+    gsap.fromTo(projectText,
       { x: -60, opacity: 0 },
       {
         x: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: bannerText, start: 'top 75%', once: true }
+        scrollTrigger: { trigger: projectText, start: 'top 75%', once: true }
       }
     );
   }
 
-  if (bannerPhoto) {
-    gsap.fromTo(bannerPhoto,
+  if (projectImage) {
+    gsap.fromTo(projectImage,
       { scale: 0.9, opacity: 0 },
       {
         scale: 1, opacity: 1, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: bannerPhoto, start: 'top 75%', once: true }
+        scrollTrigger: { trigger: projectImage, start: 'top 75%', once: true }
       }
     );
   }
