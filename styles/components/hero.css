@@ -54,7 +54,6 @@
     color-mix(in srgb, var(--color-event-horizon) 2%, transparent) 50%,
     transparent 70%
   );
-  clip-path: polygon(40% 0%, 100% 0%, 100% 100%, 40% 100%);
   pointer-events: none;
 }
 
