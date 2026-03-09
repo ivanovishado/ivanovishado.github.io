@@ -15,7 +15,7 @@
         <div
           class="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-8 md:gap-12 items-center"
         >
-          <!-- Left Column: Text Content -->
+          <!-- Left Column: Text Content + Social -->
           <div class="order-2 md:order-1 text-center md:text-left">
             <p
               class="text-event-horizon font-medium tracking-widest uppercase mb-4 opacity-0 animate-fade-in-up animate-delay-100"
@@ -51,26 +51,10 @@
                 >Mentoring Others</span
               >
             </div>
-          </div>
-
-          <!-- Right Column: Photo + Social -->
-          <div
-            class="order-1 md:order-2 flex flex-col items-center md:items-end gap-8"
-          >
-            <!-- Profile Picture -->
-            <div id="hero-profile-pic" class="relative opacity-0 animate-fade-in-up">
-              <img
-                src="https://github.com/ivanovishado.png"
-                alt="Ivan Galaviz"
-                width="200"
-                height="200"
-                class="w-40 h-40 md:w-[200px] md:h-[200px] rounded-full border-2 border-event-horizon/50 profile-glow object-cover"
-              />
-            </div>
 
             <!-- Social Links -->
             <div
-              class="flex flex-row md:flex-col items-center gap-4 opacity-0 animate-fade-in-up animate-delay-400"
+              class="flex flex-row items-center justify-center md:justify-start gap-4 opacity-0 animate-fade-in-up animate-delay-400"
             >
               <a
                 href="https://github.com/ivanovishado"
@@ -94,6 +78,24 @@
               >
                 <i class="ph ph-envelope text-xl text-gray-400 group-hover:text-white transition-colors"></i>
               </a>
+            </div>
+          </div>
+
+          <!-- Right Column: Portrait -->
+          <div
+            class="order-1 md:order-2 flex flex-col items-center"
+          >
+            <!-- Profile Picture -->
+            <div id="hero-profile-pic" class="hero-portrait-wrapper opacity-0">
+              <img
+                src="img/headshot.webp"
+                alt="Ivan Galaviz"
+                width="400"
+                height="500"
+                fetchpriority="high"
+                decoding="async"
+                class="hero-portrait"
+              />
             </div>
           </div>
         </div>

@@ -53,10 +53,10 @@ export function initSystemBootstrap() {
     ease: "power2.out"
   }, '-=0.8');
 
-  // STEP 5: PROFILE PIC warps in
+  // STEP 5: PROFILE PIC fades in with upward drift
   tl.fromTo(heroProfile,
-    { scale: 0, opacity: 0 },
-    { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.7)" },
+    { y: 40, opacity: 0 },
+    { y: 0, opacity: 1, duration: 1.0, ease: "power3.out" },
     '-=0.6'
   );
 

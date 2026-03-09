@@ -147,15 +147,52 @@
   animation-delay: 8s;
 }
 
-/* Profile picture glow */
-.profile-glow {
-  box-shadow: 0 0 30px color-mix(in srgb, var(--color-event-horizon) 30%, transparent);
-  transition:
-    box-shadow 0.3s ease,
-    transform 0.3s ease;
+/* Hero Portrait — Background-removed headshot */
+.hero-portrait-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
 }
 
-.profile-glow:hover {
-  box-shadow: 0 0 50px color-mix(in srgb, var(--color-event-horizon) 50%, transparent);
-  transform: scale(1.05);
+.hero-portrait {
+  position: relative;
+  z-index: 1;
+  max-height: 480px;
+  width: auto;
+  object-fit: contain;
+  /* Gradient mask: soft fade at top (hides hair crop) and bottom (seamless blend) */
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 65%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 65%, transparent 100%);
+  filter: brightness(0.95) contrast(1.05);
+}
+
+/* Ambient glow behind the portrait */
+.hero-portrait-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-event-horizon) 20%, transparent) 0%,
+    color-mix(in srgb, var(--color-event-horizon) 5%, transparent) 50%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Mobile: slightly smaller but still prominent */
+@media (max-width: 767px) {
+  .hero-portrait {
+    max-height: 320px;
+  }
+  .hero-portrait-wrapper::before {
+    width: 260px;
+    height: 260px;
+  }
 }
