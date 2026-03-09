@@ -1,29 +1,29 @@
-    <section id="experience" class="py-32 bg-dark-800 relative">
+    <section id="experience" class="py-32 bg-warm-surface relative">
       <div class="max-w-6xl mx-auto px-6">
         <h2
-          class="font-display text-5xl md:text-6xl text-center mb-4 tracking-wide"
+          class="font-display text-h1 mb-4 tracking-wide"
         >
           EXPERIENCE
         </h2>
-        <p class="text-gray-500 text-center mb-20">
+        <p class="text-gray-500 mb-20">
           <span id="years-experience"></span>+ years building scalable systems
         </p>
 
-        <div class="space-y-12">
-          <!-- Netflix -->
+        <div class="space-y-12 experience-connector">
+          <!-- Netflix — Featured Card (Full Width) -->
           <div
-            class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5 glow-border"
+            class="card-featured bg-dark-700/80 rounded-2xl p-8"
           >
-            <div class="flex flex-col md:flex-row md:items-start gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-6">
               <div class="flex-shrink-0">
                 <div
                   id="logo-netflix"
-                  class="w-16 h-16 rounded-xl bg-black flex items-center justify-center overflow-hidden border border-white/10"
+                  class="w-20 h-20 rounded-xl bg-black flex items-center justify-center overflow-hidden border border-white/10"
                 >
                   <img
                     src="https://upload.wikimedia.org/wikipedia/commons/1/18/Netflix_2016_N_logo.svg"
                     alt="Netflix Logo"
-                    class="w-12 h-12 object-contain"
+                    class="w-14 h-14 object-contain"
                   />
                 </div>
               </div>
@@ -35,31 +35,40 @@
                     <h3 class="text-2xl font-semibold">Software Engineer</h3>
                     <p class="text-netflix-red font-medium">Netflix</p>
                   </div>
-                  <span class="text-gray-500 mt-2 md:mt-0"
-                    >Apr 2023 — Present</span
-                  >
+                  <span class="text-gray-500 mt-2 md:mt-0 flex items-center gap-2">
+                    <span
+                      class="w-2 h-2 rounded-full bg-green-400 inline-block animate-pulse"
+                    ></span>
+                    Apr 2023 — Present
+                  </span>
                 </div>
-                <p class="text-gray-400 leading-relaxed">
-                  Building a Digital Asset Management (DAM) System that powers
-                  marketing campaigns for Netflix titles. Collaborating with
-                  cross-functional teams to deliver scalable solutions that
-                  reach our users worldwide.
-                </p>
+                <ul class="text-gray-400 space-y-2">
+                  <li class="flex items-baseline gap-2">
+                    <span class="text-netflix-red">▸</span>
+                    Building a Digital Asset Management (DAM) System that powers
+                    marketing campaigns for Netflix titles
+                  </li>
+                  <li class="flex items-baseline gap-2">
+                    <span class="text-netflix-red">▸</span>
+                    Collaborating with cross-functional teams to deliver
+                    scalable solutions that reach users worldwide
+                  </li>
+                </ul>
                 <div class="flex flex-wrap gap-2 mt-4">
                   <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
+                    class="skill-tag-sm"
                     >AI: LLMs & Emerging Tech</span
                   >
                   <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
+                    class="skill-tag-sm"
                     >Distributed Systems</span
                   >
                   <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
+                    class="skill-tag-sm"
                     >Java</span
                   >
                   <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
+                    class="skill-tag-sm"
                     >Microservices</span
                   >
                 </div>
@@ -67,156 +76,172 @@
             </div>
           </div>
 
-          <!-- Nubank -->
-          <div
-            class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5"
-          >
-            <div class="flex flex-col md:flex-row md:items-start gap-6">
-              <div class="flex-shrink-0">
-                <div
-                  id="logo-nubank"
-                  class="w-16 h-16 rounded-xl bg-white flex items-center justify-center overflow-hidden"
-                >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Nubank_logo_2021.svg"
-                    alt="Nubank Logo"
-                    class="w-12 h-12 object-contain"
-                  />
-                </div>
-              </div>
-              <div class="flex-1">
-                <div
-                  class="flex flex-col md:flex-row md:items-center md:justify-between mb-4"
-                >
-                  <div>
-                    <h3 class="text-2xl font-semibold">
-                      Senior Software Engineer
-                    </h3>
-                    <p class="text-purple-400 font-medium">Nubank</p>
+          <!-- Nubank — Ghost Card (Indented Right) -->
+          <div class="lg:ml-20 experience-card-right">
+            <div
+              class="card-ghost rounded-2xl p-6 md:p-8"
+            >
+              <div class="flex flex-col lg:flex-row lg:items-start gap-6">
+                <!-- Mobile logo (above content) -->
+                <div class="flex-shrink-0 lg:hidden">
+                  <div
+                    class="w-16 h-16 rounded-xl bg-white flex items-center justify-center overflow-hidden"
+                  >
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Nubank_logo_2021.svg"
+                      alt="Nubank Logo"
+                      class="w-12 h-12 object-contain"
+                    />
                   </div>
-                  <span class="text-gray-500 mt-2 md:mt-0"
-                    >Aug 2021 — Apr 2023</span
-                  >
                 </div>
-                <ul class="text-gray-400 space-y-2">
-                  <li class="flex items-baseline gap-2">
-                    <span class="text-purple-400">▸</span>
-                    Led the design, implementation, and monitoring of critical
-                    projects to enhance the experience of people applying for
-                    Nubank's products
-                  </li>
-                  <li class="flex items-baseline gap-2">
-                    <span class="text-purple-400">▸</span>
-                    Mentored mid-level engineers to empower them to own
-                    essential tasks and projects
-                  </li>
-                  <li class="flex items-baseline gap-2">
-                    <span class="text-purple-400">▸</span>
-                    Interviewed dozens of candidates across all hiring pipeline
-                    stages
-                  </li>
-                  <li class="flex items-baseline gap-2">
-                    <span class="text-purple-400">▸</span>
-                    Organized and executed initiatives to increase brand
-                    awareness (Building Nu MX Meetups)
-                  </li>
-                </ul>
-                <div class="flex flex-wrap gap-2 mt-4">
-                  <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
-                    >Clojure</span
+                <div class="flex-1">
+                  <div
+                    class="flex flex-col md:flex-row md:items-center md:justify-between mb-4"
                   >
-                  <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
-                    >Datomic</span
+                    <div>
+                      <h3 class="text-2xl font-semibold">
+                        Senior Software Engineer
+                      </h3>
+                      <p class="text-purple-400 font-medium">Nubank</p>
+                    </div>
+                    <span class="text-gray-500 mt-2 md:mt-0"
+                      >Aug 2021 — Apr 2023</span
+                    >
+                  </div>
+                  <ul class="text-gray-400 space-y-2">
+                    <li class="flex items-baseline gap-2">
+                      <span class="text-purple-400">▸</span>
+                      Led the design, implementation, and monitoring of critical
+                      projects to enhance the experience of people applying for
+                      Nubank's products
+                    </li>
+                    <li class="flex items-baseline gap-2">
+                      <span class="text-purple-400">▸</span>
+                      Mentored mid-level engineers to empower them to own
+                      essential tasks and projects
+                    </li>
+                    <li class="flex items-baseline gap-2">
+                      <span class="text-purple-400">▸</span>
+                      Interviewed dozens of candidates across all hiring pipeline
+                      stages
+                    </li>
+                    <li class="flex items-baseline gap-2">
+                      <span class="text-purple-400">▸</span>
+                      Organized and executed initiatives to increase brand
+                      awareness (Building Nu MX Meetups)
+                    </li>
+                  </ul>
+                  <div class="flex flex-wrap gap-2 mt-4">
+                    <span
+                      class="skill-tag-sm"
+                      >Clojure</span
+                    >
+                    <span
+                      class="skill-tag-sm"
+                      >Datomic</span
+                    >
+                    <span
+                      class="skill-tag-sm"
+                      >Event-Driven</span
+                    >
+                    <span
+                      class="skill-tag-sm"
+                      >Functional Programming</span
+                    >
+                  </div>
+                </div>
+                <div class="flex-shrink-0 hidden lg:block">
+                  <div
+                    id="logo-nubank"
+                    class="w-16 h-16 rounded-xl bg-white flex items-center justify-center overflow-hidden"
                   >
-                  <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
-                    >Event-Driven</span
-                  >
-                  <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
-                    >Functional Programming</span
-                  >
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Nubank_logo_2021.svg"
+                      alt="Nubank Logo"
+                      class="w-12 h-12 object-contain"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Wizeline -->
-          <div
-            class="card-hover bg-dark-700 rounded-2xl p-8 border border-white/5"
-          >
-            <div class="flex flex-col md:flex-row md:items-start gap-6">
-              <div class="flex-shrink-0">
-                <div
-                  id="logo-wizeline"
-                  class="w-16 h-16 rounded-xl bg-white flex items-center justify-center overflow-hidden"
-                >
-                  <img
-                    src="https://github.com/wizeline.png"
-                    alt="Wizeline Logo"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-              <div class="flex-1">
-                <div
-                  class="flex flex-col md:flex-row md:items-center md:justify-between mb-4"
-                >
-                  <div>
-                    <h3 class="text-2xl font-semibold">
-                      Software Engineer I → III
-                    </h3>
-                    <p class="text-blue-400 font-medium">Wizeline</p>
+          <!-- Wizeline — Connected Card (Left-aligned, Narrower) -->
+          <div class="max-w-[85%] experience-card-left">
+            <div
+              class="card-connected bg-dark-700/50 rounded-2xl p-8 border border-white/5"
+            >
+              <div class="flex flex-col md:flex-row md:items-start gap-6">
+                <div class="flex-shrink-0">
+                  <div
+                    id="logo-wizeline"
+                    class="w-16 h-16 rounded-xl bg-white flex items-center justify-center overflow-hidden"
+                  >
+                    <img
+                      src="https://github.com/wizeline.png"
+                      alt="Wizeline Logo"
+                      class="w-full h-full object-cover"
+                    />
                   </div>
-                  <span class="text-gray-500 mt-2 md:mt-0"
-                    >Aug 2018 — Jul 2021</span
-                  >
                 </div>
-                <ul class="text-gray-400 space-y-2">
-                  <li class="flex items-baseline gap-2">
-                    <span class="text-blue-400">▸</span>
-                    Worked on a platform processing hundreds of billions of
-                    events monthly for major US broadcasting companies
-                  </li>
-                  <li class="flex items-baseline gap-2">
-                    <span class="text-blue-400">▸</span>
-                    Built Authorization/Identity flows for one of the biggest
-                    entertainment companies in the US
-                  </li>
-                  <li class="flex items-baseline gap-2">
-                    <span class="text-blue-400">▸</span>
-                    Developed a chatbot for the largest real estate company in
-                    the US
-                  </li>
-                  <li class="flex items-baseline gap-2">
-                    <span class="text-blue-400">▸</span>
-                    Promoted from Trainee to full-time in 2 months; progressed
-                    to SE III in 3 years
-                  </li>
-                </ul>
-                <div class="flex flex-wrap gap-2 mt-4">
-                  <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
-                    >Go</span
+                <div class="flex-1">
+                  <div
+                    class="flex flex-col md:flex-row md:items-center md:justify-between mb-4"
                   >
-                  <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
-                    >Python</span
-                  >
-                  <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
-                    >AWS</span
-                  >
-                  <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
-                    >gRPC</span
-                  >
-                  <span
-                    class="px-3 py-1 bg-dark-600 text-gray-300 text-sm rounded-full"
-                    >React</span
-                  >
+                    <div>
+                      <h3 class="text-2xl font-semibold">
+                        Software Engineer I → III
+                      </h3>
+                      <p class="text-blue-400 font-medium">Wizeline</p>
+                    </div>
+                    <span class="text-gray-500 mt-2 md:mt-0"
+                      >Aug 2018 — Jul 2021</span
+                    >
+                  </div>
+                  <ul class="text-gray-400 space-y-2">
+                    <li class="flex items-baseline gap-2">
+                      <span class="text-blue-400">▸</span>
+                      Worked on a platform processing hundreds of billions of
+                      events monthly for major US broadcasting companies
+                    </li>
+                    <li class="flex items-baseline gap-2">
+                      <span class="text-blue-400">▸</span>
+                      Built Authorization/Identity flows for one of the biggest
+                      entertainment companies in the US
+                    </li>
+                    <li class="flex items-baseline gap-2">
+                      <span class="text-blue-400">▸</span>
+                      Developed a chatbot for the largest real estate company in
+                      the US
+                    </li>
+                    <li class="flex items-baseline gap-2">
+                      <span class="text-blue-400">▸</span>
+                      Promoted from Trainee to full-time in 2 months; progressed
+                      to SE III in 3 years
+                    </li>
+                  </ul>
+                  <div class="flex flex-wrap gap-2 mt-4">
+                    <span
+                      class="skill-tag-sm"
+                      >Go</span
+                    >
+                    <span
+                      class="skill-tag-sm"
+                      >Python</span
+                    >
+                    <span
+                      class="skill-tag-sm"
+                      >AWS</span
+                    >
+                    <span
+                      class="skill-tag-sm"
+                      >gRPC</span
+                    >
+                    <span
+                      class="skill-tag-sm"
+                      >React</span
+                    >
+                  </div>
                 </div>
               </div>
             </div>

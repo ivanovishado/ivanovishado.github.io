@@ -1,5 +1,5 @@
 /**
- * Mobile menu toggle functions
+ * Mobile menu toggle functions + scroll-aware navbar
  */
 export function toggleMobileMenu() {
   const menu = document.getElementById('mobileMenu');
@@ -8,7 +8,6 @@ export function toggleMobileMenu() {
   menu.classList.toggle('active');
   hamburger.classList.toggle('active');
 
-  // Prevent scrolling when menu is open
   if (menu.classList.contains('active')) {
     window.lenis?.stop();
     document.body.style.overflow = 'hidden';
@@ -29,8 +28,30 @@ export function closeMobileMenu() {
   document.body.style.overflow = '';
 }
 
-// Initialize global listeners (since these are used in onclick attributes in HTML)
+/**
+ * Scroll-aware navbar: transparent at top, blurred on scroll
+ */
+export function initNavbar() {
+  const nav = document.getElementById('main-nav');
+  if (!nav) return;
+
+  let isScrolled = false;
+
+  const updateNav = () => {
+    const shouldBeScrolled = window.scrollY > 50;
+    if (shouldBeScrolled === isScrolled) return;
+    isScrolled = shouldBeScrolled;
+    nav.classList.toggle('nav-scrolled', isScrolled);
+  };
+
+  // Initial state
+  updateNav();
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+}
+
+// Initialize global listeners (used in onclick attributes in HTML)
 export function initMenu() {
-    window.toggleMobileMenu = toggleMobileMenu;
-    window.closeMobileMenu = closeMobileMenu;
+  window.toggleMobileMenu = toggleMobileMenu;
+  window.closeMobileMenu = closeMobileMenu;
 }

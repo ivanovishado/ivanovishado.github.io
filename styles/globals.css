@@ -1,97 +1,73 @@
 /* ==========================================================================
-   Orbital Orchestrator — Design Tokens
-   Event Horizon Color Palette + Typography System
+   Design Tokens — Single Source of Truth
    ========================================================================== */
 
 /* Cabinet Grotesk is loaded via Fontshare CDN in index.html */
 
+@theme {
+  --font-display: "Cabinet Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
-/* --------------------------------------------------------------------------
-   CSS Custom Properties — Event Horizon Palette
-   -------------------------------------------------------------------------- */
+  --color-void: #06080C;
+  --color-starlight: #e2e8f0;
+  --color-event-horizon: #2563EB;
+  --color-event-horizon-deep: #1E40AF;
+  --color-active-signal: #F5F0E8;
+  --color-alert: #EF4444;
+
+  --color-dark-900: #0C0F14;
+  --color-dark-800: #12161E;
+  --color-dark-700: #1A1F2A;
+  --color-dark-600: #242B38;
+
+  --color-warm-surface: #141210;
+  --color-cool-surface: #0A1018;
+
+  --color-accent-dark: #1D4ED8;
+  --color-netflix-red: #e50914;
+  --color-youtube-red: #ff0000;
+  --color-spotify-green: #1DB954;
+
+  /* Fluid Typography Scale */
+  --text-hero: clamp(4rem, 12vw, 11rem);
+  --text-h1: clamp(2.5rem, 6vw, 4rem);
+  --text-h2: clamp(2rem, 4vw, 3rem);
+  --text-h3: clamp(1.25rem, 2vw, 1.5rem);
+  --text-cta: clamp(2.25rem, 8vw, 4.5rem);
+  --text-body: clamp(0.875rem, 1.2vw, 1rem);
+  --text-small: clamp(0.75rem, 1vw, 0.875rem);
+}
+
 :root {
-    /* ========== EVENT HORIZON COLOR PALETTE ========== */
-
-    /* Primary Colors */
-    --color-void: #030305;
-    /* Deep warm charcoal/black background */
-    --color-starlight: #E2E8F0;
-    /* Primary text/Silver */
-    --color-event-horizon: #6366F1;
-    /* Indigo - Brands & "Classical" elements */
-    --color-active-signal: #00F0FF;
-    /* Cyan - Cursors, active states, "Jazz" spikes */
-    --color-alert: #FF9F1C;
-    /* Orange - Critical data points */
-
-    /* Surface Colors (derived from Void) */
-    --color-surface-1: #0a0a0c;
-    /* Slightly lighter than void */
-    --color-surface-2: #14141a;
-    /* Card backgrounds */
-    --color-surface-3: #1e1e28;
-    /* Elevated elements */
-    --color-surface-4: #2a2a36;
-    /* Hover states */
-
     /* Text Colors */
     --color-text-primary: var(--color-starlight);
     --color-text-secondary: #94A3B8;
-    /* Muted text */
     --color-text-tertiary: #64748B;
-    /* Very muted */
 
     /* Border Colors */
     --color-border: rgba(255, 255, 255, 0.08);
-    --color-border-hover: rgba(99, 102, 241, 0.4);
+    --color-border-hover: color-mix(in srgb, var(--color-event-horizon) 40%, transparent);
 
-    /* ========== TYPOGRAPHY ========== */
-
-    /* Font Families */
-    --font-display: 'Cabinet Grotesk', system-ui, sans-serif;
-    --font-technical: 'JetBrains Mono', 'Fira Code', monospace;
-
-    /* Fluid Typography Scale */
-    --text-hero: clamp(4rem, 12vw, 13rem);
-    --text-h1: clamp(2.5rem, 6vw, 4rem);
-    --text-h2: clamp(2rem, 4vw, 3rem);
-    --text-h3: clamp(1.25rem, 2vw, 1.5rem);
-    --text-body: clamp(0.875rem, 1.2vw, 1rem);
-    --text-small: clamp(0.75rem, 1vw, 0.875rem);
-    --text-xs: 0.75rem;
-
-    /* ========== SPACING ========== */
-    --space-section: clamp(4rem, 10vw, 8rem);
-    --space-container: clamp(1rem, 5vw, 6rem);
-
-    /* ========== RESPONSIVE BREAKPOINTS ========== */
-    --bp-sm: 640px;
-    --bp-md: 768px;
-    --bp-lg: 1024px;
-    --bp-xl: 1280px;
-    --bp-2xl: 1536px;
-
-    /* ========== ANIMATION CURVES ========== */
+    /* Animation Curves */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
-    /* ========== EFFECTS ========== */
-    --glow-event-horizon: 0 0 40px rgba(99, 102, 241, 0.3);
-    --glow-active-signal: 0 0 30px rgba(0, 240, 255, 0.4);
-    --glow-alert: 0 0 30px rgba(255, 159, 28, 0.3);
+    /* Effects */
+    --glow-event-horizon: 0 0 40px color-mix(in srgb, var(--color-event-horizon) 25%, transparent);
+    --glow-active-signal: 0 0 30px color-mix(in srgb, var(--color-active-signal) 15%, transparent);
+    --glow-alert: 0 0 30px color-mix(in srgb, var(--color-alert) 30%, transparent);
 }
 
 /* --------------------------------------------------------------------------
-   Base Resets with New Typography
+   Base Resets with Typography
    -------------------------------------------------------------------------- */
 body {
-    font-family: var(--font-technical);
+    font-family: var(--font-mono);
     background: var(--color-void);
     color: var(--color-text-primary);
 }
 
-/* Display headings use Cabinet Grotesk */
 h1,
 h2,
 h3,
@@ -99,30 +75,27 @@ h3,
     font-family: var(--font-display);
 }
 
-/* Technical / code elements */
 code,
 pre,
-.font-mono,
-.font-technical {
-    font-family: var(--font-technical);
+.font-mono {
+    font-family: var(--font-mono);
 }
 
 /* --------------------------------------------------------------------------
-   Gradient Text Utility (Event Horizon theme)
+   Gradient Text Utility
    -------------------------------------------------------------------------- */
 .gradient-text-orbital {
-    background: linear-gradient(135deg, var(--color-starlight) 0%, var(--color-event-horizon) 100%);
+    background: linear-gradient(135deg, var(--color-active-signal) 0%, var(--color-event-horizon) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-/* Hero-specific gradient (more dramatic) */
 .gradient-text-hero {
     background: linear-gradient(135deg,
-            var(--color-starlight) 0%,
+            var(--color-active-signal) 0%,
             var(--color-event-horizon) 50%,
-            var(--color-active-signal) 100%);
+            var(--color-event-horizon-deep) 100%);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -131,7 +104,7 @@ pre,
 }
 
 /* --------------------------------------------------------------------------
-   Glow Effects (Event Horizon theme)
+   Glow Effects
    -------------------------------------------------------------------------- */
 .glow-event-horizon {
     box-shadow: var(--glow-event-horizon);
@@ -141,13 +114,12 @@ pre,
     box-shadow: var(--glow-active-signal);
 }
 
-/* Hover glow for interactive elements */
 .hover-glow-orbital {
     transition: box-shadow 0.3s var(--ease-out-quart);
 }
 
 .hover-glow-orbital:hover {
-    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.15);
+    box-shadow: 0 20px 50px color-mix(in srgb, var(--color-event-horizon) 15%, transparent);
 }
 
 /* --------------------------------------------------------------------------
@@ -177,17 +149,17 @@ pre,
 }
 
 /* --------------------------------------------------------------------------
-   Active State Pulse (for current role indicators)
+   Active State Pulse
    -------------------------------------------------------------------------- */
 @keyframes pulse-orbital {
 
     0%,
     100% {
-        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-event-horizon) 40%, transparent);
     }
 
     50% {
-        box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+        box-shadow: 0 0 0 10px color-mix(in srgb, var(--color-event-horizon) 0%, transparent);
     }
 }
 
@@ -196,7 +168,7 @@ pre,
 }
 
 /* --------------------------------------------------------------------------
-   Lenis Smooth Scroll Preparation
+   Lenis Smooth Scroll
    -------------------------------------------------------------------------- */
 html.lenis,
 html.lenis body {

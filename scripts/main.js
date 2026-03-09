@@ -3,7 +3,6 @@
    ========================================================================== */
 
 import '../styles/tailwind.css';
-import '../styles/design-tokens.css';
 import '../styles.css';
 
 import { initLenis } from './utils/lenis.js';
@@ -11,7 +10,7 @@ import { initScrollTrigger } from './animation/gsap-setup.js';
 import { initScrollRevealAnimations } from './animation/scroll-reveal.js';
 import { initSystemBootstrap } from './animation/hero.js';
 import { initMagneticButtons } from './components/buttons.js';
-import { initMenu } from './components/menu.js';
+import { initMenu, initNavbar } from './components/menu.js';
 import { initYearsExperience } from './utils/data.js';
 
 /**
@@ -24,6 +23,7 @@ function init() {
 
   // Initialize components
   initMenu();
+  initNavbar();
 
   // Initialize animations
   initSystemBootstrap();
@@ -32,8 +32,6 @@ function init() {
 
   // Initialize UI components
   initYearsExperience();
-
-  console.log('🚀 Orbital Orchestrator initialized');
 }
 
 // Run on DOM ready

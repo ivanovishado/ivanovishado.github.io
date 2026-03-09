@@ -1,15 +1,42 @@
-/* Timeline (Experience) */
-.timeline-line {
+/* Timeline / Experience Connectors */
+
+/* Vertical connector line between experience cards */
+.experience-connector {
+  position: relative;
+}
+
+.experience-connector::before {
+  content: "";
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(180deg, #6366f1 0%, #1e1e28 100%);
+  left: 2rem;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-event-horizon) 30%, transparent) 0%,
+    color-mix(in srgb, var(--color-event-horizon) 10%, transparent) 50%,
+    transparent 100%
+  );
+}
+
+/* Connector dot */
+.experience-connector .connector-dot {
+  position: absolute;
+  left: calc(2rem - 4px);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 2px solid var(--color-event-horizon);
+  background: var(--color-void);
 }
 
 @media (max-width: 768px) {
-  .timeline-line {
-    left: 20px;
+  .experience-connector::before {
+    left: 1rem;
+  }
+
+  .experience-connector .connector-dot {
+    left: calc(1rem - 4px);
   }
 }

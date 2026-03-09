@@ -5,26 +5,7 @@
 
 .card-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.12);
-}
-
-.glow-border {
-  position: relative;
-}
-
-.glow-border::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, #6366f1, transparent, #00f0ff);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
-}
-
-.glow-border:hover::before {
-  opacity: 1;
+  box-shadow: 0 20px 40px color-mix(in srgb, var(--color-event-horizon) 12%, transparent);
 }
 
 /* Magnetic button effect */
@@ -43,9 +24,9 @@
   inset: -2px;
   background: linear-gradient(
     135deg,
-    rgba(99, 102, 241, 0.5),
+    color-mix(in srgb, var(--color-event-horizon) 50%, transparent),
     transparent,
-    rgba(0, 240, 255, 0.3)
+    color-mix(in srgb, var(--color-active-signal) 20%, transparent)
   );
   border-radius: inherit;
   opacity: 0;
@@ -59,15 +40,36 @@
 
 /* Interactive skill tags */
 .skill-tag {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, white 10%, transparent);
+  color: #d1d5db;
+  font-size: 0.875rem;
+  border-radius: 9999px;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: default;
 }
 
 .skill-tag:hover {
   transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
-  border-color: rgba(99, 102, 241, 0.5) !important;
-  background: linear-gradient(135deg, #1e1e28, #14141a) !important;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--color-event-horizon) 20%, transparent);
+  border-color: color-mix(in srgb, var(--color-event-horizon) 50%, transparent) !important;
+  background: linear-gradient(135deg, var(--color-dark-700), var(--color-dark-800)) !important;
+}
+
+.skill-tag-sm {
+  padding: 0.25rem 0.75rem;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, white 10%, transparent);
+  color: #9ca3af;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  transition: all 0.15s ease;
+}
+
+.skill-tag-sm:hover {
+  border-color: color-mix(in srgb, var(--color-event-horizon) 30%, transparent);
+  background: color-mix(in srgb, var(--color-event-horizon) 5%, transparent);
 }
 
 /* Featured article cards */
@@ -84,7 +86,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #6366f1, #00f0ff, #6366f1);
+  background: linear-gradient(90deg, var(--color-event-horizon), var(--color-active-signal), var(--color-event-horizon));
   background-size: 200% 100%;
   animation: shimmer 3s linear infinite;
   opacity: 0;
@@ -97,7 +99,7 @@
 
 .featured-article-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 25px 50px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 25px 50px color-mix(in srgb, var(--color-event-horizon) 15%, transparent);
 }
 
 .article-logo {
@@ -106,4 +108,51 @@
 
 .featured-article-card:hover .article-logo {
   transform: scale(1.1);
+}
+
+/* --- Card Variants --- */
+
+/* Featured card: full-width emphasis with left accent */
+.card-featured {
+  position: relative;
+  border-left: 4px solid var(--color-event-horizon);
+  transition: all 0.3s ease;
+}
+
+.card-featured:hover {
+  box-shadow: 0 20px 40px color-mix(in srgb, var(--color-event-horizon) 10%, transparent);
+}
+
+/* Ghost card: transparent with subtle border */
+.card-ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card-ghost:hover {
+  border-color: color-mix(in srgb, var(--color-event-horizon) 30%, transparent);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--color-event-horizon) 5%, transparent);
+}
+
+/* Connected card: shows relationship via connector */
+.card-connected {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.card-connected:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px color-mix(in srgb, var(--color-event-horizon) 8%, transparent);
+}
+
+/* Photo placeholder slot */
+.photo-placeholder {
+  background: color-mix(in srgb, var(--color-dark-700) 50%, transparent);
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.875rem;
 }

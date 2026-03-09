@@ -9,22 +9,13 @@ export function initMagneticButtons() {
 
   if (!buttons.length) return;
 
-  // Track mouse position globally for better performance
-  let mouseX = 0;
-  let mouseY = 0;
-
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
   buttons.forEach((btn) => {
     // xTo and yTo for high-performance updates
     const xTo = gsap.quickTo(btn, "x", { duration: 0.5, ease: "power3.out" });
     const yTo = gsap.quickTo(btn, "y", { duration: 0.5, ease: "power3.out" });
 
     // Internal elements (icon) move slightly less for parallax depth
-    const icon = btn.querySelector('svg');
+    const icon = btn.querySelector('svg, i');
     let iconXTo, iconYTo;
 
     if (icon) {
@@ -39,8 +30,8 @@ export function initMagneticButtons() {
       const centerY = rect.top + rect.height / 2;
 
       // Calculate distance from center
-      const distX = mouseX - centerX;
-      const distY = mouseY - centerY;
+      const distX = e.clientX - centerX;
+      const distY = e.clientY - centerY;
 
       // Magnetic pull strength (how far it can travel)
       // Increased range for "Gravity Well" feeling

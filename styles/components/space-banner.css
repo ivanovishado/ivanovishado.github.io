@@ -1,0 +1,8 @@
+/* Space Experiment Banner */
+.space-banner {
+  background:
+    radial-gradient(ellipse at 70% 50%, color-mix(in srgb, var(--color-event-horizon) 8%, transparent), transparent 60%),
+    var(--color-void);
+  border-top: 1px solid color-mix(in srgb, var(--color-event-horizon) 20%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-event-horizon) 20%, transparent);
+}

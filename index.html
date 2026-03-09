@@ -3,17 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ivan Galaviz | System Orchestrator & Distributed Engineer</title>
+    <title>Ivan Galaviz | Software Engineer</title>
     <meta
       name="description"
-      content="System Orchestrator at Netflix. Building scalable distributed systems and solving challenging problems. Previously at Nubank and Wizeline."
+      content="Software Engineer at Netflix. Building scalable distributed systems and solving challenging problems. Previously at Nubank and Wizeline."
     />
-    <meta property="og:title" content="Ivan Galaviz | System Orchestrator" />
+    <meta property="og:title" content="Ivan Galaviz | Software Engineer" />
     <meta
       property="og:description"
-      content="System Orchestrator at Netflix. Building scalable distributed systems and solving challenging problems."
+      content="Software Engineer at Netflix. Building scalable distributed systems and solving challenging problems."
     />
     <meta property="og:type" content="website" />
+
+    <!-- Phosphor Icons (regular weight) -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css"
+    />
 
     <!-- Fonts: Cabinet Grotesk (Fontshare CDN) + JetBrains Mono (Google) -->
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
@@ -27,13 +35,9 @@
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
-
-
-    <!-- Global Styles (Imported in main.js) -->
   </head>
 
-  <body class="bg-dark-900 text-white min-h-screen">
+  <body class="bg-void text-white min-h-screen">
     <!-- Grain overlay -->
     <div class="grain"></div>
 
@@ -46,23 +50,20 @@
     <!-- Hero Section -->
     <load src="src/sections/hero.html" />
 
+    <!-- Space Experiment Banner -->
+    <load src="src/sections/space-experiment.html" />
+
     <!-- Experience Section -->
     <load src="src/sections/experience.html" />
+
+    <!-- In The Spotlight (Press + Talks) -->
+    <load src="src/sections/press.html" />
 
     <!-- Skills Section -->
     <load src="src/sections/skills.html" />
 
-    <!-- Education Section -->
+    <!-- Formation (Education + Volunteering) -->
     <load src="src/sections/education.html" />
-
-    <!-- Volunteering Section -->
-    <load src="src/sections/volunteering.html" />
-
-    <!-- Presentations (Talks) Section -->
-    <load src="src/sections/talks.html" />
-
-    <!-- Featured Press Coverage Section -->
-    <load src="src/sections/press.html" />
 
     <!-- Awards Section -->
     <load src="src/sections/awards.html" />
@@ -73,7 +74,7 @@
     <!-- Footer -->
     <load src="src/sections/footer.html" />
 
-    <!-- Orbital Orchestrator JS -->
+    <!-- Main JS -->
     <script type="module" src="scripts/main.js"></script>
   </body>
 </html>

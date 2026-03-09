@@ -1,6 +1,6 @@
-/* Hero Section Styles */
+/* Hero Section Styles — Asymmetric Deep Space Layout */
 .gradient-text {
-  background: linear-gradient(135deg, #e2e8f0 0%, #6366f1 60%, #00f0ff 100%);
+  background: linear-gradient(135deg, var(--color-active-signal) 0%, var(--color-event-horizon) 60%, var(--color-event-horizon-deep) 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -11,16 +11,16 @@
 .hero-gradient {
   background:
     radial-gradient(
-      ellipse at top,
-      rgba(99, 102, 241, 0.15) 0%,
+      ellipse at 20% 40%,
+      color-mix(in srgb, var(--color-event-horizon) 12%, transparent) 0%,
       transparent 50%
     ),
     radial-gradient(
-      ellipse at bottom right,
-      rgba(0, 240, 255, 0.08) 0%,
+      ellipse at 80% 60%,
+      color-mix(in srgb, var(--color-active-signal) 4%, transparent) 0%,
       transparent 40%
     ),
-    linear-gradient(180deg, #030305 0%, #0a0a0c 100%);
+    linear-gradient(180deg, var(--color-void) 0%, var(--color-dark-900) 100%);
   /* Initial state for bootstrap animation */
   transform: scale(0.8);
   opacity: 0;
@@ -28,7 +28,7 @@
 
 /* System Boot Wireframe State */
 .boot-wireframe {
-  border: 1px solid rgba(99, 102, 241, 0.5);
+  border: 1px solid color-mix(in srgb, var(--color-event-horizon) 50%, transparent);
   background: transparent !important;
   color: transparent !important;
   box-shadow: none !important;
@@ -40,24 +40,54 @@
   opacity: 0;
 }
 
-/* Floating geometric shapes - OPTIMIZED FOR 60FPS */
+/* Planetary arc shape — positioned upper-right */
+.hero-arc {
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    color-mix(in srgb, var(--color-event-horizon) 8%, transparent) 0%,
+    color-mix(in srgb, var(--color-event-horizon) 2%, transparent) 50%,
+    transparent 70%
+  );
+  clip-path: polygon(40% 0%, 100% 0%, 100% 100%, 40% 100%);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .hero-arc {
+    will-change: transform;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-arc {
+    width: 300px;
+    height: 300px;
+    top: -10%;
+    right: -15%;
+  }
+}
+
+/* Floating geometric shapes — OPTIMIZED FOR 60FPS */
 .floating-shape {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  /* Removed filter: blur(40px) for performance */
-  /* Using softer gradients implementation below instead */
-  will-change: transform; /* Hint to browser to promote to layer */
+  will-change: transform;
 }
 
 .floating-shape-1 {
   width: 500px;
   height: 500px;
-  /* Smoother gradient transition for fake blur effect */
   background: radial-gradient(
     circle,
-    rgba(99, 102, 241, 0.15) 0%,
-    rgba(99, 102, 241, 0.05) 40%,
+    color-mix(in srgb, var(--color-event-horizon) 12%, transparent) 0%,
+    color-mix(in srgb, var(--color-event-horizon) 4%, transparent) 40%,
     transparent 70%
   );
   top: 5%;
@@ -70,8 +100,8 @@
   height: 400px;
   background: radial-gradient(
     circle,
-    rgba(0, 240, 255, 0.1) 0%,
-    rgba(0, 240, 255, 0.03) 40%,
+    color-mix(in srgb, var(--color-active-signal) 6%, transparent) 0%,
+    color-mix(in srgb, var(--color-active-signal) 2%, transparent) 40%,
     transparent 70%
   );
   bottom: 10%;
@@ -79,26 +109,12 @@
   animation: float-reverse 30s ease-in-out infinite;
 }
 
-.floating-shape-3 {
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.05) 0%,
-    transparent 60%
-  );
-  top: 50%;
-  right: 25%;
-  animation: float-diagonal 20s ease-in-out infinite;
-}
-
-/* Hero name dramatic styling */
+/* Hero name */
 .hero-name {
-  animation: hero-name-reveal 1.2s ease-out 0.3s forwards;
   opacity: 0;
 }
 
-/* Rotating tagline - FIXED */
+/* Rotating tagline */
 .rotating-tagline-container {
   height: 28px;
   overflow: hidden;
@@ -112,6 +128,12 @@
   text-align: center;
   opacity: 0;
   animation: tagline-cycle 12s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+  .rotating-tagline {
+    text-align: left;
+  }
 }
 
 .rotating-tagline:nth-child(1) {
@@ -128,13 +150,13 @@
 
 /* Profile picture glow */
 .profile-glow {
-  box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 0 30px color-mix(in srgb, var(--color-event-horizon) 30%, transparent);
   transition:
     box-shadow 0.3s ease,
     transform 0.3s ease;
 }
 
 .profile-glow:hover {
-  box-shadow: 0 0 50px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 50px color-mix(in srgb, var(--color-event-horizon) 50%, transparent);
   transform: scale(1.05);
 }
