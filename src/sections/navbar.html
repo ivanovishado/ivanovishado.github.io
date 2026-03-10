@@ -46,7 +46,7 @@
           <a
             href="https://blog.ivanovishado.dev"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             class="text-sm text-gray-400 hover:text-white transition-colors"
             >Blog</a
           >
@@ -61,7 +61,10 @@
         <div
           id="hamburger"
           class="hamburger md:hidden"
-          onclick="toggleMobileMenu()"
+          role="button"
+          tabindex="0"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
         >
           <span></span>
           <span></span>

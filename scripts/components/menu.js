@@ -1,12 +1,22 @@
 /**
  * Mobile menu toggle functions + scroll-aware navbar
  */
+
+let menuEl;
+let hamburgerEl;
+
+function getMenuElements() {
+  if (!menuEl) menuEl = document.getElementById('mobileMenu');
+  if (!hamburgerEl) hamburgerEl = document.getElementById('hamburger');
+  return { menu: menuEl, hamburger: hamburgerEl };
+}
+
 export function toggleMobileMenu() {
-  const menu = document.getElementById('mobileMenu');
-  const hamburger = document.getElementById('hamburger');
+  const { menu, hamburger } = getMenuElements();
 
   menu.classList.toggle('active');
   hamburger.classList.toggle('active');
+  hamburger.setAttribute('aria-expanded', menu.classList.contains('active'));
 
   if (menu.classList.contains('active')) {
     window.lenis?.stop();
@@ -18,11 +28,12 @@ export function toggleMobileMenu() {
 }
 
 export function closeMobileMenu() {
-  const menu = document.getElementById('mobileMenu');
-  const hamburger = document.getElementById('hamburger');
+  const { menu, hamburger } = getMenuElements();
+  if (!menu.classList.contains('active')) return;
 
   menu.classList.remove('active');
   hamburger.classList.remove('active');
+  hamburger.setAttribute('aria-expanded', 'false');
 
   window.lenis?.start();
   document.body.style.overflow = '';
@@ -54,4 +65,15 @@ export function initNavbar() {
 export function initMenu() {
   window.toggleMobileMenu = toggleMobileMenu;
   window.closeMobileMenu = closeMobileMenu;
+
+  const { hamburger } = getMenuElements();
+  if (hamburger) {
+    hamburger.addEventListener('click', () => toggleMobileMenu());
+    hamburger.addEventListener('keydown', (e) => {
+      if (e.key === ' ') {
+        e.preventDefault();
+        toggleMobileMenu();
+      }
+    });
+  }
 }

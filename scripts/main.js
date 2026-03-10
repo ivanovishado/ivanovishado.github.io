@@ -13,6 +13,7 @@ import { initMagneticButtons } from './components/buttons.js';
 import { initMenu, initNavbar } from './components/menu.js';
 import { initYearsExperience } from './utils/data.js';
 import { initProjectsCarousel } from './components/projects-carousel.js';
+import { initNavTracker } from './components/nav-tracker.js';
 
 /**
  * Main initialization function
@@ -29,6 +30,7 @@ function init() {
   // Initialize animations
   initSystemBootstrap();
   initScrollRevealAnimations();
+  initNavTracker();
   initProjectsCarousel();
   initMagneticButtons();
 

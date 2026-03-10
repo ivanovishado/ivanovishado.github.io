@@ -26,7 +26,9 @@ export function initProjectsCarousel() {
   /** Shared cleanup after any slide transition completes */
   function completeTransition(fromSlide, toSlide, targetIndex) {
     fromSlide.classList.remove('active');
+    fromSlide.setAttribute('aria-hidden', 'true');
     toSlide.classList.add('active');
+    toSlide.removeAttribute('aria-hidden');
     gsap.set(fromSlide, { clearProps: CLEAR_PROPS });
     gsap.set(toSlide, { clearProps: CLEAR_PROPS });
     activeIndex = targetIndex;

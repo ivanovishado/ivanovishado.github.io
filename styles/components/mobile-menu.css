@@ -102,6 +102,10 @@
   transition-delay: 0.4s;
 }
 
+.mobile-menu.active a:nth-child(8) {
+  transition-delay: 0.45s;
+}
+
 .mobile-menu a:hover {
   color: white;
 }

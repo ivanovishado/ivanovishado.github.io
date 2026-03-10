@@ -18,6 +18,10 @@
   transform: scale(1.02);
 }
 
+.magnetic-btn:active {
+  transform: scale(0.97) translateY(1px);
+}
+
 .magnetic-btn::after {
   content: "";
   position: absolute;
@@ -55,6 +59,10 @@
   box-shadow: 0 10px 30px color-mix(in srgb, var(--color-event-horizon) 20%, transparent);
   border-color: color-mix(in srgb, var(--color-event-horizon) 50%, transparent) !important;
   background: linear-gradient(135deg, var(--color-dark-700), var(--color-dark-800)) !important;
+}
+
+.skill-tag:active {
+  transform: translateY(-2px) scale(1.02);
 }
 
 .skill-tag-sm {
@@ -100,6 +108,10 @@
 .featured-article-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 25px 50px color-mix(in srgb, var(--color-event-horizon) 15%, transparent);
+}
+
+.featured-article-card:active {
+  transform: translateY(-4px);
 }
 
 .article-logo {

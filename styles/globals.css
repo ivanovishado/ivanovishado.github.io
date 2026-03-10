@@ -57,6 +57,8 @@
     --glow-event-horizon: 0 0 40px color-mix(in srgb, var(--color-event-horizon) 25%, transparent);
     --glow-active-signal: 0 0 30px color-mix(in srgb, var(--color-active-signal) 15%, transparent);
     --glow-alert: 0 0 30px color-mix(in srgb, var(--color-alert) 30%, transparent);
+
+    --focus-ring: var(--color-event-horizon);
 }
 
 /* --------------------------------------------------------------------------
