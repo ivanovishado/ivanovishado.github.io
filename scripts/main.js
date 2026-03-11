@@ -2,6 +2,7 @@
    Orbital Orchestrator — Main Application
    ========================================================================== */
 
+import '@phosphor-icons/web/regular';
 import '../styles/tailwind.css';
 import '../styles.css';
 
