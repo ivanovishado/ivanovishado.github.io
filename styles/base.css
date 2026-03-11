@@ -19,6 +19,7 @@ section h2 {
   top: 0;
   left: 50%;
   transform: translate(-50%, -100%);
+  opacity: 0;
   padding: 0.75rem 1.5rem;
   background: var(--color-event-horizon);
   color: white;
@@ -31,7 +32,8 @@ section h2 {
 
 .skip-to-content:focus {
   transform: translate(-50%, 0);
-  transition: transform 0.2s ease;
+  opacity: 1;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 /* Focus rings */

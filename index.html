@@ -83,8 +83,12 @@
     ]
     </script>
 
-    <!-- Prevent FOUC: hide body until stylesheets load -->
-    <style>body { opacity: 0; }</style>
+    <!-- Prevent FOUC: hide body, mobile menu, and skip link until stylesheets load -->
+    <style>
+      body { opacity: 0; }
+      .mobile-menu { visibility: hidden; opacity: 0; }
+      .skip-to-content { position: fixed; opacity: 0; }
+    </style>
 
     <!-- Phosphor Icons (regular weight) -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -100,7 +104,7 @@
     <!-- Fonts: Cabinet Grotesk (Fontshare CDN) + JetBrains Mono (Google) -->
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link
-      href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@variable&display=swap"
+      href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&display=swap"
       rel="stylesheet"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
