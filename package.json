@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "vite": "8.0.5",
+    "vite": "8.0.7",
     "vite-plugin-html-inject": "1.1.2"
   },
   "dependencies": {
