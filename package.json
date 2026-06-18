@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:host": "vite --host",
-    "build": "bun run tools/og-image.ts && vite build",
+    "build": "bun run tools/sitemap.ts && bun run tools/og-image.ts && vite build",
     "preview": "vite preview --host",
     "typecheck": "tsc --noEmit"
   },
@@ -21,6 +21,7 @@
     "@types/react": "19.2.17",
     "postcss": "^8.4.49",
     "satori": "0.26.0",
+    "sharp": "0.35.1",
     "tailwindcss": "^4.0.0",
     "typescript": "6.0.3",
     "vite": "^6.0.0"
