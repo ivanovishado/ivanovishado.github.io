@@ -34,6 +34,61 @@
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="manifest" href="/site.webmanifest" />
 
+    <style>
+      /* Critical CSS — prevents FOUC on first paint */
+      *{box-sizing:border-box}
+      html{-webkit-text-size-adjust:100%;font-optical-sizing:auto;color-scheme:dark}
+      body{margin:0;background:#090a0c;color:#ece4d2;font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace;font-size:clamp(1rem,1.05vw,1.0625rem);line-height:1.6;font-weight:400;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:hidden}
+      h1,h2,h3,h4{font-family:"Fraunces","Iowan Old Style",Georgia,serif;font-weight:380;letter-spacing:-.01em;line-height:1.04;font-variation-settings:"opsz" 96;margin:0}
+      a{color:inherit;text-decoration:none}
+      img{display:block;max-width:100%}
+      button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+      ::selection{background:rgba(232,176,75,.28);color:#ece4d2}
+      :focus-visible{outline:1px solid #e8b04b;outline-offset:4px;border-radius:1px}
+      .ambient{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(60% 50% at 78% 12%,rgba(232,176,75,.06),transparent 60%),radial-gradient(50% 50% at 12% 88%,rgba(74,109,150,.05),transparent 60%)}
+      .vignette{position:fixed;inset:0;pointer-events:none;z-index:55;background:radial-gradient(120% 90% at 50% 30%,transparent 40%,rgba(0,0,0,.55) 100%)}
+      .grain{position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.045;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+      .progress{position:fixed;top:0;left:0;height:1px;width:100%;background:rgba(236,228,210,.12);z-index:70}
+      .progress__bar{height:100%;width:100%;transform-origin:0 50%;transform:scaleX(0);background:#e8b04b;box-shadow:0 0 12px rgba(232,176,75,.5)}
+      .nav{position:fixed;top:0;left:0;right:0;z-index:65;border-bottom:1px solid transparent;transition:background .5s cubic-bezier(.25,1,.5,1),border-color .5s cubic-bezier(.25,1,.5,1)}
+      .nav__inner{max-width:1240px;margin-inline:auto;padding:1.1rem clamp(1.25rem,5vw,3rem);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+      .brand{font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;color:#ece4d2;display:inline-flex;align-items:center;gap:.6rem}
+      .brand__mark{width:1.4rem;height:1.4rem;display:grid;place-items:center;border:1px solid rgba(236,228,210,.22);border-radius:2px;font-size:.6rem;color:#e8b04b}
+      .nav__links{display:none;align-items:center;gap:clamp(1rem,2.4vw,2rem)}
+      @media(min-width:880px){.nav__links{display:flex}}
+      .nav__link{font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace;font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,228,210,.62);position:relative;padding-block:.25rem}
+      .nav__cta{font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace;font-size:.6875rem;letter-spacing:.18em;text-transform:uppercase;color:#090a0c;background:#e8b04b;padding:.6rem 1rem;border-radius:999px}
+      .burger{display:inline-flex;flex-direction:column;justify-content:center;gap:5px;width:28px;height:22px}
+      .burger span{display:block;height:1px;width:100%;background:#ece4d2}
+      @media(min-width:880px){.burger{display:none}}
+      .mobile-menu{position:fixed;inset:0;z-index:64;background:#090a0c;display:flex;flex-direction:column;justify-content:center;padding:clamp(1.25rem,5vw,3rem);opacity:0;visibility:hidden}
+      @media(min-width:880px){.mobile-menu{display:none}}
+      .shell{position:relative;z-index:1;max-width:1240px;margin-inline:auto;padding-inline:clamp(1.25rem,5vw,3rem)}
+      .section{position:relative;padding-block:clamp(5rem,12vh,9rem)}
+      .eyebrow{font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace;font-size:.6875rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:#e8b04b;display:inline-flex;align-items:center;gap:.7em}
+      .eyebrow::before{content:"";width:1.6rem;height:1px;background:rgba(232,176,75,.5);display:inline-block}
+      .skip-link{position:fixed;top:0;left:50%;transform:translate(-50%,-120%);z-index:80;background:#e8b04b;color:#090a0c;font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace;font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;padding:.7rem 1.2rem}
+      .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding-block:clamp(7rem,14vh,10rem) clamp(3rem,8vh,5rem);overflow:hidden}
+      .hero__inner{position:relative;z-index:2}
+      .hero__top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:clamp(3rem,12vh,7rem)}
+      .hero__name{font-size:clamp(3.25rem,13vw,11rem);line-height:.86;letter-spacing:-.035em;font-weight:360;font-variation-settings:"opsz" 144}
+      .hero__name em{font-style:italic;color:#e8b04b;font-variation-settings:"opsz" 144}
+      .hero__sub{font-family:"Fraunces","Iowan Old Style",Georgia,serif;font-size:clamp(1.1rem,1.8vw,1.5rem);line-height:1.45;max-width:40ch;color:#ece4d2;font-weight:380;font-variation-settings:"opsz" 36;margin-top:1.25rem}
+      .hero__sub em{font-style:italic;color:#e8b04b}
+      .hero__meta{display:flex;flex-wrap:wrap;gap:clamp(1.25rem,4vw,3rem);margin-top:clamp(2rem,5vh,3rem);padding-top:1.5rem;border-top:1px solid rgba(236,228,210,.12);font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace;font-size:.6875rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(236,228,210,.62)}
+      .hero__meta b{color:#ece4d2;font-weight:500}
+      .hero__meta .dot{color:#e8b04b}
+      .hero__cue{position:absolute;left:clamp(1.25rem,5vw,3rem);bottom:1.6rem;z-index:2;font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace;font-size:.6875rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(236,228,210,.40);display:flex;align-items:center;gap:.6rem}
+      .hero__cta-row{display:flex;flex-wrap:wrap;gap:1rem 1.5rem;align-items:center;margin-top:clamp(2rem,5vh,3rem)}
+      .hero__cta{font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace;font-size:.8125rem;letter-spacing:.18em;text-transform:uppercase;color:#090a0c;background:#e8b04b;padding:.9rem 1.6rem;border-radius:999px;display:inline-flex;align-items:center;gap:.5rem}
+      .hero__cta--ghost{font-family:"JetBrains Mono",ui-monospace,"SF Mono",monospace;font-size:.6875rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(236,228,210,.62);border-bottom:1px solid rgba(236,228,210,.22);padding-bottom:.25rem}
+      .footer{border-top:1px solid rgba(236,228,210,.12);padding-block:2.5rem}
+      .footer__inner{max-width:1240px;margin-inline:auto;padding-inline:clamp(1.25rem,5vw,3rem);display:flex;flex-direction:column;gap:1.25rem}
+      [data-reveal]{opacity:0;transform:translateY(22px)}
+      .hero [data-h]{opacity:0;transform:translateY(18px)}
+      @media(prefers-reduced-motion:reduce){[data-reveal],.hero [data-h]{opacity:1!important;transform:none!important}}
+    </style>
+
     <link rel="preload" href="img/headshot.webp" as="image" type="image/webp" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -104,7 +159,7 @@
           <a class="nav__link" href="#service" data-target="service">Service</a>
           <a class="nav__link" href="/mentorship/">Mentorship</a>
           <a class="nav__link" href="https://blog.ivanovishado.dev" target="_blank" rel="noopener noreferrer">Blog ↗</a>
-          <a class="nav__cta magnetic" href="#contact">Contact</a>
+          <a class="nav__cta" href="#contact">Contact</a>
         </div>
         <button class="burger" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -176,7 +231,7 @@
               </p>
             </div>
 
-            <figure class="plate magnetic" data-reveal>
+            <figure class="plate" data-reveal>
               <img
                 class="plate__img"
                 src="img/headshot.webp"
@@ -578,22 +633,22 @@
           </div>
 
           <div class="contact__grid" data-reveal>
-            <a class="tile tile--accent magnetic" href="/mentorship/">
+            <a class="tile tile--accent" href="/mentorship/">
               <span class="tile__k">Mentoring</span>
               <span class="tile__v">About mentorship ↗</span>
               <svg class="tile__arrow" width="16" height="16" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9L9 3M9 3H4M9 3V8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <a class="tile magnetic" href="mailto:me@ivanovishado.dev">
+            <a class="tile" href="mailto:me@ivanovishado.dev">
               <span class="tile__k">Email</span>
               <span class="tile__v">me@ivanovishado.dev</span>
               <svg class="tile__arrow" width="16" height="16" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9L9 3M9 3H4M9 3V8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <a class="tile magnetic" href="https://linkedin.com/in/ivanovishado" target="_blank" rel="noopener noreferrer">
+            <a class="tile" href="https://linkedin.com/in/ivanovishado" target="_blank" rel="noopener noreferrer">
               <span class="tile__k">LinkedIn</span>
               <span class="tile__v">/in/ivanovishado</span>
               <svg class="tile__arrow" width="16" height="16" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9L9 3M9 3H4M9 3V8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <a class="tile magnetic" href="https://github.com/ivanovishado" target="_blank" rel="noopener noreferrer">
+            <a class="tile" href="https://github.com/ivanovishado" target="_blank" rel="noopener noreferrer">
               <span class="tile__k">GitHub</span>
               <span class="tile__v">/ivanovishado</span>
               <svg class="tile__arrow" width="16" height="16" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9L9 3M9 3H4M9 3V8" stroke-linecap="round" stroke-linejoin="round"/></svg>
