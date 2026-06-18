@@ -5,12 +5,15 @@
    Respects reduced-motion & viewport.
    ========================================================================== */
 
+type RGB = [number, number, number];
+
 interface Point { x: number; y: number; }
+type Arc = [Point, Point, Point, Point];
 interface Star { x: number; y: number; r: number; tw: number; sp: number; drift: number; }
 
 const INK = '#090a0c';
-const PAPER: number[] = [236, 228, 210];
-const AMBER: number[] = [232, 176, 75];
+const PAPER: RGB = [236, 228, 210];
+const AMBER: RGB = [232, 176, 75];
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -44,8 +47,12 @@ export function initTrajectory(canvasEl: HTMLCanvasElement | null): () => void {
   const trailMax = 60;
 
   // control points (relative coords), set on resize
-  let main: Point[] = [];
-  let ref: Point[] = [];
+  let main: Arc = [
+    { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 },
+  ];
+  let ref: Arc = [
+    { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 },
+  ];
   let apex: Point = { x: 0, y: 0 };
 
   function resize() {
@@ -111,7 +118,7 @@ export function initTrajectory(canvasEl: HTMLCanvasElement | null): () => void {
     }
   }
 
-  function drawArc(pts: Point[], color: number[], alpha: number, dash: number[]) {
+  function drawArc(pts: Arc, color: RGB, alpha: number, dash: number[]) {
     ctx.setLineDash(dash);
     ctx.lineWidth = 1;
     ctx.strokeStyle = `rgba(${color[0]},${color[1]},${color[2]},${alpha})`;
@@ -151,7 +158,7 @@ export function initTrajectory(canvasEl: HTMLCanvasElement | null): () => void {
     ctx.globalCompositeOperation = 'lighter';
     ctx.lineCap = 'round';
     for (let i = 1; i < n; i++) {
-      const p0 = trail[i - 1], p1 = trail[i];
+      const p0 = trail[i - 1]!, p1 = trail[i]!;
       const a = (i / n) * 0.6;
       ctx.strokeStyle = `rgba(${AMBER[0]},${AMBER[1]},${AMBER[2]},${a})`;
       ctx.lineWidth = 1.4 * (i / n) + 0.4;
@@ -159,7 +166,7 @@ export function initTrajectory(canvasEl: HTMLCanvasElement | null): () => void {
       ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y);
       ctx.stroke();
     }
-    const head = trail[n - 1];
+    const head = trail[n - 1]!;
     const halo = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, 16);
     halo.addColorStop(0, `rgba(${AMBER[0]},${AMBER[1]},${AMBER[2]},0.6)`);
     halo.addColorStop(1, 'rgba(0,0,0,0)');

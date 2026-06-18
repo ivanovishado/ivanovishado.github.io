@@ -6,15 +6,16 @@
 
 interface Point { x: number; y: number; }
 interface Star { x: number; y: number; r: number; tw: number; sp: number; }
+type RGB = [number, number, number];
 interface Body {
   a: number; b: number; phi: number; speed: number; phase: number;
-  color: number[]; weight: number; trail: number; head: number;
+  color: RGB; weight: number; trail: number; head: number;
   hist: Point[]; t: number;
 }
 
 const INK = '#090a0c';
-const PAPER: number[] = [236, 228, 210];
-const AMBER: number[] = [232, 176, 75];
+const PAPER: RGB = [236, 228, 210];
+const AMBER: RGB = [232, 176, 75];
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -83,8 +84,7 @@ export function initOrbital(canvasEl: HTMLCanvasElement | null): () => void {
       // cardinal tick marks — observatory chart detail
       ctx.fillStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${0.18 * body.weight})`;
       const ticks: [number, number][] = [[a, 0], [-a, 0], [0, b], [0, -b]];
-      for (const [tx, ty] of ticks) {
-        ctx.beginPath();
+      for (const [tx, ty] of ticks) {        ctx.beginPath();
         ctx.arc(tx, ty, 1.4, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -125,7 +125,7 @@ export function initOrbital(canvasEl: HTMLCanvasElement | null): () => void {
       ctx.lineWidth = body.head * 0.9;
       ctx.lineCap = 'round';
       for (let i = 1; i < n; i++) {
-        const p0 = hist[i - 1], p1 = hist[i];
+        const p0 = hist[i - 1]!, p1 = hist[i]!;
         const a = (i / n) * 0.55 * body.weight;
         ctx.strokeStyle = `rgba(${cr},${cg},${cb},${a})`;
         ctx.beginPath();
@@ -134,7 +134,7 @@ export function initOrbital(canvasEl: HTMLCanvasElement | null): () => void {
         ctx.stroke();
       }
       // head glow
-      const head = hist[n - 1];
+      const head = hist[n - 1]!;
       const halo = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, body.head * 4);
       halo.addColorStop(0, `rgba(${cr},${cg},${cb},${0.5 * body.weight})`);
       halo.addColorStop(1, 'rgba(0,0,0,0)');
