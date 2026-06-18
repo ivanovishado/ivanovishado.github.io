@@ -27,7 +27,7 @@ Commands:
 bun install              # install deps (CI uses --frozen-lockfile)
 bun run dev              # Vite dev server → http://localhost:5173
 bun run dev:host         # dev server exposed on LAN
-bun run build            # composes OG image (tools/og-image.ts) then vite build → dist/
+bun run build            # sitemap + OG image + vite build → dist/
 bun run preview          # preview the production build
 bun run typecheck        # tsc --noEmit (strict) — run before declaring done
 ```
@@ -48,13 +48,19 @@ src/
     trajectory.ts           # generative canvas: transfer arc + traveler (mentorship hero)
     scroll.ts               # Lenis smooth scroll + GSAP ScrollTrigger, reveals, parallax
     nav.ts                  # nav scroll state, progress bar, active section, mobile menu
-    globals.d.ts            # ambient Window typings (lenis, ScrollTrigger)
+    globals.d.ts            # ambient Window typings (ScrollTrigger)
+  partials/                 # shared HTML fragments inlined by the Vite partials plugin
+    critical-css.html       # FOUC-preventing <style> block (shared by both pages)
+    head-links.html         # icon, apple-touch-icon, manifest <link>s
+    body-chrome.html        # ambient/vignette/grain/progress divs
+    analytics.html          # Umami analytics script
 tools/
-  og-image.ts               # Bun/Node script: composites branded OG image (satori + resvg)
+  og-image.ts               # Bun script: composites branded OG image (satori + resvg → sharp → JPG)
+  sitemap.ts                # Bun script: generates sitemap.xml with lastmod from git
   fonts/, og-image-base.png # inputs for the OG compositor
-vite.config.ts              # two inputs: main + mentorship; base './'
+vite.config.ts              # two inputs: main + mentorship; base './'; HTML partials plugin
 postcss.config.ts           # @tailwindcss/postcss
-public/                     # static assets served as-is (favicon, og-image.png, sitemap, 404)
+public/                     # static assets served as-is (favicon, apple-touch-icon, og-image.jpg, sitemap, 404)
 img/                        # headshot.webp, space-experiment.webp
 .github/workflows/          # deploy.yml (Bun → GitHub Pages), dependabot-auto-merge.yml
 ```
@@ -62,16 +68,30 @@ img/                        # headshot.webp, space-experiment.webp
 ## TypeScript conventions
 
 - **Strict mode is on** (`tsconfig.json`: `strict`, `noUnusedLocals`,
-  `noUnusedParameters`, `noImplicitOverride`). No `any` without justification;
-  prefer typed DOM generics (`querySelector<HTMLElement>(...)`,
-  `querySelectorAll<HTMLAnchorElement>(...)`) and explicit interfaces for canvas
-  state (see `orbital.ts` `Body`/`Point`/`Star`).
+  `noUnusedParameters`, `noImplicitOverride`, `noUncheckedIndexedAccess`).
+  No `any` without justification; prefer typed DOM generics
+  (`querySelector<HTMLElement>(...)`, `querySelectorAll<HTMLAnchorElement>(...)`)
+  and explicit interfaces for canvas state (see `orbital.ts` `Body`/`Point`/`Star`/`RGB`).
+  Use tuple types (`RGB = [number, number, number]`, `Arc = [Point, Point, Point, Point]`)
+  for fixed-length arrays — `noUncheckedIndexedAccess` makes `number[]` indexing
+  return `T | undefined`, but tuple literal indexing stays safe.
 - `moduleResolution: "bundler"` — use **extensionless relative imports**
   (`import { initNav } from './nav'`), not `.js`/`.ts` extensions.
 - Entry HTML `<script type="module" src="/src/js/*.ts">` — Vite resolves these.
 - Vite client types (`vite/client`) are included, so CSS/asset imports are typed.
-- `src/js/globals.d.ts` declares `window.lenis` and `window.ScrollTrigger` —
-  extend it if you add more globals rather than casting `window as any`.
+- `src/js/globals.d.ts` declares `window.ScrollTrigger` — extend it if you add
+  more globals rather than casting `window as any`.
+- Fonts are self-hosted via `@fontsource-variable` (Fraunces opsz + italic,
+  JetBrains Mono wght). Import them in the TS entry files; the font-family names
+  are `"Fraunces Variable"` and `"JetBrains Mono Variable"`. The `public/404.html`
+  page is standalone (no Vite bundle) and still uses Google Fonts CDN.
+
+## HTML partials
+
+Both pages share `<head>` and `<body>` chrome via `<!-- partial:name -->` tokens
+that a Vite plugin (`htmlPartials()` in `vite.config.ts`) replaces at dev and
+build time. Partial files live in `src/partials/`. To change shared critical CSS,
+icon links, or analytics across both pages, edit one partial — not both HTML files.
 
 ## Styling conventions
 
@@ -99,8 +119,9 @@ Mirror this structure for any new canvas piece.
 
 - Push to `main` → `deploy.yml` runs `bun install --frozen-lockfile` → `bun run build`
   → uploads `dist/` → deploys to GitHub Pages.
-- `bun run build` regenerates `public/og-image.png` from `tools/og-image-base.png`.
-  That PNG is committed, so only re-run the build if the OG branding changes.
+- `bun run build` regenerates `public/og-image.jpg` (via satori → resvg → sharp)
+  and `public/sitemap.xml` (lastmod from `git log`). The `og-image.jpg` is
+  committed, so only re-run the build if the OG branding or page list changes.
 
 ## Things to keep in mind
 
