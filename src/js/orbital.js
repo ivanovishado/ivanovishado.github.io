@@ -1,7 +1,7 @@
 /* ==========================================================================
    Orbital — a generative celestial-mechanics field for the hero.
    Hairline guide orbits + bodies leaving fading light trails.
-   Contemplative, cursor-responsive. Respects reduced-motion & viewport.
+   Contemplative. Respects reduced-motion & viewport.
    ========================================================================== */
 
 const INK = '#090a0c';
@@ -21,7 +21,6 @@ export function initOrbital(canvas) {
   let w = 0, h = 0, cx = 0, cy = 0, scale = 1;
   let raf = 0;
   let running = false;
-  let mouse = { tx: 0, ty: 0, x: 0, y: 0 };
   let stars = [];
 
   // Bodies: elliptical orbits around the focus.
@@ -141,17 +140,11 @@ export function initOrbital(canvas) {
 
   function frame(time) {
     if (!running) return;
-    // ease mouse parallax
-    mouse.x += (mouse.tx - mouse.x) * 0.05;
-    mouse.y += (mouse.ty - mouse.y) * 0.05;
-    const px = mouse.x * scale * 0.03;
-    const py = mouse.y * scale * 0.03;
 
     ctx.fillStyle = INK;
     ctx.fillRect(0, 0, w, h);
 
     ctx.save();
-    ctx.translate(px, py);
     drawStars(time);
     drawGuides();
     drawFocus();
@@ -195,12 +188,6 @@ export function initOrbital(canvas) {
     cancelAnimationFrame(raf);
   }
 
-  function onMove(e) {
-    const rect = canvas.getBoundingClientRect();
-    mouse.tx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-    mouse.ty = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-  }
-
   const io = new IntersectionObserver((entries) => {
     for (const en of entries) {
       if (en.isIntersecting) start(); else stop();
@@ -212,8 +199,6 @@ export function initOrbital(canvas) {
     if (prefersReduced) { staticFrame(); return; }
     io.observe(canvas);
     window.addEventListener('resize', resize, { passive: true });
-    window.addEventListener('mousemove', onMove, { passive: true });
-    window.addEventListener('scroll', () => {}, { passive: true });
     start();
   }
 
@@ -223,6 +208,5 @@ export function initOrbital(canvas) {
     stop();
     io.disconnect();
     window.removeEventListener('resize', resize);
-    window.removeEventListener('mousemove', onMove);
   };
 }
