@@ -5,16 +5,19 @@
    Respects reduced-motion & viewport.
    ========================================================================== */
 
+interface Point { x: number; y: number; }
+interface Star { x: number; y: number; r: number; tw: number; sp: number; drift: number; }
+
 const INK = '#090a0c';
-const PAPER = [236, 228, 210];
-const AMBER = [232, 176, 75];
+const PAPER: number[] = [236, 228, 210];
+const AMBER: number[] = [232, 176, 75];
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function rand(min, max) { return min + Math.random() * (max - min); }
+function rand(min: number, max: number): number { return min + Math.random() * (max - min); }
 
 // cubic bezier point
-function bezier(t, p0, p1, p2, p3) {
+function bezier(t: number, p0: Point, p1: Point, p2: Point, p3: Point): Point {
   const u = 1 - t;
   const a = u * u * u, b = 3 * u * u * t, c = 3 * u * t * t, d = t * t * t;
   return {
@@ -23,25 +26,27 @@ function bezier(t, p0, p1, p2, p3) {
   };
 }
 
-export function initTrajectory(canvas) {
-  if (!canvas) return () => {};
-  const ctx = canvas.getContext('2d', { alpha: false });
-  if (!ctx) return () => {};
+export function initTrajectory(canvasEl: HTMLCanvasElement | null): () => void {
+  if (!canvasEl) return () => {};
+  const canvas = canvasEl;
+  const context = canvas.getContext('2d', { alpha: false });
+  if (!context) return () => {};
+  const ctx = context;
 
-  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
   let w = 0, h = 0;
   let raf = 0;
   let running = false;
   let mouse = { tx: 0, ty: 0, x: 0, y: 0 };
-  let stars = [];
+  let stars: Star[] = [];
   let t = 0;
-  const trail = [];
+  const trail: Point[] = [];
   const trailMax = 60;
 
   // control points (relative coords), set on resize
-  let main = [null, null, null, null];
-  let ref = [null, null, null, null];
-  let apex = null;
+  let main: Point[] = [];
+  let ref: Point[] = [];
+  let apex: Point = { x: 0, y: 0 };
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
@@ -66,7 +71,7 @@ export function initTrajectory(canvas) {
     ];
     apex = bezier(0.5, main[0], main[1], main[2], main[3]);
 
-    stars = Array.from({ length: 44 }, () => ({
+    stars = Array.from({ length: 44 }, (): Star => ({
       x: Math.random() * w,
       y: Math.random() * h,
       r: rand(0.3, 1.1),
@@ -94,7 +99,7 @@ export function initTrajectory(canvas) {
     }
   }
 
-  function drawStars(time) {
+  function drawStars(time: number) {
     for (const s of stars) {
       s.x += s.drift * 0.15;
       if (s.x > w) s.x = 0;
@@ -106,7 +111,7 @@ export function initTrajectory(canvas) {
     }
   }
 
-  function drawArc(pts, color, alpha, dash) {
+  function drawArc(pts: Point[], color: number[], alpha: number, dash: number[]) {
     ctx.setLineDash(dash);
     ctx.lineWidth = 1;
     ctx.strokeStyle = `rgba(${color[0]},${color[1]},${color[2]},${alpha})`;
@@ -167,7 +172,7 @@ export function initTrajectory(canvas) {
     ctx.globalCompositeOperation = 'source-over';
   }
 
-  function frame(time) {
+  function frame(time: number) {
     if (!running) return;
     mouse.x += (mouse.tx - mouse.x) * 0.05;
     mouse.y += (mouse.ty - mouse.y) * 0.05;
@@ -227,7 +232,7 @@ export function initTrajectory(canvas) {
   }
   function stop() { running = false; cancelAnimationFrame(raf); }
 
-  function onMove(e) {
+  function onMove(e: MouseEvent) {
     const rect = canvas.getBoundingClientRect();
     mouse.tx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
     mouse.ty = ((e.clientY - rect.top) / rect.height - 0.5) * 2;

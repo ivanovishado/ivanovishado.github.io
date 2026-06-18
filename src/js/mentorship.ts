@@ -1,17 +1,17 @@
 import '../styles/main.css';
 
-import { initTrajectory } from './trajectory.js';
-import { initScroll, gsap } from './scroll.js';
-import { initNav } from './nav.js';
+import { initTrajectory } from './trajectory';
+import { initScroll, gsap } from './scroll';
+import { initNav } from './nav';
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function initHero() {
-  initTrajectory(document.getElementById('trajectory'));
+  initTrajectory(document.getElementById('trajectory') as HTMLCanvasElement | null);
 
   if (prefersReduced) {
-    document.querySelectorAll('.hero [data-h]').forEach((el) => {
-      el.style.opacity = 1;
+    document.querySelectorAll<HTMLElement>('.hero [data-h]').forEach((el) => {
+      el.style.opacity = '1';
       el.style.transform = 'none';
     });
     return;
@@ -31,7 +31,7 @@ function init() {
   initNav();
   initHero();
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => window.ScrollTrigger && ScrollTrigger.refresh());
+    document.fonts.ready.then(() => window.ScrollTrigger?.refresh());
   }
 }
 

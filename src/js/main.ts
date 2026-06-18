@@ -1,17 +1,17 @@
 import '../styles/main.css';
 
-import { initOrbital } from './orbital.js';
-import { initScroll, gsap } from './scroll.js';
-import { initNav } from './nav.js';
+import { initOrbital } from './orbital';
+import { initScroll, gsap } from './scroll';
+import { initNav } from './nav';
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function initHero() {
-  initOrbital(document.getElementById('orbital'));
+  initOrbital(document.getElementById('orbital') as HTMLCanvasElement | null);
 
   if (prefersReduced) {
-    document.querySelectorAll('.hero [data-h]').forEach((el) => {
-      el.style.opacity = 1;
+    document.querySelectorAll<HTMLElement>('.hero [data-h]').forEach((el) => {
+      el.style.opacity = '1';
       el.style.transform = 'none';
     });
     return;
@@ -31,7 +31,7 @@ function init() {
   initHero();
   // refresh ScrollTrigger after fonts load to fix offsets
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => window.ScrollTrigger && ScrollTrigger.refresh());
+    document.fonts.ready.then(() => window.ScrollTrigger?.refresh());
   }
 }
 

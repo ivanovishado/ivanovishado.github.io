@@ -1,14 +1,16 @@
 /* Nav: scroll state, progress bar, active section, mobile menu. */
 
+import { getLenis } from './scroll';
+
 export function initNav() {
-  const nav = document.querySelector('.nav');
-  const bar = document.querySelector('.progress__bar');
-  const burger = document.querySelector('.burger');
-  const menu = document.querySelector('.mobile-menu');
-  const links = document.querySelectorAll('.nav__link[data-target]');
+  const nav = document.querySelector<HTMLElement>('.nav');
+  const bar = document.querySelector<HTMLElement>('.progress__bar');
+  const burger = document.querySelector<HTMLElement>('.burger');
+  const menu = document.querySelector<HTMLElement>('.mobile-menu');
+  const links = document.querySelectorAll<HTMLAnchorElement>('.nav__link[data-target]');
   const sections = Array.from(links)
-    .map((l) => document.getElementById(l.dataset.target))
-    .filter(Boolean);
+    .map((l) => document.getElementById(l.dataset.target ?? ''))
+    .filter((el): el is HTMLElement => Boolean(el));
 
   // progress + scrolled state
   const onScroll = () => {
@@ -54,12 +56,12 @@ export function initNav() {
   // smooth anchor scroll (works even without lenis)
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
-      const id = a.getAttribute('href').slice(1);
+      const id = a.getAttribute('href')?.slice(1);
       if (!id) return;
       const el = document.getElementById(id);
       if (!el) return;
       e.preventDefault();
-      const lenis = window.lenis;
+      const lenis = getLenis();
       if (lenis) lenis.scrollTo(el, { offset: -10, duration: 1.2 });
       else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       close();

@@ -4,33 +4,43 @@
    Contemplative. Respects reduced-motion & viewport.
    ========================================================================== */
 
+interface Point { x: number; y: number; }
+interface Star { x: number; y: number; r: number; tw: number; sp: number; }
+interface Body {
+  a: number; b: number; phi: number; speed: number; phase: number;
+  color: number[]; weight: number; trail: number; head: number;
+  hist: Point[]; t: number;
+}
+
 const INK = '#090a0c';
-const PAPER = [236, 228, 210];
-const AMBER = [232, 176, 75];
+const PAPER: number[] = [236, 228, 210];
+const AMBER: number[] = [232, 176, 75];
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function rand(min, max) { return min + Math.random() * (max - min); }
+function rand(min: number, max: number): number { return min + Math.random() * (max - min); }
 
-export function initOrbital(canvas) {
-  if (!canvas) return () => {};
-  const ctx = canvas.getContext('2d', { alpha: false });
-  if (!ctx) return () => {};
+export function initOrbital(canvasEl: HTMLCanvasElement | null): () => void {
+  if (!canvasEl) return () => {};
+  const canvas = canvasEl;
+  const context = canvas.getContext('2d', { alpha: false });
+  if (!context) return () => {};
+  const ctx = context;
 
-  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
   let w = 0, h = 0, cx = 0, cy = 0, scale = 1;
   let raf = 0;
   let running = false;
-  let stars = [];
+  let stars: Star[] = [];
 
   // Bodies: elliptical orbits around the focus.
-  const bodies = [
+  const bodies: Body[] = [
     { a: 0.34, b: 0.22, phi: -0.35, speed: 0.052, phase: 0.0,  color: AMBER,  weight: 1.0, trail: 64, head: 2.6 },
     { a: 0.52, b: 0.40, phi: 0.55,  speed: 0.031, phase: 1.2,  color: PAPER,  weight: 0.7, trail: 80, head: 1.8 },
     { a: 0.66, b: 0.30, phi: 1.15,  speed: 0.022, phase: 2.4,  color: PAPER,  weight: 0.5, trail: 90, head: 1.5 },
     { a: 0.78, b: 0.58, phi: -0.9,  speed: 0.014, phase: 3.6,  color: AMBER,  weight: 0.35, trail: 110, head: 1.3 },
     { a: 0.22, b: 0.16, phi: 0.1,   speed: 0.078, phase: 4.5,  color: PAPER,  weight: 0.85, trail: 52, head: 2.0 },
-  ].map(b => ({ ...b, hist: [], t: b.phase }));
+  ].map((b) => ({ ...b, hist: [] as Point[], t: b.phase }));
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
@@ -41,7 +51,7 @@ export function initOrbital(canvas) {
     cx = w / 2; cy = h * 0.54;
     scale = Math.min(w, h) * 1.05;
     // regenerate stars relative to size
-    stars = Array.from({ length: 46 }, () => ({
+    stars = Array.from({ length: 46 }, (): Star => ({
       x: Math.random() * w,
       y: Math.random() * h,
       r: rand(0.3, 1.1),
@@ -50,7 +60,7 @@ export function initOrbital(canvas) {
     }));
   }
 
-  function point(body, t) {
+  function point(body: Body, t: number): Point {
     const a = body.a * scale;
     const b = body.b * scale;
     const cos = Math.cos(body.phi), sin = Math.sin(body.phi);
@@ -63,7 +73,6 @@ export function initOrbital(canvas) {
     ctx.lineWidth = 1;
     for (const body of bodies) {
       const a = body.a * scale, b = body.b * scale;
-      const cos = Math.cos(body.phi), sin = Math.sin(body.phi);
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(body.phi);
@@ -73,7 +82,8 @@ export function initOrbital(canvas) {
       ctx.stroke();
       // cardinal tick marks — observatory chart detail
       ctx.fillStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${0.18 * body.weight})`;
-      for (const [tx, ty] of [[a, 0], [-a, 0], [0, b], [0, -b]]) {
+      const ticks: [number, number][] = [[a, 0], [-a, 0], [0, b], [0, -b]];
+      for (const [tx, ty] of ticks) {
         ctx.beginPath();
         ctx.arc(tx, ty, 1.4, 0, Math.PI * 2);
         ctx.fill();
@@ -82,7 +92,7 @@ export function initOrbital(canvas) {
     }
   }
 
-  function drawStars(time) {
+  function drawStars(time: number) {
     for (const s of stars) {
       const a = 0.10 + 0.10 * Math.sin(time * 0.001 * s.sp + s.tw);
       ctx.beginPath();
@@ -138,7 +148,7 @@ export function initOrbital(canvas) {
     ctx.globalCompositeOperation = 'source-over';
   }
 
-  function frame(time) {
+  function frame(time: number) {
     if (!running) return;
 
     ctx.fillStyle = INK;
