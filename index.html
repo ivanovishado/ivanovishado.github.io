@@ -3,45 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ivan Galaviz | Software Engineer at Netflix</title>
+    <title>Ivan Galaviz — Field Notes</title>
     <meta
       name="description"
-      content="Software Engineer at Netflix building scalable distributed systems. 7+ years with Java, Go, Python & AWS. Open to mentoring."
+      content="Ivan Galaviz is a software engineer at Netflix building digital asset systems at scale — and once, an experiment that flew to the International Space Station."
     />
     <meta name="author" content="Ivan Galaviz" />
-    <meta name="theme-color" content="#2563EB" />
+    <meta name="theme-color" content="#090a0c" />
     <link rel="canonical" href="https://www.ivanovishado.dev/" />
 
-    <!-- Google Site verification -->
     <meta name="google-site-verification" content="TLmX5S2mQjoqW4TzBzEn6QtUxsstvwyrZtv6UxGQPE8" />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Ivan Galaviz | Software Engineer at Netflix" />
-    <meta
-      property="og:description"
-      content="Software Engineer at Netflix building scalable distributed systems. 7+ years with Java, Go, Python & AWS. Open to mentoring."
-    />
+    <meta property="og:title" content="Ivan Galaviz — Field Notes" />
+    <meta property="og:description" content="Software engineer at Netflix. Distributed systems, craft, and one experiment that flew to the ISS." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.ivanovishado.dev/" />
-    <meta property="og:site_name" content="Ivan Galaviz" />
+    <meta property="og:site_name" content="Ivan Galaviz — Field Notes" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://www.ivanovishado.dev/og-image.png" />
     <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Ivan Galaviz — Software Engineer at Netflix" />
+    <meta property="og:image:height" content="675" />
+    <meta property="og:image:alt" content="Ivan Galaviz — Field Notes" />
 
-    <!-- Twitter/X Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Ivan Galaviz | Software Engineer at Netflix" />
-    <meta name="twitter:description" content="Software Engineer at Netflix building scalable distributed systems. 7+ years with Java, Go, Python & AWS. Open to mentoring." />
+    <meta name="twitter:title" content="Ivan Galaviz — Field Notes" />
+    <meta name="twitter:description" content="Software engineer at Netflix. Distributed systems, craft, and one experiment that flew to the ISS." />
     <meta name="twitter:image" content="https://www.ivanovishado.dev/og-image.png" />
 
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- JSON-LD Structured Data -->
+    <link rel="preload" href="img/headshot.webp" as="image" type="image/webp" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
     <script type="application/ld+json">
     [
       {
@@ -51,107 +52,567 @@
         "url": "https://www.ivanovishado.dev",
         "image": "https://www.ivanovishado.dev/img/headshot.webp",
         "jobTitle": "Software Engineer",
-        "worksFor": {
-          "@type": "Organization",
-          "name": "Netflix",
-          "url": "https://www.netflix.com"
-        },
-        "alumniOf": {
-          "@type": "EducationalOrganization",
-          "name": "Universidad de Guadalajara"
-        },
+        "worksFor": { "@type": "Organization", "name": "Netflix", "url": "https://www.netflix.com" },
+        "alumniOf": { "@type": "EducationalOrganization", "name": "Universidad de Guadalajara" },
         "knowsAbout": [
           "Java", "Python", "Go", "Clojure", "TypeScript",
           "Distributed Systems", "AWS", "GCP", "Azure",
-          "LLM Orchestration", "Microservices", "Event-Driven Architecture",
-          "Functional Programming"
+          "LLM Orchestration", "Microservices", "Event-Driven Architecture", "Functional Programming"
         ],
         "sameAs": [
           "https://github.com/ivanovishado",
           "https://linkedin.com/in/ivanovishado"
         ],
         "email": "me@ivanovishado.dev",
-        "description": "Software Engineer at Netflix with 7+ years building scalable distributed systems. Previously Senior SWE at Nubank (Clojure) and SWE at Wizeline (Go, Python, AWS). MCB-1 space experiment team member."
+        "description": "Software Engineer at Netflix with 7+ years building scalable distributed systems. Previously Senior SWE at Nubank (Clojure) and SWE at Wizeline (Go, Python, AWS). Member of Mat X Space, whose MCB-1 experiment flew aboard SpaceX CRS-31 to the International Space Station."
       },
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "Ivan Galaviz — Software Engineer",
+        "name": "Ivan Galaviz — Field Notes",
         "url": "https://www.ivanovishado.dev",
-        "description": "Personal portfolio of Ivan Galaviz, Software Engineer at Netflix."
+        "description": "Personal monograph of Ivan Galaviz, Software Engineer at Netflix."
       }
     ]
     </script>
 
-    <!-- Prevent FOUC: hide body, mobile menu, and skip link until stylesheets load -->
-    <style>
-      body { opacity: 0; }
-      .mobile-menu { visibility: hidden; opacity: 0; }
-      .skip-to-content { position: fixed; opacity: 0; }
-    </style>
-
-    <!-- Preload critical resources -->
-    <link rel="preload" href="img/headshot.webp" as="image" type="image/webp" />
-
-    <!-- Fonts: Cabinet Grotesk (Fontshare CDN) + JetBrains Mono (Google) -->
-    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-    <link
-      href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Umami -->
     <script defer src="https://umami-pearl-mu.vercel.app/script.js" data-website-id="8abe00e6-5d2d-4a27-bd9b-5d2c1cd9dfaa"></script>
   </head>
 
-  <body class="bg-void text-white min-h-screen">
-    <a href="#hero" class="skip-to-content">Skip to content</a>
+  <body>
+    <a href="#frontis" class="skip-link">Skip to content</a>
 
-    <!-- Grain overlay -->
+    <div class="ambient"></div>
+    <div class="vignette"></div>
     <div class="grain"></div>
 
-    <!-- Mobile Menu Overlay -->
-    <load src="src/sections/mobile-menu.html" />
+    <!-- Scroll progress -->
+    <div class="progress"><div class="progress__bar"></div></div>
 
     <!-- Navigation -->
-    <load src="src/sections/navbar.html" />
+    <nav class="nav" aria-label="Primary">
+      <div class="nav__inner">
+        <a href="#" class="brand" aria-label="Ivan Galaviz — home">
+          <span class="brand__mark">IG</span>
+          <span>Ivan Galaviz</span>
+        </a>
+        <div class="nav__links">
+          <a class="nav__link" href="#positions" data-target="positions">Work</a>
+          <a class="nav__link" href="#space" data-target="space">Space</a>
+          <a class="nav__link" href="#record" data-target="record">Record</a>
+          <a class="nav__link" href="#inventory" data-target="inventory">Inventory</a>
+          <a class="nav__link" href="#service" data-target="service">Service</a>
+          <a class="nav__link" href="https://blog.ivanovishado.dev" target="_blank" rel="noopener noreferrer">Blog ↗</a>
+          <a class="nav__cta magnetic" href="#contact">Contact</a>
+        </div>
+        <button class="burger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#positions">Work <span>01</span></a>
+      <a href="#space">Space <span>02</span></a>
+      <a href="#record">Record <span>03</span></a>
+      <a href="#inventory">Inventory <span>04</span></a>
+      <a href="#service">Service <span>05</span></a>
+      <a href="#recognition">Recognition <span>06</span></a>
+      <a href="https://blog.ivanovishado.dev" target="_blank" rel="noopener noreferrer">Blog <span>↗</span></a>
+      <a href="#contact">Contact <span>07</span></a>
+    </div>
 
     <main>
-      <!-- Hero Section -->
-      <load src="src/sections/hero.html" />
+      <!-- ============ Hero ============ -->
+      <section class="hero" id="hero">
+        <canvas id="orbital" aria-hidden="true"></canvas>
+        <div class="shell hero__inner">
+          <div class="hero__top">
+            <p class="eyebrow" data-h="eyebrow">Field Notes — Vol. I</p>
+          </div>
 
-      <!-- Projects Showcase -->
-      <load src="src/sections/projects.html" />
+          <h1 class="hero__name" data-h="name">
+            Ivan<br /><em>Galaviz</em>
+          </h1>
 
-      <!-- Experience Section -->
-      <load src="src/sections/experience.html" />
+          <p class="hero__sub" data-h="sub">
+            Software engineer building digital asset systems at Netflix — and
+            once, an experiment that flew to the space station.
+          </p>
 
-      <!-- In The Spotlight (Press + Talks) -->
-      <load src="src/sections/press.html" />
+          <div class="hero__meta" data-h="meta">
+            <span><b>Guadalajara</b> · Mexico</span>
+            <span class="dot">·</span>
+            <span><b>Netflix</b></span>
+            <span class="dot">·</span>
+            <span><b>7+</b> years</span>
+            <span class="dot">·</span>
+            <span><b>MCB-1</b> → ISS</span>
+          </div>
+        </div>
+        <p class="hero__cue" data-h="cue">Scroll</p>
+      </section>
 
-      <!-- Skills Section -->
-      <load src="src/sections/skills.html" />
+      <!-- ============ Frontispiece ============ -->
+      <section class="section" id="frontis">
+        <div class="shell">
+          <div class="frontis">
+            <div class="frontis__body" data-reveal>
+              <p class="frontis__lede">
+                Ivan Galaviz is a software engineer at <em>Netflix</em>, where he
+                builds the digital asset systems that power marketing campaigns
+                for titles worldwide. His work lives where distributed systems
+                meet human craft — and occasionally, it leaves the atmosphere.
+              </p>
+              <p class="prose prose--quiet">
+                Before Netflix he was a senior engineer at Nubank (Clojure) and an
+                engineer at Wizeline (Go, Python), helping platforms process
+                hundreds of billions of events. He studied computer engineering in
+                Guadalajara, and in 2024 an experiment he helped build flew to the
+                International Space Station aboard SpaceX CRS-31.
+              </p>
+            </div>
 
-      <!-- Education + Volunteering -->
-      <load src="src/sections/education.html" />
+            <figure class="plate magnetic" data-reveal>
+              <img
+                class="plate__img"
+                src="img/headshot.webp"
+                alt="Portrait of Ivan Galaviz"
+                width="400" height="500" fetchpriority="high" decoding="async"
+              />
+              <figcaption class="plate__cap">
+                <span>Fig. 01 — Ivan Galaviz</span>
+                <span><b>Netflix</b> · 2024</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
 
-      <!-- Awards Section -->
-      <load src="src/sections/awards.html" />
+      <!-- ============ 01 Positions ============ -->
+      <section class="section" id="positions">
+        <div class="shell">
+          <div class="section-head" data-reveal>
+            <div>
+              <p class="section-head__index">01 — Positions</p>
+              <h2 class="section-head__title">A short <em>record</em> of work.</h2>
+            </div>
+            <p class="section-head__lede">
+              Seven years of building systems that have to stay up — for a
+              streaming service, a bank serving tens of millions, and a platform
+              handling hundreds of billions of events.
+            </p>
+          </div>
 
-      <!-- Contact Section -->
-      <load src="src/sections/contact.html" />
+          <div class="positions">
+            <!-- Netflix -->
+            <article class="position position--feature" data-reveal>
+              <div class="position__meta">
+                <p class="position__org"><span style="width:6px;height:6px;border-radius:999px;background:#e50914;display:inline-block"></span>Netflix</p>
+                <h3 class="position__role">Software Engineer</h3>
+                <p class="position__when"><span class="live"></span>Apr 2023 — Present</p>
+              </div>
+              <div class="position__body">
+                <p>
+                  Builds the <strong>Digital Asset Management</strong> system
+                  behind marketing campaigns for Netflix titles — the pipeline
+                  that moves creative assets from studios to screens worldwide.
+                </p>
+                <p>
+                  Collaborates across teams to keep it scalable, observable, and
+                  fast for the people who depend on it every day.
+                </p>
+                <div class="position__notes">
+                  <span>Java</span><span>Distributed Systems</span><span>Microservices</span><span>LLMs & Emerging Tech</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Nubank -->
+            <article class="position" data-reveal>
+              <div class="position__meta">
+                <p class="position__org">Nubank</p>
+                <h3 class="position__role">Senior Software Engineer</h3>
+                <p class="position__when">Aug 2021 — Apr 2023</p>
+              </div>
+              <div class="position__body">
+                <p>
+                  Led the design and operation of projects shaping how people
+                  apply for Nubank's products. <strong>Mentored mid-level
+                  engineers</strong> toward ownership, interviewed across the
+                  hiring pipeline, and founded community initiatives (Building Nu
+                  MX Meetups).
+                </p>
+                <div class="position__notes">
+                  <span>Clojure</span><span>Datomic</span><span>Event-Driven</span><span>Functional Programming</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Wizeline -->
+            <article class="position" data-reveal>
+              <div class="position__meta">
+                <p class="position__org">Wizeline</p>
+                <h3 class="position__role">Software Engineer I → III</h3>
+                <p class="position__when">Aug 2018 — Jul 2021</p>
+              </div>
+              <div class="position__body">
+                <p>
+                  Worked on a platform processing
+                  <strong>hundreds of billions of events monthly</strong> for
+                  major US broadcasters; built identity and authorization flows
+                  for a leading entertainment company; and developed a chatbot for
+                  the largest US real-estate company.
+                </p>
+                <p>Promoted from trainee to SE III in three years.</p>
+                <div class="position__notes">
+                  <span>Go</span><span>Python</span><span>AWS</span><span>gRPC</span><span>React</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 02 The Space Experiment ============ -->
+      <section class="section" id="space">
+        <div class="shell">
+          <div class="section-head" data-reveal>
+            <div>
+              <p class="section-head__index">02 — The Space Experiment</p>
+              <h2 class="section-head__title">Something that <em>left</em> the atmosphere.</h2>
+            </div>
+            <p class="section-head__lede">
+              The uncommon part of an engineering career — an experiment flown to
+              the International Space Station.
+            </p>
+          </div>
+
+          <div class="space__feature">
+            <figure class="space__plate" data-reveal>
+              <img
+                class="space__img"
+                src="img/space-experiment.webp"
+                alt="Ivan Galaviz at NASA Kennedy Space Center with the Vehicle Assembly Building"
+                loading="lazy"
+                data-parallax="0.05"
+              />
+              <figcaption class="space__caption">
+                <span>Kennedy Space Center · VAB</span>
+                <span><b>Artemis</b> era</span>
+              </figcaption>
+            </figure>
+
+            <div>
+              <h3 class="space__title" data-reveal>MCB-<em>1</em></h3>
+              <p class="space__sub" data-reveal>Aboard SpaceX CRS-31 · November 2024</p>
+              <p class="space__copy" data-reveal>
+                A biomimetic smart material inspired by muscle fibers, tested aboard
+                the <strong>International Space Station</strong> through the MISSE
+                module to withstand extreme orbital temperatures. Built with
+                <strong>Mat X Space</strong>, a Mexican youth collective — and
+                covered by Forbes Mexico and El País.
+              </p>
+              <div class="space__facts" data-reveal>
+                <div class="fact"><div class="fact__k">Mission</div><div class="fact__v">SpaceX <em>CRS-31</em></div></div>
+                <div class="fact"><div class="fact__k">Destination</div><div class="fact__v">ISS</div></div>
+                <div class="fact"><div class="fact__k">Year</div><div class="fact__v">2024</div></div>
+                <div class="fact"><div class="fact__k">Team</div><div class="fact__v">Mat X Space</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="positions" style="margin-top: clamp(2.5rem,6vh,4rem)">
+            <article class="workrow" data-reveal>
+              <div class="workrow__num">02.1 — Selected Work</div>
+              <div>
+                <h4 class="workrow__title">Expo Playground</h4>
+                <p class="workrow__desc" style="margin-top:.6rem">
+                  An annotated code explorer that helps beginners understand
+                  LLM-generated Expo / React Native code through interactive
+                  highlights and inline annotations.
+                </p>
+                <a class="workrow__link" href="https://www.ivanovishado.dev/expo-playground/" target="_blank" rel="noopener noreferrer">
+                  Visit project
+                  <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9L9 3M9 3H4M9 3V8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+              <div class="position__notes" style="margin:0">
+                <span>Next.js</span><span>TypeScript</span><span>CodeMirror 6</span><span>Babel AST</span><span>2026</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 03 In Print & On Record ============ -->
+      <section class="section" id="record">
+        <div class="shell">
+          <div class="section-head" data-reveal>
+            <div>
+              <p class="section-head__index">03 — In Print & On Record</p>
+              <h2 class="section-head__title">Press, <em>talks</em> &amp; essays.</h2>
+            </div>
+            <p class="section-head__lede">
+              A small index of moments when the work met an audience — most of it
+              in Spanish.
+            </p>
+          </div>
+
+          <div class="record">
+            <a class="citation" href="https://forbes.com.mx/musk-llevara-un-experimento-mexicano-al-espacio-en-octubre/" target="_blank" rel="noopener noreferrer" data-reveal>
+              <span class="citation__kind">Press</span>
+              <span class="citation__title">Musk Will Carry a Mexican Experiment to Space</span>
+              <span class="citation__src"><b>Forbes México</b> · Oct 2024</span>
+            </a>
+            <a class="citation" href="https://elpais.com/mexico/2024-12-02/los-chicos-que-sonaban-con-las-estrellas-la-historia-detras-del-ultimo-experimento-de-mexico-en-el-espacio.html" target="_blank" rel="noopener noreferrer" data-reveal>
+              <span class="citation__kind">Press</span>
+              <span class="citation__title">The Kids Who Dreamed of the Stars</span>
+              <span class="citation__src"><b>El País</b> · Dec 2024</span>
+            </a>
+            <a class="citation" href="https://www.youtube.com/watch?v=o75pGPjBqmU" target="_blank" rel="noopener noreferrer" data-reveal>
+              <span class="citation__kind">Talk</span>
+              <span class="citation__title">Engineering Principles at Nubank</span>
+              <span class="citation__src"><b>YouTube</b> · ES</span>
+            </a>
+            <a class="citation" href="https://www.youtube.com/watch?v=YpFuzEAWjJM" target="_blank" rel="noopener noreferrer" data-reveal>
+              <span class="citation__kind">Talk</span>
+              <span class="citation__title">Go Concurrency Patterns</span>
+              <span class="citation__src"><b>YouTube</b> · ES</span>
+            </a>
+            <a class="citation" href="https://blog.matxspace.com/2025-05-14-mi-aventura-espacial-de-m%C3%A9xico-a-samara/" target="_blank" rel="noopener noreferrer" data-reveal>
+              <span class="citation__kind">Essay</span>
+              <span class="citation__title">My Space Adventure: From Mexico to Samara</span>
+              <span class="citation__src"><b>Mat X Space</b> · May 2025</span>
+            </a>
+            <a class="citation" href="https://open.spotify.com/episode/7InqS8nts57eJIwAMeCdBk" target="_blank" rel="noopener noreferrer" data-reveal>
+              <span class="citation__kind">Talk</span>
+              <span class="citation__title">Detecting Hate Speech with AI</span>
+              <span class="citation__src"><b>Spotify</b> · ES</span>
+            </a>
+            <a class="citation" href="https://open.spotify.com/episode/0IQna0wz6CNVALdQgy2CmV" target="_blank" rel="noopener noreferrer" data-reveal>
+              <span class="citation__kind">Talk</span>
+              <span class="citation__title">AI Against Gender Violence</span>
+              <span class="citation__src"><b>Spotify</b> · ES</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 04 Inventory ============ -->
+      <section class="section" id="inventory">
+        <div class="shell">
+          <div class="section-head" data-reveal>
+            <div>
+              <p class="section-head__index">04 — Inventory</p>
+              <h2 class="section-head__title">The <em>instruments</em>.</h2>
+            </div>
+            <p class="section-head__lede">
+              What the work is built with — kept current, used with intent.
+            </p>
+          </div>
+
+          <div class="inventory" data-reveal-stagger>
+            <div class="inv-col">
+              <p class="inv-col__head">Languages</p>
+              <ul class="inv-list">
+                <li>Java <small>primary</small></li>
+                <li>Python <small>primary</small></li>
+                <li>Go <small>prior</small></li>
+                <li>Clojure <small>prior</small></li>
+                <li>TypeScript <small>tooling</small></li>
+              </ul>
+            </div>
+            <div class="inv-col">
+              <p class="inv-col__head">Cloud &amp; Data</p>
+              <ul class="inv-list">
+                <li>AWS <small>cloud</small></li>
+                <li>GCP <small>cloud</small></li>
+                <li>Azure <small>cloud</small></li>
+                <li>Datomic <small>db</small></li>
+                <li>DynamoDB <small>db</small></li>
+                <li>Elasticsearch <small>db</small></li>
+                <li>MySQL <small>db</small></li>
+              </ul>
+            </div>
+            <div class="inv-col">
+              <p class="inv-col__head">Paradigms &amp; AI</p>
+              <ul class="inv-list">
+                <li>Distributed Systems</li>
+                <li>Event-Driven</li>
+                <li>Functional Programming</li>
+                <li>LLM Orchestration</li>
+                <li>Sub-Agent Workflows</li>
+                <li>Context Engineering</li>
+                <li>MCP Servers</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 05 Education & Service ============ -->
+      <section class="section" id="service">
+        <div class="shell">
+          <div class="section-head" data-reveal>
+            <div>
+              <p class="section-head__index">05 — Education &amp; Service</p>
+              <h2 class="section-head__title">Schooling, and <em>giving</em> back.</h2>
+            </div>
+            <p class="section-head__lede">
+              Where the foundations came from, and where time is given to others
+              learning the craft.
+            </p>
+          </div>
+
+          <div class="duo">
+            <div class="duo__col" data-reveal>
+              <h3>Education</h3>
+              <div class="entry">
+                <span class="entry__t">B.E. Computer Engineering</span>
+                <span class="entry__s">2013–2018</span>
+                <span class="entry__d">Universidad de Guadalajara</span>
+                <p class="entry__note">Terminal project: a news scraper for Mexican outlets with NLP-based violence classification.</p>
+              </div>
+              <div class="entry">
+                <span class="entry__t">Summer Space School</span>
+                <span class="entry__s">2024</span>
+                <span class="entry__d">Samara University · Russia</span>
+              </div>
+              <div class="entry">
+                <span class="entry__t">Data Engineering Bootcamp</span>
+                <span class="entry__s">2021</span>
+                <span class="entry__d">Wizeline Academy</span>
+              </div>
+              <div class="entry">
+                <span class="entry__t">Deep Learning</span>
+                <span class="entry__s">2021</span>
+                <span class="entry__d">Saturdays.AI</span>
+              </div>
+              <div class="entry">
+                <span class="entry__t">Machine Learning</span>
+                <span class="entry__s">2020</span>
+                <span class="entry__d">Saturdays.AI</span>
+              </div>
+              <div class="entry">
+                <span class="entry__t">ELP English Language Program</span>
+                <span class="entry__s">2015</span>
+                <span class="entry__d">University of Toronto</span>
+              </div>
+            </div>
+
+            <div class="duo__col" data-reveal>
+              <h3>Service</h3>
+              <div class="entry">
+                <span class="entry__t">Marketing Team Member</span>
+                <span class="entry__s">2022 — Present</span>
+                <span class="entry__d">Mat X Space</span>
+                <p class="entry__note">Web presence &amp; content strategy. Built <a href="https://matxspace.com" target="_blank" rel="noopener noreferrer">matxspace.com</a> and <a href="https://blog.matxspace.com" target="_blank" rel="noopener noreferrer">blog.matxspace.com</a>.</p>
+              </div>
+              <div class="entry">
+                <span class="entry__t">Mentor &amp; Judge</span>
+                <span class="entry__s">2019 · 2020 · 2021 · 2025</span>
+                <span class="entry__d">Technovation Girls</span>
+                <p class="entry__note">Supporting girls in identifying community problems and building mobile-app solutions.</p>
+              </div>
+              <div class="entry">
+                <span class="entry__t">Course Designer, Speaker &amp; Mentor</span>
+                <span class="entry__s">2018 — 2021</span>
+                <span class="entry__d">Wizeline Academy</span>
+                <p class="entry__note">Designed courses on chatbot development, taught JavaScript and Go, and led English→ASL initiatives.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 06 Recognition ============ -->
+      <section class="section section--tight" id="recognition">
+        <div class="shell">
+          <div class="section-head" data-reveal>
+            <div>
+              <p class="section-head__index">06 — Recognition</p>
+              <h2 class="section-head__title">A few things <em>noticed</em>.</h2>
+            </div>
+            <p class="section-head__lede">Awards and distinctions along the way.</p>
+          </div>
+
+          <div class="recognition" data-reveal-stagger>
+            <div class="award">
+              <span class="award__yr">2023 / 2024</span>
+              <h3 class="award__t">IAC Research Papers</h3>
+              <p class="award__s">Baku '23 &amp; Milan '24 — with Mat X Space</p>
+            </div>
+            <a class="award" href="https://www.matxspace.com/" target="_blank" rel="noopener noreferrer">
+              <span class="award__yr">2022</span>
+              <h3 class="award__t">1st Place</h3>
+              <p class="award__s">International Air &amp; Space Program</p>
+            </a>
+            <div class="award">
+              <span class="award__yr">2018</span>
+              <h3 class="award__t">Premio Ceneval</h3>
+              <p class="award__s">Excellence Award · EGEL</p>
+            </div>
+            <div class="award">
+              <span class="award__yr">2017 / 2018</span>
+              <h3 class="award__t">Research Scholarships</h3>
+              <p class="award__s">Programa Delfín</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 07 Contact ============ -->
+      <section class="section contact" id="contact">
+        <div class="shell">
+          <div data-reveal>
+            <p class="eyebrow eyebrow--bare" style="margin-bottom:1.5rem">07 — Contact</p>
+            <h2 class="contact__big">Let's <em>talk</em>.</h2>
+            <p class="prose" style="margin-top:1.5rem;max-width:52ch">
+              Open to interesting work, collaborations, and the occasional
+              mentoring conversation.
+            </p>
+          </div>
+
+          <div class="contact__grid" data-reveal>
+            <a class="tile tile--accent magnetic" href="https://cal.com/ivan-galaviz-qtcayv/mentoring" target="_blank" rel="noopener noreferrer">
+              <span class="tile__k">Mentoring</span>
+              <span class="tile__v">Book a session ↗</span>
+              <svg class="tile__arrow" width="16" height="16" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9L9 3M9 3H4M9 3V8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="tile magnetic" href="mailto:me@ivanovishado.dev">
+              <span class="tile__k">Email</span>
+              <span class="tile__v">me@ivanovishado.dev</span>
+              <svg class="tile__arrow" width="16" height="16" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9L9 3M9 3H4M9 3V8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="tile magnetic" href="https://linkedin.com/in/ivanovishado" target="_blank" rel="noopener noreferrer">
+              <span class="tile__k">LinkedIn</span>
+              <span class="tile__v">/in/ivanovishado</span>
+              <svg class="tile__arrow" width="16" height="16" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9L9 3M9 3H4M9 3V8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="tile magnetic" href="https://github.com/ivanovishado" target="_blank" rel="noopener noreferrer">
+              <span class="tile__k">GitHub</span>
+              <span class="tile__v">/ivanovishado</span>
+              <svg class="tile__arrow" width="16" height="16" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9L9 3M9 3H4M9 3V8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <!-- Footer -->
-    <load src="src/sections/footer.html" />
+    <footer class="footer">
+      <div class="shell footer__inner">
+        <span class="footer__mark">Ivan Galaviz — Field Notes</span>
+        <div class="footer__meta">
+          <span>© <span id="year">2026</span> · Guadalajara, Mexico</span>
+          <span><b>7+</b> years · <b>3</b> companies · <b>1</b> ISS experiment</span>
+          <a href="#hero" style="color:var(--paper-dim)">Back to top ↑</a>
+        </div>
+      </div>
+    </footer>
 
-    <!-- Main JS -->
-    <script type="module" src="scripts/main.js"></script>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    <script type="module" src="/src/js/main.js"></script>
   </body>
 </html>

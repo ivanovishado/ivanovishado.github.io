@@ -1,86 +1,51 @@
-# Ivan Galaviz - Personal Website
+# Ivan Galaviz — Field Notes
 
-A modern, responsive personal website showcasing my experience as a Software Engineer. Built with Vite, Tailwind CSS, and GSAP.
+A monograph-style personal site. Cool near-black canvas, warm ivory text, a single archival-amber accent. Fraunces (editorial serif) for narrative voice, JetBrains Mono for instrument-like metadata. The signature visual is a custom generative orbital canvas — hairline guide orbits with bodies leaving fading light trails.
 
-## 🚀 Quick Start
+## Quick Start
 
-### Prerequisites
-
-- Node.js v22 or higher (Recommended: use `nvm install 22` && `nvm use 22`)
-
-### Installation
+Requires [Bun](https://bun.sh) 1.3+.
 
 ```bash
-# Install dependencies
-npm install
+bun install
+bun run dev        # http://localhost:5173
 ```
 
-### Local Development
-
-Start the Vite development server with hot module replacement:
+## Building for Production
 
 ```bash
-npm run dev
+bun run build      # outputs to dist/
+bun run preview    # preview the production build
 ```
 
-Then open http://localhost:5173 in your browser.
+## Tech Stack
 
-### Building for Production
+- **Vite** — build tool and dev server
+- **Tailwind CSS v4** — styling (via `@tailwindcss/postcss`)
+- **GSAP** — scroll reveals, parallax, hero entrance (ScrollTrigger)
+- **Lenis** — smooth scrolling
+- Custom canvas 2D renderer for the orbital hero piece (`src/js/orbital.js`)
 
-To create an optimized production build (minified HTML/CSS/JS):
-
-```bash
-npm run build
-```
-
-To preview the production build locally:
-
-```bash
-npm run preview
-```
-
-### Mobile Testing
-
-1. Ensure your mobile device is on the same WiFi network.
-2. Run `npm run dev -- --host` or `npm run dev-mobile`.
-3. Open the **Network** URL displayed (e.g., `http://192.168.x.x:5173`) on your mobile device.
-
-## 🛠️ Tech Stack
-
-- **Vite** - Build tool and development server
-- **HTML5** - Semantic markup with partial injection (`vite-plugin-html-inject`)
-- **Tailwind CSS** - Utility-first styling (PostCSS build)
-- **GSAP** - Professional animation library
-- **Lenis** - Smooth scrolling
-- **Three.js** - 3D effects
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-├── index.html              # Main entry point (shell)
+├── index.html              # Monograph entry point (all sections inline)
 ├── src/
-│   └── sections/           # HTML partials (hero, navbar, etc.)
-├── styles/
-│   ├── components/         # Component-specific CSS
-│   ├── tailwind.css        # Tailwind entry point
-│   └── styles.css          # Main stylesheet
-├── scripts/
-│   ├── animation/          # GSAP and scroll logic
-│   ├── components/         # UI component logic (menu, buttons)
-│   └── main.js             # JS entry point
-├── vite.config.js          # Vite configuration
-├── tailwind.config.js      # Tailwind configuration
-└── .github/workflows/      # CI/CD for GitHub Pages
+│   ├── styles/main.css     # Design tokens, base, components (single sheet)
+│   └── js/
+│       ├── main.js         # Entry point
+│       ├── orbital.js      # Generative canvas hero piece
+│       ├── scroll.js       # Lenis + GSAP ScrollTrigger, reveals, parallax
+│       └── nav.js          # Nav state, progress bar, mobile menu
+├── img/                    # headshot.webp, space-experiment.webp
+├── public/                 # favicon, manifest, 404, og-image, robots, sitemap
+└── .github/workflows/      # GitHub Pages deploy (Bun)
 ```
 
-## 🌐 Deployment
+## Deployment
 
-This site is automatically deployed to GitHub Pages via GitHub Actions whenever changes are pushed to the `main` branch.
+Pushed to `main` → GitHub Actions (`deploy.yml`) builds with Bun and deploys `dist/` to GitHub Pages at https://www.ivanovishado.dev.
 
-1. Commits trigger the `Deploy to GitHub Pages` workflow.
-2. The site is built (`npm run build`).
-3. The contents of `dist/` are deployed.
-
-## 📄 License
+## License
 
 See [LICENSE](LICENSE) for details.

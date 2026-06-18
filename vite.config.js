@@ -1,7 +1,12 @@
 import { defineConfig } from 'vite';
-import htmlInject from 'vite-plugin-html-inject';
 
 export default defineConfig({
-  plugins: [htmlInject()],
-  base: './', // Ensures relative paths for assets in production
+  base: './',
+  resolve: {
+    alias: { '@': '/src' },
+  },
+  build: {
+    target: 'es2020',
+    cssMinify: 'lightningcss',
+  },
 });
