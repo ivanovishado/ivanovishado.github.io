@@ -9,8 +9,8 @@
    Design Tokens
    -------------------------------------------------------------------------- */
 @theme {
-  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+  --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", monospace;
 
   /* Cool void + warm human elements = warmth against the cold */
   --color-ink: #090a0c;
