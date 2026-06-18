@@ -9,6 +9,7 @@ import { dirname, resolve } from 'node:path';
 import type { ReactNode } from 'react';
 import satori, { type Font } from 'satori';
 import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
@@ -93,10 +94,11 @@ async function build() {
 
   const svg = await satori(tree as unknown as ReactNode, { width: W, height: H, fonts });
 
-  const png = new Resvg(svg, { fitTo: { mode: 'width', value: W } }).render().asPng();
-  const out = resolve(root, 'public/og-image.png');
-  writeFileSync(out, png);
-  console.log(`✓ OG image composited → public/og-image.png (${W}×${H})`);
+  const pngBuffer = new Resvg(svg, { fitTo: { mode: 'width', value: W } }).render().asPng();
+  const jpg = await sharp(pngBuffer).jpeg({ quality: 82, mozjpeg: true }).toBuffer();
+  const out = resolve(root, 'public/og-image.jpg');
+  writeFileSync(out, jpg);
+  console.log(`✓ OG image composited → public/og-image.jpg (${W}×${H})`);
 }
 
 build().catch((e: unknown) => { console.error(e); process.exit(1); });
