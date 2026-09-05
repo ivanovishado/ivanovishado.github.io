@@ -10,7 +10,7 @@ export function initSupernovaIntro(): () => void {
   overlay.className = 'supernova-intro';
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
-  const renderer = createSupernova3D(canvas);
+  let renderer = createSupernova3D(canvas);
   if (!renderer) return () => {};
   const skip = document.createElement('button');
   skip.className = 'supernova-intro__skip';
@@ -20,16 +20,19 @@ export function initSupernovaIntro(): () => void {
   document.body.classList.add('supernova-entering');
   let raf = 0;
   let disposed = false;
+  let revealPending = false;
+  let snapshot: HTMLCanvasElement | null = null;
   const startedAt = performance.now();
   function frame(now: number): void {
     if (disposed) return;
     renderer?.render((now - startedAt) / 1000);
-    if (!disposed) raf = requestAnimationFrame(frame);
+    if (revealPending) finish();
+    if (!disposed && !finished) raf = requestAnimationFrame(frame);
   }
   raf = requestAnimationFrame(frame);
   let finished = false;
   let removal = 0;
-  const reveal = window.setTimeout(() => finish(), 4300);
+  const reveal = window.setTimeout(() => { revealPending = true; }, 4300);
 
   function cleanup(): void {
     if (disposed) return;
@@ -39,6 +42,9 @@ export function initSupernovaIntro(): () => void {
     cancelAnimationFrame(raf);
     canvas.removeEventListener('webglcontextlost', dismiss);
     renderer?.dispose();
+    renderer = null;
+    snapshot?.remove();
+    snapshot = null;
     overlay.remove();
     document.body.classList.remove('supernova-entering');
     window.removeEventListener('keydown', onKey);
@@ -50,14 +56,27 @@ export function initSupernovaIntro(): () => void {
   }
 
   function finish(immediate = false): void {
+    if (disposed) return;
+    if (immediate) { cleanup(); return; }
     if (finished) return;
     finished = true;
+    // Copy in the same animation frame as the draw: WebGL clears its buffer
+    // after presentation when preserveDrawingBuffer is disabled.
+    snapshot = document.createElement('canvas');
+    snapshot.width = canvas.width;
+    snapshot.height = canvas.height;
+    snapshot.setAttribute('aria-hidden', 'true');
+    const context = snapshot.getContext('2d');
+    if (!context) { cleanup(); return; }
+    context.drawImage(canvas, 0, 0);
+    canvas.replaceWith(snapshot);
+    renderer?.dispose();
+    renderer = null;
     document.body.classList.remove('supernova-entering');
     overlay.classList.add('is-leaving');
     if (document.activeElement === skip) skip.blur();
     skip.disabled = true;
-    if (immediate) cleanup();
-    else removal = window.setTimeout(cleanup, 800);
+    removal = window.setTimeout(cleanup, 800);
   }
   function dismiss(): void { finish(true); }
   function onKey(): void { dismiss(); }

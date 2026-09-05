@@ -26,7 +26,7 @@ float noise(vec3 p) {
 }
 float fbm(vec3 p) {
   float v = 0.0, a = .55;
-  for(int i=0; i<5; i++) {
+  for(int i=0; i<3; i++) {
     v += a * noise(p);
     p = mat3(.00,.80,.60, -.80,.36,-.48, -.60,-.48,.64) * p * 2.13 + 7.1;
     a *= .48;
@@ -59,9 +59,9 @@ void main() {
   if(hit > 0.0) {
     float nearT = max(0.0,-b-sqrt(hit));
     float farT = -b+sqrt(hit);
-    float stepSize = (farT-nearT)/112.0;
+    float stepSize = (farT-nearT)/48.0;
     float jitter = hash(vec3(gl_FragCoord.xy, 1.0));
-    for(int i=0;i<112;i++) {
+    for(int i=0;i<48;i++) {
       vec3 p = eye + ray*(nearT+(float(i)+jitter)*stepSize);
       vec3 q = p / max(radius,.1);
       q.xz = rotate(t*.075) * q.xz;
@@ -150,26 +150,53 @@ export function createSupernova3D(canvas: HTMLCanvasElement): Supernova3D | null
   const resolution = gl.getUniformLocation(program, 'uResolution');
   const time = gl.getUniformLocation(program, 'uTime');
   let disposed = false;
+  let pixelBudget = 360_000;
+  let sizeDirty = true;
+  let previousTime: number | undefined;
+  let lastEvaluation = 0;
+  const intervals: number[] = [];
+  const onResize = (): void => { sizeDirty = true; };
+  window.addEventListener('resize', onResize);
   return {
     render(seconds) {
       if (disposed || gl.isContextLost()) return;
-      const rect = canvas.getBoundingClientRect();
-      const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
-      const width = Math.max(1, Math.round(rect.width * ratio));
-      const height = Math.max(1, Math.round(rect.height * ratio));
-      if (canvas.width !== width || canvas.height !== height) { canvas.width = width; canvas.height = height; }
-      gl.viewport(0,0,width,height);
+      if (previousTime !== undefined) {
+        intervals.push((seconds - previousTime) * 1000);
+        if (intervals.length > 12) intervals.shift();
+      }
+      previousTime = seconds;
+      if (seconds - lastEvaluation >= .25 && intervals.length === 12) {
+        lastEvaluation = seconds;
+        const sorted = [...intervals].sort((a, b) => a - b);
+        const median = (sorted[5]! + sorted[6]!) / 2;
+        if (median > 20 && pixelBudget > 120_000) {
+          pixelBudget = Math.max(120_000, pixelBudget * .75);
+          sizeDirty = true;
+        }
+      }
+      if (sizeDirty) {
+        const rect = canvas.getBoundingClientRect();
+        const ratio = Math.min(1, Math.sqrt(pixelBudget / Math.max(1, rect.width * rect.height)));
+        const width = Math.max(1, Math.floor(rect.width * ratio));
+        const height = Math.max(1, Math.floor(rect.height * ratio));
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+        }
+        sizeDirty = false;
+      }
+      gl.viewport(0,0,canvas.width,canvas.height);
       gl.useProgram(program);
-      gl.uniform2f(resolution,width,height);
+      gl.uniform2f(resolution,canvas.width,canvas.height);
       gl.uniform1f(time,seconds);
       gl.drawArrays(gl.TRIANGLES,0,3);
     },
     dispose() {
       if (disposed) return;
       disposed = true;
+      gl.useProgram(null);
       gl.deleteProgram(program);
-      // This short-lived context has no use after the opening has faded away.
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
+      window.removeEventListener('resize', onResize);
     },
   };
 }
