@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="A quiet star field">
+  <rect width="1200" height="675" fill="#090a0c"/>
+  <g fill="#ece4d2" opacity=".48">
+    <circle cx="91" cy="96" r="1.2"/><circle cx="178" cy="514" r=".8"/>
+    <circle cx="287" cy="167" r=".65"/><circle cx="367" cy="602" r=".9"/>
+    <circle cx="463" cy="88" r=".7"/><circle cx="548" cy="382" r=".55"/>
+    <circle cx="632" cy="142" r=".8"/><circle cx="719" cy="576" r=".65"/>
+    <circle cx="822" cy="86" r=".6"/><circle cx="886" cy="491" r=".9"/>
+    <circle cx="981" cy="183" r=".65"/><circle cx="1084" cy="581" r=".8"/>
+    <circle cx="1145" cy="92" r=".7"/><circle cx="1028" cy="396" r=".5"/>
+  </g>
+  <g fill="#a9cfff" opacity=".34">
+    <circle cx="134" cy="294" r=".7"/><circle cx="331" cy="472" r=".55"/>
+    <circle cx="506" cy="256" r=".7"/><circle cx="676" cy="296" r=".55"/>
+    <circle cx="754" cy="516" r=".65"/><circle cx="1127" cy="326" r=".65"/>
+  </g>
+  <g fill="none" stroke-linecap="round">
+    <g transform="translate(841 142)" stroke="#fff9ed">
+      <path d="M-31-18 31 18M-31 18 31-18M0-36V36" stroke-width="1.2" opacity=".48"/>
+      <path d="M-10 0H10" stroke-width=".7" opacity=".2"/>
+      <circle r="3.3" fill="#fff9ed" stroke="none"/>
+    </g>
+    <g transform="translate(1027 305)" stroke="#efbf85">
+      <path d="M-28-16 28 16M-28 16 28-16M0-33V33" stroke-width="1.1" opacity=".46"/>
+      <path d="M-9 0H9" stroke-width=".65" opacity=".18"/>
+      <circle r="3" fill="#fff9ed" stroke="none"/>
+    </g>
+    <g transform="translate(1095 535)" stroke="#a9cfff">
+      <path d="M-25-14 25 14M-25 14 25-14M0-29V29" stroke-width="1" opacity=".43"/>
+      <path d="M-8 0H8" stroke-width=".6" opacity=".18"/>
+      <circle r="2.8" fill="#fff9ed" stroke="none"/>
+    </g>
+  </g>
+</svg>
