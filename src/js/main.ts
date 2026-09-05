@@ -1,13 +1,15 @@
 import '@fontsource-variable/jetbrains-mono/wght.css';
 import '../styles/main.css';
 
+import { initSupernovaIntro } from './supernova-intro';
 import { initSupernova } from './supernova';
 import { initScroll } from './scroll';
 import { initNav } from './nav';
 
 function initHero() {
   const cleanup = initSupernova(document.getElementById('supernova') as HTMLCanvasElement | null);
-  import.meta.hot?.dispose(cleanup);
+  const cleanupIntro = initSupernovaIntro();
+  import.meta.hot?.dispose(() => { cleanupIntro(); cleanup(); });
 }
 
 function init() {
