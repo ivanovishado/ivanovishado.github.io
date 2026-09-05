@@ -1,7 +1,11 @@
 User-agent: *
 Allow: /
 
-# AI search crawlers (explicitly allowed for citation)
+# Search and user-requested retrieval
+User-agent: OAI-SearchBot
+Allow: /
+
+# Existing permissions for other AI crawlers
 User-agent: GPTBot
 Allow: /
 

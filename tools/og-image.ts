@@ -151,7 +151,7 @@ async function build() {
                     color: '#ECE4D2',
                     lineHeight: 1.1,
                   },
-                  children: 'Software engineer',
+                  children: 'Senior Software Engineer',
                 },
               },
               {

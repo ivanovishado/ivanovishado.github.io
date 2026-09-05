@@ -1,38 +1,16 @@
-import '@fontsource-variable/fraunces/opsz.css';
-import '@fontsource-variable/fraunces/opsz-italic.css';
 import '@fontsource-variable/jetbrains-mono/wght.css';
 import '../styles/main.css';
 
-import { initTrajectory } from './trajectory';
-import { initScroll, gsap } from './scroll';
+import { initSupernova } from './supernova';
+import { initScroll } from './scroll';
 import { initNav } from './nav';
-
-const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-function initHero() {
-  initTrajectory(document.getElementById('trajectory') as HTMLCanvasElement | null);
-
-  if (prefersReduced) {
-    document.querySelectorAll<HTMLElement>('.hero [data-h]').forEach((el) => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-    });
-    return;
-  }
-
-  const tl = gsap.timeline({ delay: 0.25, defaults: { ease: 'power3.out' } });
-  tl.to('.hero [data-h="eyebrow"]', { opacity: 1, y: 0, duration: 0.8 })
-    .to('.hero [data-h="title"]', { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out' }, '-=0.5')
-    .to('.hero [data-h="sub"]', { opacity: 1, y: 0, duration: 0.9 }, '-=0.7')
-    .to('.hero [data-h="cta"]', { opacity: 1, y: 0, duration: 0.8 }, '-=0.6')
-    .to('.hero [data-h="meta"]', { opacity: 1, y: 0, duration: 0.7 }, '-=0.5')
-    .to('.hero [data-h="cue"]', { opacity: 1, y: 0, duration: 0.6 }, '-=0.4');
-}
 
 function init() {
   initScroll();
+  document.body.classList.add('reveals-ready');
   initNav();
-  initHero();
+  const cleanup = initSupernova(document.querySelector<HTMLCanvasElement>('#mentorship-stars'));
+  import.meta.hot?.dispose(cleanup);
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(() => window.ScrollTrigger?.refresh());
   }

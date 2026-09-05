@@ -1,6 +1,6 @@
 {
-  "name": "Ivan Galaviz — Field Notes",
-  "short_name": "Field Notes",
+  "name": "Ivan Galaviz",
+  "short_name": "Ivan Galaviz",
   "icons": [
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
   ],
