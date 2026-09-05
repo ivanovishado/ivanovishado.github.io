@@ -51,4 +51,37 @@
       [data-reveal]{opacity:0;transform:translateY(22px)}
       .hero [data-h]{opacity:0;transform:translateY(18px)}
       @media(prefers-reduced-motion:reduce){[data-reveal],.hero [data-h]{opacity:1!important;transform:none!important}}
+
+      /* Homepage-only first paint. Mentorship keeps the shared rules above. */
+      .portfolio{--portfolio-gutter:clamp(1.25rem,4.5vw,4rem);--color-ink:#090a0c;--color-paper:#ece4d2;--color-amber:#e8b04b;font-family:"Neue Montreal","Helvetica Neue",Helvetica,sans-serif;background:#090a0c;color:#ece4d2}
+      .portfolio .ambient,.portfolio .vignette,.portfolio .grain{display:none}
+      .portfolio h1,.portfolio h2,.portfolio h3,.portfolio h4{font-family:"Neue Montreal","Helvetica Neue",Helvetica,sans-serif;font-weight:400;font-variation-settings:normal}
+      .portfolio em,.portfolio i{font-style:normal}
+      .portfolio .shell{max-width:1240px;padding-inline:var(--portfolio-gutter)}
+      .portfolio .section{padding-block:clamp(4.5rem,12vw,10rem)}
+      .portfolio .nav{background:linear-gradient(180deg,rgba(9,10,12,.78),transparent)}
+      .portfolio .nav__inner{max-width:1240px;padding:1rem var(--portfolio-gutter)}
+      .portfolio .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-block:6.5rem clamp(3.5rem,8vh,6rem);overflow:hidden;isolation:isolate}
+      .portfolio .hero__art{position:absolute;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:#090a0c}
+      .portfolio .hero__art::after{content:"";position:absolute;inset:0;z-index:2;background:radial-gradient(circle at 76% 43%,transparent 0,transparent 22%,rgba(9,10,12,.08) 44%,rgba(9,10,12,.4) 72%,rgba(9,10,12,.94) 100%)}
+      .portfolio .hero__fallback,.portfolio .hero__art canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+      .portfolio .hero__fallback{z-index:0;opacity:1}
+      .portfolio .hero__art:has(canvas[data-rendered="true"]) .hero__fallback{opacity:0;visibility:hidden}
+      .portfolio .hero__art canvas{z-index:1}
+      .portfolio .hero__protection{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(90deg,rgba(9,10,12,.98) 0%,rgba(9,10,12,.92) 22%,rgba(9,10,12,.52) 47%,transparent 75%),linear-gradient(0deg,rgba(9,10,12,.88),transparent 28%)}
+      .portfolio .hero__inner{z-index:4;width:52%;margin-left:max(var(--portfolio-gutter),calc((100vw - 1240px)/2 + var(--portfolio-gutter)));margin-right:0;padding-inline:0}
+      .portfolio .hero__label{width:fit-content;margin-bottom:clamp(2rem,5vh,4rem);padding-bottom:.75rem;border-bottom:1px solid #e8b04b;font-family:"JetBrains Mono Variable",ui-monospace,"SF Mono",monospace;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}
+      .portfolio .hero__name{max-width:8ch;color:#ece4d2;font-size:clamp(6rem,10vw,9.5rem);line-height:.84;letter-spacing:-.065em}
+      .portfolio .hero__name span{color:#e8b04b}
+      .portfolio .hero__sub{max-width:46ch;margin-top:clamp(1.75rem,3vw,2.5rem);color:rgba(236,228,210,.72);font-family:"Neue Montreal","Helvetica Neue",Helvetica,sans-serif;font-size:clamp(1.125rem,1.35vw,1.3rem);line-height:1.52}
+      .portfolio .hero__cta{min-height:48px;width:fit-content;margin-top:clamp(1.75rem,4vh,2.75rem);padding:.8rem 1.2rem;border:1px solid #e8b04b;border-radius:999px;color:#090a0c;background:#e8b04b;display:inline-flex;align-items:center;gap:.65rem;font-family:"JetBrains Mono Variable",ui-monospace,"SF Mono",monospace;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}
+      .portfolio .hero__meta{display:flex;flex-wrap:wrap;gap:.75rem 1rem;margin-top:clamp(2.5rem,6vh,4.5rem);padding-top:1rem;border-top:1px solid rgba(236,228,210,.15);font-family:"JetBrains Mono Variable",ui-monospace,"SF Mono",monospace;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(236,228,210,.62)}
+      .portfolio .hero__cue{left:var(--portfolio-gutter);bottom:1.75rem;z-index:4;font-family:"JetBrains Mono Variable",ui-monospace,"SF Mono",monospace;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(236,228,210,.62)}
+      .portfolio .section-intro{display:grid;grid-template-columns:minmax(10rem,.7fr) minmax(0,1.3fr);gap:clamp(2rem,7vw,7rem);align-items:start;margin-bottom:clamp(3.5rem,7vh,6rem)}
+      .portfolio .section-intro__index{padding-top:.45rem;font-family:"JetBrains Mono Variable",ui-monospace,"SF Mono",monospace;color:#e8b04b;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase}
+      .portfolio .section-intro h2{max-width:12ch;color:#ece4d2;font-size:clamp(3rem,5.4vw,4.5rem);line-height:.92;letter-spacing:-.06em}
+      .portfolio .section-intro h2 span{color:#e8b04b}
+      .portfolio .section-intro__lede{max-width:58ch;margin-top:1.75rem;color:rgba(236,228,210,.72);font-size:clamp(1.05rem,1.25vw,1.25rem);line-height:1.6}
+      .portfolio [data-reveal],.portfolio [data-reveal-stagger]>*{opacity:1;transform:none}
+      @media(max-width:879px){.portfolio .hero{min-height:auto;display:block;padding-block:0 clamp(4.5rem,12vw,6rem)}.portfolio .hero__inner{width:auto;margin-inline:0;padding-inline:var(--portfolio-gutter);padding-top:clamp(15rem,43vw,19rem)}.portfolio .hero__name{max-width:9ch;font-size:clamp(3.5rem,18vw,5.5rem)}.portfolio .section-intro{grid-template-columns:1fr;gap:1.25rem}.portfolio .section-intro h2{max-width:11ch;font-size:clamp(2.55rem,11vw,3.5rem)}}
     </style>
