@@ -8,3 +8,7 @@ dist/
 .DS_Store
 
 .shots/
+
+# Reinstall with: npx skills add wheresryan22/anatomy (listed in skills-lock.json)
+.agents/skills/anatomy/
+.claude/skills/anatomy

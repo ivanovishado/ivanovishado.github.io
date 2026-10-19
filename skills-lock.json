@@ -1,36 +1,17 @@
 {
   "version": 1,
   "skills": {
-    "agent-browser": {
-      "source": "vercel-labs/agent-browser",
+    "anatomy": {
+      "source": "wheresryan22/anatomy",
       "sourceType": "github",
-      "skillPath": "skills/agent-browser/SKILL.md",
-      "computedHash": "228f87d57035100d9dc6efcfc05aafd4b6e3962adacaa04b8217ab2fadb15dc8"
+      "skillPath": "SKILL.md",
+      "computedHash": "76838f81aaec2589fabe05c6b004dc9150f7e33a61e948f111bc7941b678514d"
     },
-    "ai-seo": {
-      "source": "coreyhaines31/marketingskills",
+    "awwwards": {
+      "source": "juliobsz/skills",
       "sourceType": "github",
-      "computedHash": "5f7ce5ccdb2b0dce5e1ea7f3ed8bf17070b790865e91725ca8908e6ec829e164"
-    },
-    "design-taste-frontend": {
-      "source": "leonxlnx/taste-skill",
-      "sourceType": "github",
-      "computedHash": "9d1e82c5c409d2b0247245a005bc0f7e4447c0999b78dcea60f568c1ba4a6694"
-    },
-    "programmatic-seo": {
-      "source": "coreyhaines31/marketingskills",
-      "sourceType": "github",
-      "computedHash": "40b8fe29a6c9cb0606e6fa77aff227cf275e3808adf66e5ef69e02dcf60a7303"
-    },
-    "redesign-existing-projects": {
-      "source": "leonxlnx/taste-skill",
-      "sourceType": "github",
-      "computedHash": "b405eee0e0e80fc243f731d9aa368bca307e356db7e6157d27101d369dac6726"
-    },
-    "seo-audit": {
-      "source": "coreyhaines31/marketingskills",
-      "sourceType": "github",
-      "computedHash": "ec3109d213dde1747614ad1112ef0e498e04b24e464538968e156dfbfadb2121"
+      "skillPath": "awwwards/SKILL.md",
+      "computedHash": "13ad20b51362042ed98afe412f687efb6f55d5fc56f472d20c688d6d029ddfd3"
     }
   }
 }
