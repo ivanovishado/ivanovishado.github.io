@@ -1,0 +1,39 @@
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    <div id="curtain" aria-hidden="true">
+      <div class="curtain__panel">
+        <div class="curtain__label">
+          <p class="curtain__coords mono"></p>
+          <p class="curtain__title"></p>
+        </div>
+      </div>
+      <svg class="curtain__edge" preserveAspectRatio="none"><path /></svg>
+    </div>
+
+    <header class="frame">
+      <a class="frame__brand draw" href="/" data-title="Ivan Galaviz" data-coords="20.66°N 103.35°W">Ivan Galaviz</a>
+      <p class="frame__readout mono" data-readout aria-hidden="true">Rev 001  20.66°N 103.35°W</p>
+      <nav class="frame__nav" aria-label="Primary">
+        <a class="draw" href="/#work" data-nav="work">Work</a>
+        <a class="draw" href="/trajectory/" data-nav="trajectory" data-title="Trajectory" data-coords="20.66°N 103.35°W">Trajectory</a>
+        <a class="draw" href="/#about" data-nav="about">About</a>
+        <a class="draw" href="/mentorship/" data-nav="mentorship" data-title="Mentorship" data-coords="20.66°N 103.35°W">Mentorship</a>
+        <a class="draw" href="#contact" data-nav="contact">Contact</a>
+      </nav>
+      <button class="frame__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+    </header>
+
+    <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="menu__top">
+        <span class="mono muted" data-readout aria-hidden="true">Rev 001  20.66°N 103.35°W</span>
+        <button class="menu__close" type="button">Close</button>
+      </div>
+      <nav class="menu__list" aria-label="Menu">
+        <span class="menu__line"><a href="/#work">Work</a></span>
+        <span class="menu__line"><a href="/trajectory/">Trajectory</a></span>
+        <span class="menu__line"><a href="/#about">About</a></span>
+        <span class="menu__line"><a href="/mentorship/">Mentorship</a></span>
+        <span class="menu__line"><a href="#contact">Contact</a></span>
+      </nav>
+      <p class="mono muted">me@ivanovishado.dev</p>
+    </div>

@@ -1,6 +1,6 @@
-# Ivan Galaviz — Field Notes
+# Ivan Galaviz — Ground track
 
-A monograph-style personal site. Cool near-black canvas, warm ivory text, a single archival-amber accent. Fraunces (editorial serif) for narrative voice, JetBrains Mono for instrument-like metadata. The signature visual is a custom generative orbital canvas — hairline guide orbits with bodies leaving fading light trails.
+A personal portfolio drawn as an orbit's ground track: each chapter of the work is one pass over the place it happened, and the Earth appears only where the track's swath has flown. Neue Montreal and JetBrains Mono on a night map, one amber accent for the track. See `DESIGN.md` for the full system.
 
 ## Quick Start
 
@@ -21,25 +21,21 @@ bun run preview    # preview the production build
 ## Tech Stack
 
 - **Vite** — build tool and dev server
-- **Tailwind CSS v4** — styling (via `@tailwindcss/postcss`)
+- **Plain CSS** with design tokens (`src/styles/site.css`)
 - **GSAP** — scroll reveals, parallax, hero entrance (ScrollTrigger)
 - **Lenis** — smooth scrolling
-- Custom canvas 2D renderer for the orbital hero piece (`src/js/orbital.js`)
+- Custom canvas 2D ground-track map (`src/js/site/concept/`), land from Natural Earth
 
 ## Project Structure
 
 ```
-├── index.html              # Monograph entry point (all sections inline)
+├── index.html, work/*/, trajectory/, mentorship/, 404.html   # pages
 ├── src/
-│   ├── styles/main.css     # Design tokens, base, components (single sheet)
-│   └── js/
-│       ├── main.js         # Entry point
-│       ├── orbital.js      # Generative canvas hero piece
-│       ├── scroll.js       # Lenis + GSAP ScrollTrigger, reveals, parallax
-│       └── nav.js          # Nav state, progress bar, mobile menu
-├── img/                    # headshot.webp, space-experiment.webp
-├── public/                 # favicon, manifest, 404, og-image, robots, sitemap
-└── .github/workflows/      # GitHub Pages deploy (Bun)
+│   ├── styles/site.css    # the design system
+│   └── js/site/           # engine, ground-track concept, transitions, UI
+├── DESIGN.md              # concept, palette, type, motion rules
+├── img/, public/          # images, favicon, OG, sitemap, robots
+└── .github/workflows/     # GitHub Pages deploy (Bun)
 ```
 
 ## Deployment

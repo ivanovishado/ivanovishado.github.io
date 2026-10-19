@@ -1,0 +1,7 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "dev", "runtimeExecutable": "bun", "runtimeArgs": ["run", "dev", "--", "--port", "5173", "--strictPort"], "port": 5173 },
+    { "name": "prod", "runtimeExecutable": "node", "runtimeArgs": [".agents/skills/awwwards/scripts/serve.mjs", "dist", "--port", "4400"], "port": 4400 }
+  ]
+}

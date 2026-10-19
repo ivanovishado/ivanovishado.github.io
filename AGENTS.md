@@ -4,18 +4,19 @@ Guidance for coding agents working in this repo. Read this before making changes
 
 ## What this is
 
-**Ivan Galaviz — Field Notes.** A monograph-style personal site (plus a `/mentorship`
-landing page). Static, no web framework: the pages are hand-written HTML files
-(`index.html`, `mentorship/index.html`) with sections inlined, styled by a single
-CSS sheet, with small TypeScript modules for motion and generative canvas art.
+**Ivan Galaviz — Ground track.** A personal portfolio: home, four case pages under
+`/work/`, `/trajectory/`, `/mentorship/` and a Point Nemo 404. Static, no web
+framework: hand-written HTML files with sections inlined, one CSS design system and
+small TypeScript modules for motion and the canvas map. The concept, palette, type
+and motion rules live in `DESIGN.md`: read it before changing anything visual.
 
 Production: https://www.ivanovishado.dev (GitHub Pages).
 
 ## Toolchain — use Bun
 
 This repo is Bun-first. **Do not use npm, yarn, or pnpm.** Bun is the runtime,
-package manager, and script runner (the `build` script also runs a Bun TS file
-directly: `bun run tools/og-image.ts`).
+package manager, and script runner (the `build` script also runs Bun TS files
+directly: `bun run tools/sitemap.ts`).
 
 - Requires **Bun 1.3+** (CI pins `1.3` in `.github/workflows/deploy.yml`).
 - `.nvmrc` pins Node 24 only for editor/CI parity; Node is not required to run tasks.
@@ -24,12 +25,13 @@ directly: `bun run tools/og-image.ts`).
 Commands:
 
 ```bash
-bun install              # install deps (CI uses --frozen-lockfile)
-bun run dev              # Vite dev server → http://localhost:5173
-bun run dev:host         # dev server exposed on LAN
-bun run build            # sitemap + OG image + vite build → dist/
-bun run preview          # preview the production build
-bun run typecheck        # tsc --noEmit (strict) — run before declaring done
+bun install                  # install deps (CI uses --frozen-lockfile)
+bun run dev                  # Vite dev server → http://localhost:5173
+bun run dev:host             # dev server exposed on LAN
+bun run build                # sitemap + vite build → dist/
+bun run preview              # preview the production build
+bun run typecheck            # tsc --noEmit (strict) — run before declaring done
+bun run tools/check-seo.ts   # after a build: canonicals, sitemap, JSON-LD, FAQ parity
 ```
 
 Always run `bun run typecheck` after touching any `.ts` file.
@@ -37,30 +39,29 @@ Always run `bun run typecheck` after touching any `.ts` file.
 ## Project layout
 
 ```
-index.html                  # main page entry (all sections inline)
-mentorship/index.html       # /mentorship entry (shares src/styles + src/js)
+index.html                  # home (all sections inline)
+work/<slug>/index.html      # case pages: netflix, mcb-1, nubank, wizeline
+trajectory/index.html       # trips and where the work lands, on one map
+mentorship/index.html       # mentorship (its FAQ must match its FAQPage JSON-LD)
+404.html                    # Point Nemo (Vite entry, served by GitHub Pages for misses)
+DESIGN.md                   # concept card, palette, type, grid, motion language
 src/
-  styles/main.css           # design tokens (@theme) + base + components — the ONLY stylesheet
-  js/                       # TypeScript modules (strict)
-    main.ts                 # main-page entry: orbital hero + reveals + nav
-    mentorship.ts           # mentorship-page entry: trajectory hero + reveals + nav
-    orbital.ts              # generative canvas: guide orbits + fading light trails
-    trajectory.ts           # generative canvas: transfer arc + traveler (mentorship hero)
-    scroll.ts               # Lenis smooth scroll + GSAP ScrollTrigger, reveals, parallax
-    nav.ts                  # nav scroll state, progress bar, active section, mobile menu
-    globals.d.ts            # ambient Window typings (ScrollTrigger)
-  partials/                 # shared HTML fragments inlined by the Vite partials plugin
-    critical-css.html       # FOUC-preventing <style> block (shared by both pages)
-    head-links.html         # icon, apple-touch-icon, manifest <link>s
-    body-chrome.html        # ambient/vignette/grain/progress divs
-    analytics.html          # Umami analytics script
+  styles/site.css           # the design system (tokens + components)
+  fonts/                    # Neue Montreal woff2 (owner's files)
+  js/
+    site.ts                 # entry for every page: engine boot + driver + UI
+    site/engine/            # one-clock lifecycle: Lenis on gsap.ticker, reveals, curtain, router
+    site/concept/           # ground-track model (orbit.ts), land mask, canvas map, driver
+    site/motion/curtain.ts  # page transition: sine-edged curtain sweeping west to east
+    site/ui/                # frame (header), mobile menu, work-index pass preview
+  partials/                 # site-head, site-chrome (header, menu, curtain), site-footer, analytics
 tools/
-  og-image.ts               # Bun script: composites branded OG image (satori + resvg → sharp → JPG)
-  sitemap.ts                # Bun script: generates sitemap.xml with lastmod from git
-  fonts/, og-image-base.png # inputs for the OG compositor
-vite.config.ts              # two inputs: main + mentorship; base './'; HTML partials plugin
-postcss.config.ts           # @tailwindcss/postcss
-public/                     # static assets served as-is (favicon, apple-touch-icon, og-image.jpg, sitemap, 404)
+  land.ts                   # rasterizes Natural Earth land into src/js/site/concept/land-data.ts
+  sitemap.ts                # generates public/sitemap.xml with lastmod from git
+  check-seo.ts              # validates dist/ (run after a build)
+  fonts/                    # Neue Montreal source files
+vite.config.ts              # one input per page; base '/'; partials plugin
+public/                     # favicon, apple-touch-icon, og.jpg, og-mentorship.jpg, sitemap, robots
 img/                        # headshot.webp, space-experiment.webp
 .github/workflows/          # deploy.yml (Bun → GitHub Pages), dependabot-auto-merge.yml
 ```
@@ -70,63 +71,50 @@ img/                        # headshot.webp, space-experiment.webp
 - **Strict mode is on** (`tsconfig.json`: `strict`, `noUnusedLocals`,
   `noUnusedParameters`, `noImplicitOverride`, `noUncheckedIndexedAccess`).
   No `any` without justification; prefer typed DOM generics
-  (`querySelector<HTMLElement>(...)`, `querySelectorAll<HTMLAnchorElement>(...)`)
-  and explicit interfaces for canvas state (see `orbital.ts` `Body`/`Point`/`Star`/`RGB`).
-  Use tuple types (`RGB = [number, number, number]`, `Arc = [Point, Point, Point, Point]`)
-  for fixed-length arrays — `noUncheckedIndexedAccess` makes `number[]` indexing
-  return `T | undefined`, but tuple literal indexing stays safe.
+  (`querySelector<HTMLElement>(...)`) and explicit types for canvas state
+  (see `concept/map.ts` `MapOptions`/`Link`, `concept/orbit.ts` `Pass`/`Place`).
 - `moduleResolution: "bundler"` — use **extensionless relative imports**
-  (`import { initNav } from './nav'`), not `.js`/`.ts` extensions.
-- Entry HTML `<script type="module" src="/src/js/*.ts">` — Vite resolves these.
-- Vite client types (`vite/client`) are included, so CSS/asset imports are typed.
-- `src/js/globals.d.ts` declares `window.ScrollTrigger` — extend it if you add
-  more globals rather than casting `window as any`.
-- Fonts are self-hosted via `@fontsource-variable` (Fraunces opsz + italic,
-  JetBrains Mono wght). Import them in the TS entry files; the font-family names
-  are `"Fraunces Variable"` and `"JetBrains Mono Variable"`. The `public/404.html`
-  page is standalone (no Vite bundle) and still uses Google Fonts CDN.
+  (`import { onPage } from '../engine'`), not `.js`/`.ts` extensions.
+- Entry HTML `<script type="module" src="/src/js/site.ts">` — Vite resolves it.
+- Fonts: Neue Montreal (`src/fonts/`, declared in `site.css`) and JetBrains Mono
+  via `@fontsource-variable/jetbrains-mono` (imported in `site.ts`).
 
 ## HTML partials
 
-Both pages share `<head>` and `<body>` chrome via `<!-- partial:name -->` tokens
+Pages share `<head>` and `<body>` chrome via `<!-- partial:name -->` tokens
 that a Vite plugin (`htmlPartials()` in `vite.config.ts`) replaces at dev and
-build time. Partial files live in `src/partials/`. To change shared critical CSS,
-icon links, or analytics across both pages, edit one partial — not both HTML files.
+build time. Edit the partial, not each page. Partials are not nested (one replace pass).
+A new page needs: the partials, `<main id="main" tabindex="-1">`, the `site.ts`
+script, an input in `vite.config.ts` and an entry in `tools/sitemap.ts`.
+
+## Site rules (see DESIGN.md)
+
+- One clock: every animation runs on `gsap.ticker` (Lenis, ScrollTrigger, the map).
+  No `requestAnimationFrame` loops or scroll listeners of your own.
+- Page effects live in `onPage()` (`src/js/site/engine`) so the router can revert them.
+  Same-origin links are fetched and `<main>` is swapped behind the curtain.
+- Maps are `<canvas data-track="hero|pass|trips">`; the driver mounts them. Guadalajara
+  is the home station; passes land where the work is used (DESIGN.md, Station).
+- Everything enters west to east ("sweep and lock"); hovers draw an amber line west to east.
+- Under reduced motion: no Lenis, no reveals, one still map frame, content fully visible.
+- Visible copy: no em or en dashes, sentence case.
 
 ## Styling conventions
 
-- **Tailwind CSS v4** via `@tailwindcss/postcss`. The design system lives in
-  `src/styles/main.css` under `@theme { ... }` (tokens) and `:root` (derived vars).
+- Plain CSS tokens in `src/styles/site.css` (`--c-*`, `--t-*`, grid helpers `.c-1-4` etc.).
   Use the existing tokens — do not introduce ad-hoc colors.
-- Palette: `--color-ink` (near-black canvas), `--color-paper` (warm ivory text),
-  `--color-amber` / `--color-amber-soft` (the single accent), plus `--paper-*`
-  opacity variants. Type: Fraunces (`--font-display`) + JetBrains Mono (`--font-mono`).
-- It's a component-class CSS file (BEM-ish: `.tile`, `.tile--accent`, `.tile__k`),
-  **not** utility-first in markup. Add component styles to `main.css`, not inline.
-- Respect `prefers-reduced-motion` — every animated/canvas module already checks
-  `window.matchMedia('(prefers-reduced-motion: reduce)')` and renders a static
-  fallback. Keep that pattern for any new motion.
-
-## Canvas modules
-
-`orbital.ts` and `trajectory.ts` each export an `init<Name>(canvas)` that:
-returns a cleanup `() => void`, guards `getContext('2d')`, handles HiDPI via
-`devicePixelRatio` (capped at 2), starts/stops an rAF loop via `IntersectionObserver`
-(only animates while on-screen), and draws a static frame when reduced-motion is set.
-Mirror this structure for any new canvas piece.
+- Component classes (BEM-ish: `.index__row`, `.case-hero__title`), not utilities in markup.
+- Respect `prefers-reduced-motion` in any new motion.
 
 ## Build & deploy
 
 - Push to `main` → `deploy.yml` runs `bun install --frozen-lockfile` → `bun run build`
   → uploads `dist/` → deploys to GitHub Pages.
-- `bun run build` regenerates `public/og-image.jpg` (via satori → resvg → sharp)
-  and `public/sitemap.xml` (lastmod from `git log`). The `og-image.jpg` is
-  committed, so only re-run the build if the OG branding or page list changes.
+- OG images (`public/og.jpg`, `public/og-mentorship.jpg`) are captures of the live
+  heroes (the awwwards skill's `og.mjs`), committed; regenerate only when a hero changes.
 
 ## Things to keep in mind
 
-- Two independent HTML entries share `src/` but have different hero canvases
-  (`orbital` vs `trajectory`) and entries (`main.ts` vs `mentorship.ts`).
-  Changes to shared modules (`scroll.ts`, `nav.ts`, `main.css`) affect both pages.
+- QA: `playwright` and `axe-core` are dev deps for the awwwards skill's shoot/audit scripts.
 - Don't add a test framework unless asked — there is none today.
 - Don't commit `dist/` (it's gitignored) or `node_modules/`.
