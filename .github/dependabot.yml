@@ -1,15 +1,15 @@
 version: 2
 updates:
-  # Bun dependencies (bun.lock)
+  # Bun dependencies (bun.lock): one PR a month. Security fixes come
+  # separately from Dependabot security updates, off this schedule.
   - package-ecosystem: "bun"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
     groups:
-      dev-dependencies:
-        dependency-type: "development"
-      production-dependencies:
-        dependency-type: "production"
+      dependencies:
+        patterns:
+          - "*"
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
