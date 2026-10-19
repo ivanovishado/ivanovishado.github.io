@@ -20,6 +20,6 @@
     "useDefineForClassFields": true,
     "noEmit": true
   },
-  "include": ["src/js", "tools", "vite.config.ts", "postcss.config.ts"],
+  "include": ["src/js", "tools", "vite.config.ts"],
   "exclude": ["node_modules", "dist"]
 }
