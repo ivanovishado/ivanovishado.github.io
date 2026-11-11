@@ -43,3 +43,8 @@ games:
     platform: ps3
     cover: kingdom-hearts-hd-2-5-remix.jpg
     note: In the HD 2.5 ReMIX collection.
+  - title: "The Binding of Isaac: Rebirth"
+    creator: Nicalis
+    year: 2014
+    platform: pc
+    cover: the-binding-of-isaac-rebirth.jpg
