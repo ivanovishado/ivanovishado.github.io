@@ -664,8 +664,9 @@ html:not(.js) .hero__fallback { display: block; position: absolute; inset: 0; wi
 .cover--game { aspect-ratio: 135 / 170; outline: 1px solid var(--c-line); outline-offset: 3px; margin: 0 4px 4px; width: calc(100% - 8px); }
 .cover--game[data-platform='pc'] { aspect-ratio: 2 / 3; }
 .cover--game[data-platform='switch'] { aspect-ratio: 105 / 170; }
-.cover--game[data-platform='xbox'] { aspect-ratio: 135 / 190; }
-.cover--game[data-platform='3ds'] { aspect-ratio: 137 / 125; }
+.cover--game:is([data-platform='xbox'], [data-platform='wii'], [data-platform='ngc']) { aspect-ratio: 135 / 190; }
+.cover--game:is([data-platform='3ds'], [data-platform='nds']) { aspect-ratio: 137 / 125; }
+.cover--game[data-platform='gba'] { aspect-ratio: 1; }
 .cover--type { display: flex; flex-direction: column; padding: 0.8rem; border: 1px solid var(--c-line); border-right-width: 4px; overflow: hidden; }
 .cover--type.cover--game { border-right-width: 1px; }
 .cover--type::before { content: attr(data-label); font-family: var(--f-mono); font-size: var(--t-xs); color: var(--c-muted); }

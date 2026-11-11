@@ -10,7 +10,7 @@ import { parse } from 'yaml';
 const root = resolve(import.meta.dirname, '..');
 export const shelfFile = resolve(root, 'content/shelf.yaml');
 
-const platforms = { pc: 'PC', switch: 'Switch', ps3: 'PS3', ps4: 'PS4', ps5: 'PS5', xbox: 'Xbox', '3ds': '3DS' } as const;
+const platforms = { pc: 'PC', switch: 'Switch', ps3: 'PS3', ps4: 'PS4', ps5: 'PS5', xbox: 'Xbox', '3ds': '3DS', nds: 'DS', gba: 'GBA', wii: 'Wii', ngc: 'GameCube' } as const;
 type Platform = keyof typeof platforms;
 type Kind = 'book' | 'game';
 

@@ -1,7 +1,7 @@
 # The shelf at /shelf/. Order here is the order on the page.
 #
 #   title, creator, year   required
-#   platform               required for games: pc | switch | ps3 | ps4 | ps5 | xbox | 3ds
+#   platform               required for games: pc | switch | ps3 | ps4 | ps5 | xbox | 3ds | nds | gba | wii | ngc
 #   cover                  optional, a file name in public/covers/ (no cover = a typeset one)
 #   note                   optional, one line
 
@@ -48,3 +48,43 @@ games:
     year: 2014
     platform: pc
     cover: the-binding-of-isaac-rebirth.jpg
+  - title: "Mario & Luigi: Superstar Saga"
+    creator: AlphaDream
+    year: 2003
+    platform: gba
+    cover: mario-and-luigi-superstar-saga.jpg
+  - title: Astro Bot
+    creator: Team Asobi
+    year: 2024
+    platform: ps5
+    cover: astro-bot.jpg
+  - title: Hollow Knight
+    creator: Team Cherry
+    year: 2017
+    platform: pc
+    cover: hollow-knight.jpg
+  - title: Persona 5 Royal
+    creator: Atlus
+    year: 2019
+    platform: ps4
+    cover: persona-5-royal.jpg
+  - title: Mario Kart Wii
+    creator: Nintendo
+    year: 2008
+    platform: wii
+    cover: mario-kart-wii.jpg
+  - title: Pokémon Emerald
+    creator: Game Freak
+    year: 2004
+    platform: gba
+    cover: pokemon-emerald.jpg
+  - title: Super Smash Bros. Melee
+    creator: HAL Laboratory
+    year: 2001
+    platform: ngc
+    cover: super-smash-bros-melee.jpg
+  - title: "Hotel Dusk: Room 215"
+    creator: Cing
+    year: 2007
+    platform: nds
+    cover: hotel-dusk-room-215.jpg
