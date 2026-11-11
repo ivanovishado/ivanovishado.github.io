@@ -188,8 +188,8 @@ html.on-field .frame { color: var(--c-bg); }
 html.frame-scrolled:not(.on-field) .frame::before { opacity: 1; }
 html.frame-away .frame { translate: 0 -110%; }
 .frame__brand { grid-column: 1 / span 3; font-weight: 500; letter-spacing: -0.01em; justify-self: start; }
-.frame__readout { grid-column: 5 / span 4; white-space: nowrap; }
-.frame__nav { grid-column: 9 / -1; justify-self: end; display: flex; gap: clamp(1rem, 2vw, 2rem); }
+.frame__readout { grid-column: 4 / span 3; white-space: nowrap; }
+.frame__nav { grid-column: 7 / -1; justify-self: end; display: flex; gap: clamp(1rem, 2vw, 2rem); }
 .frame__menu { display: none; }
 
 /* Nav links: underline draws west to east; the current page keeps it. */
@@ -200,6 +200,25 @@ html.frame-away .frame { translate: 0 -110%; }
 }
 @media (hover: hover) { .draw:hover { background-size: 100% 1px; } }
 .draw:focus-visible, .draw[aria-current] { background-size: 100% 1px; }
+
+/* Desktop nav as a track line: each page is a tick, the amber marker rides to the current one
+   and parks at the west end when none is. */
+.frame__nav { position: relative; padding-bottom: 0.5rem; }
+.frame__nav::after { content: ''; position: absolute; inset: auto 0 0 -1.25rem; height: 1px; background: currentColor; opacity: 0.22; }
+.frame__nav .draw { position: relative; background: none; }
+.frame__nav .draw::after {
+  content: ''; position: absolute; left: 50%; bottom: -0.5rem; width: 1px; height: 5px;
+  background: currentColor; opacity: 0.45; transition: height 0.5s var(--e-out), opacity 0.5s var(--e-out);
+}
+@media (hover: hover) { .frame__nav .draw:hover::after { height: 10px; opacity: 1; } }
+.frame__nav .draw:focus-visible::after, .frame__nav .draw[aria-current]::after { height: 10px; opacity: 1; }
+.frame__marker {
+  position: absolute; left: -3px; bottom: -3px; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--c-accent); translate: var(--x, -1.25rem) 0; transition: translate 1s var(--e-out);
+}
+html.on-field .frame__marker { background: currentColor; }
+/* Six links need the room on narrow desktops: the readout steps out. */
+@media (max-width: 1023px) { .frame__readout { display: none; } .frame__nav { grid-column: 4 / -1; } }
 
 @media (max-width: 767px) {
   .frame { grid-template-columns: 1fr auto; column-gap: 1rem; }
@@ -618,4 +637,47 @@ html:not(.js) .hero__fallback { display: block; position: absolute; inset: 0; wi
   .topics__t, .topics__d { grid-column: 1; }
   .steps__track { display: none; }
   .steps__item { grid-column: 1 / -1; }
+}
+
+/* --- Shelf page ------------------------------------------------------------------ */
+.shelf-head { padding-top: calc(var(--header) + clamp(2rem, 1rem + 4vw, 5rem)); row-gap: 1rem; align-items: end; }
+.shelf-head .lede { padding-bottom: 0.4rem; }
+/* Each item spans two subgrid rows: the cover stands on the plank, its label hangs below. */
+.shelf__row {
+  margin-inline: var(--gutter); display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); row-gap: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+}
+.shelf__item { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 0.9rem; }
+.shelf__stand {
+  position: relative; display: flex; align-items: flex-end;
+  padding: 0 clamp(1.5rem, 1rem + 1.5vw, 2.75rem) 0 0; border-bottom: 1px solid var(--c-line);
+}
+.shelf__stand::after { content: ''; position: absolute; inset: auto 0 -1px; height: 1px; background: var(--c-accent); scale: 0 1; transform-origin: left; transition: scale 0.8s var(--e-out); }
+.shelf__label { padding-right: 1.5rem; font-size: var(--t-s); line-height: 1.35; }
+.shelf__title { font-weight: 500; }
+.shelf__label .mono { margin-top: 0.35rem; }
+.shelf__note { margin-top: 0.5rem; }
+.cover { position: relative; display: block; width: 100%; aspect-ratio: 2 / 3; background: var(--c-raised); transition: translate 0.6s var(--e-out); }
+.cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Thickness is flat: a page block on books, a clear case around games. */
+.cover--book { border-right: 4px solid var(--c-muted); }
+.cover--game { aspect-ratio: 135 / 170; outline: 1px solid var(--c-line); outline-offset: 3px; margin: 0 4px 4px; width: calc(100% - 8px); }
+.cover--game[data-platform='pc'] { aspect-ratio: 2 / 3; }
+.cover--game[data-platform='switch'] { aspect-ratio: 105 / 170; }
+.cover--game[data-platform='xbox'] { aspect-ratio: 135 / 190; }
+.cover--game[data-platform='3ds'] { aspect-ratio: 137 / 125; }
+.cover--type { display: flex; flex-direction: column; padding: 0.8rem; border: 1px solid var(--c-line); border-right-width: 4px; overflow: hidden; }
+.cover--type.cover--game { border-right-width: 1px; }
+.cover--type::before { content: attr(data-label); font-family: var(--f-mono); font-size: var(--t-xs); color: var(--c-muted); }
+.cover--type::after { content: attr(data-title); margin-top: auto; font-size: var(--t-s); font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; }
+/* The plank runs to the page edge after the last item. */
+.shelf__row { overflow-x: clip; }
+.shelf__item:last-child .shelf__stand::before { content: ''; position: absolute; left: 100%; bottom: -1px; width: 100vw; height: 1px; background: var(--c-line); }
+.shelf + .shelf { padding-top: 0; }
+@media (hover: hover) {
+  .shelf__item:hover .shelf__stand::after { scale: 1 1; }
+  .shelf__item:hover .cover { translate: 0 -4px; }
+}
+@media (max-width: 767px) {
+  .shelf__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

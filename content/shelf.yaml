@@ -1,0 +1,45 @@
+# The shelf at /shelf/. Order here is the order on the page.
+#
+#   title, creator, year   required
+#   platform               required for games: pc | switch | ps3 | ps4 | ps5 | xbox | 3ds
+#   cover                  optional, a file name in public/covers/ (no cover = a typeset one)
+#   note                   optional, one line
+
+books:
+  - title: The Way of Kings
+    creator: Brandon Sanderson
+    year: 2010
+    cover: the-way-of-kings.jpg
+  - title: Words of Radiance
+    creator: Brandon Sanderson
+    year: 2014
+    cover: words-of-radiance.jpg
+  - title: Oathbringer
+    creator: Brandon Sanderson
+    year: 2017
+    cover: oathbringer.jpg
+  - title: "Mistborn: The Final Empire"
+    creator: Brandon Sanderson
+    year: 2006
+    cover: mistborn-the-final-empire.jpg
+  - title: The Well of Ascension
+    creator: Brandon Sanderson
+    year: 2007
+    cover: the-well-of-ascension.jpg
+  - title: The Hero of Ages
+    creator: Brandon Sanderson
+    year: 2008
+    cover: the-hero-of-ages.jpg
+
+games:
+  - title: Outer Wilds
+    creator: Mobius Digital
+    year: 2019
+    platform: pc
+    cover: outer-wilds.jpg
+  - title: Kingdom Hearts II
+    creator: Square Enix
+    year: 2005
+    platform: ps3
+    cover: kingdom-hearts-hd-2-5-remix.jpg
+    note: In the HD 2.5 ReMIX collection.

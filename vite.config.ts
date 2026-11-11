@@ -2,6 +2,7 @@ import { defineConfig, type Plugin } from 'vite';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { renderShelf, shelfFile, shelfJsonLd } from './tools/shelf';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -15,12 +16,19 @@ function htmlPartials(): Plugin {
       .replace(/\s*\n\s*/g, '');
   return {
     name: 'html-partials',
+    // The shelf is data: reload pages when content/shelf.yaml changes.
+    configureServer(server) {
+      server.watcher.add(shelfFile);
+      server.watcher.on('change', (file) => { if (file === shelfFile) server.ws.send({ type: 'full-reload' }); });
+    },
     transformIndexHtml: {
       order: 'pre',
       handler(html: string) {
         return html
           .replace(/<!-- partial:(\S+) -->/g, (_, name: string) => readFileSync(resolve(dir, `${name}.html`), 'utf-8'))
-          .replace(/<!-- icon:([a-z0-9-]+) -->/g, (_, slug: string) => icon(slug));
+          .replace(/<!-- icon:([a-z0-9-]+) -->/g, (_, slug: string) => icon(slug))
+          .replace('<!-- shelf:items -->', () => renderShelf())
+          .replace('<!-- shelf:jsonld -->', () => shelfJsonLd());
       },
     },
   };
@@ -44,6 +52,7 @@ export default defineConfig({
         'work-nubank': resolve(__dirname, 'work/nubank/index.html'),
         'work-wizeline': resolve(__dirname, 'work/wizeline/index.html'),
         trajectory: resolve(__dirname, 'trajectory/index.html'),
+        shelf: resolve(__dirname, 'shelf/index.html'),
         '404': resolve(__dirname, '404.html'),
       },
     },

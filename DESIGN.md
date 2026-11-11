@@ -110,7 +110,8 @@ Radius 0 everywhere except the marker dot. Hairlines 1 px.
 - Page transition: a curtain whose leading edge is a sine wave (the ground track) sweeps west to
   east over the old page carrying the destination's coordinates, then exits east.
 - Hovers: work rows draw an amber track line under the row west to east and the arrow travels
-  east; nav links underline-draw; CTA fill sweeps west to east.
+  east; the desktop nav is a track line (each page a tick, an amber marker rides to the
+  current one and parks at the west end when none is); CTA fill sweeps west to east.
 - Idle: the orbit keeps advancing (one revolution per ~6 min at rest), terminator from real
   time. Off screen the canvas stops; reduced motion shows one designed still frame.
 
@@ -148,6 +149,10 @@ FAQ (details, amber + rotates) → amber field with the booking button.
 
 Trajectory page: title + lede, 2:1 trips map, legend, every stop as a ledger (when, place,
 what, coordinates), back to the passes.
+
+Shelf: a personal preference kit (the small kit of personal things astronauts take to orbit).
+Books and game cases stand face-out on hairline planks, labels hang below; thickness is flat
+edges, hover draws the plank amber west to east. Items come from `content/shelf.yaml`.
 
 404: Point Nemo, 48°52′S 123°23′W, the farthest point from land where spacecraft are brought
 down. Track over open ocean, nothing revealed.

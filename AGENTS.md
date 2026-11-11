@@ -43,6 +43,8 @@ index.html                  # home (all sections inline)
 work/<slug>/index.html      # case pages: netflix, mcb-1, nubank, wizeline
 trajectory/index.html       # trips and where the work lands, on one map
 mentorship/index.html       # mentorship (its FAQ must match its FAQPage JSON-LD)
+shelf/index.html            # shelf: the page shell; items are rendered from content/shelf.yaml
+content/shelf.yaml          # shelf data (books, games); covers live in public/covers/
 404.html                    # Point Nemo (Vite entry, served by GitHub Pages for misses)
 DESIGN.md                   # concept card, palette, type, grid, motion language
 src/
@@ -58,6 +60,7 @@ src/
 tools/
   land.ts                   # rasterizes Natural Earth land into src/js/site/concept/land-data.ts
   sitemap.ts                # generates public/sitemap.xml with lastmod from git
+  shelf.ts                  # validates content/shelf.yaml, renders the shelf markup and JSON-LD
   check-seo.ts              # validates dist/ (run after a build)
   fonts/                    # Neue Montreal source files
 vite.config.ts              # one input per page; base '/'; partials plugin
@@ -84,6 +87,8 @@ img/                        # headshot.webp, space-experiment.webp
 Pages share `<head>` and `<body>` chrome via `<!-- partial:name -->` tokens
 that a Vite plugin (`htmlPartials()` in `vite.config.ts`) replaces at dev and
 build time. Edit the partial, not each page. Partials are not nested (one replace pass).
+`<!-- shelf:items -->` and `<!-- shelf:jsonld -->` are filled by `tools/shelf.ts` the same way;
+to add a book or game, add an entry to `content/shelf.yaml` (and optionally a cover file).
 A new page needs: the partials, `<main id="main" tabindex="-1">`, the `site.ts`
 script, an input in `vite.config.ts` and an entry in `tools/sitemap.ts`.
 

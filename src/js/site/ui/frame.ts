@@ -12,6 +12,19 @@ export function initFrame() {
     last = y;
   });
 
+  // Track line: the marker rides the nav's line to the current link; with none it parks at the west end.
+  const nav = document.querySelector<HTMLElement>('.frame__nav');
+  const marker = nav?.querySelector<HTMLElement>('.frame__marker');
+  if (nav && marker) {
+    const place = () => {
+      const a = nav.querySelector<HTMLElement>('[aria-current]');
+      if (a) marker.style.setProperty('--x', `${a.offsetLeft + a.offsetWidth / 2}px`);
+      else marker.style.removeProperty('--x');
+    };
+    new MutationObserver(place).observe(nav, { attributes: true, attributeFilter: ['aria-current'], subtree: true });
+    new ResizeObserver(place).observe(nav);
+  }
+
   onPage(({ path }) => {
     // Over the amber field the frame switches to ground ink.
     const field = document.querySelector('.field');
@@ -21,6 +34,7 @@ export function initFrame() {
     if (path.startsWith('/work/')) links.find((a) => a.dataset.nav === 'work')?.setAttribute('aria-current', 'true');
     if (path.startsWith('/mentorship')) links.find((a) => a.dataset.nav === 'mentorship')?.setAttribute('aria-current', 'page');
     if (path.startsWith('/trajectory')) links.find((a) => a.dataset.nav === 'trajectory')?.setAttribute('aria-current', 'page');
+    if (path.startsWith('/shelf')) links.find((a) => a.dataset.nav === 'shelf')?.setAttribute('aria-current', 'page');
     if (path !== '/') return;
     // Home: the nav marks the section in view.
     for (const a of links) {
