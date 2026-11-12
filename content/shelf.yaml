@@ -88,3 +88,8 @@ games:
     year: 2007
     platform: nds
     cover: hotel-dusk-room-215.jpg
+  - title: FIFA 13
+    creator: EA Canada
+    year: 2012
+    platform: ps3
+    cover: fifa-13.jpg
