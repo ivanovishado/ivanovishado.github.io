@@ -2,14 +2,14 @@
 // phase = intro sweep + scroll through the stage + an idle term (the orbit never stops).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { onPage, isMobile, prefersReducedMotion, ease } from '../engine';
+import { onPage, ease } from '../engine';
 import { TrackMap, type Link } from './map';
 import { PLACES, STATION, formatCoords, passOver, type PlaceKey } from './orbit';
 
 type Mounted = {
   map: TrackMap;
   el: HTMLCanvasElement;
-  visible: boolean;
+  view: ScrollTrigger; // active while the map (or its stage) is on screen
   phase: (t: number) => number;
   links: (t: number) => number;
   rev: number;
@@ -19,6 +19,7 @@ type Mounted = {
 const mounted: Mounted[] = [];
 let readout: HTMLElement[] = [];
 let lastText = '';
+let reducedNow = false;
 
 /** Hero: one continuous orbit that crosses Guadalajara during the intro. */
 function heroConfig() {
@@ -89,14 +90,14 @@ let isCoarse: boolean | null = null;
 const coarse = () => (isCoarse ??= matchMedia('(pointer: coarse)').matches);
 
 function tick(time: number) {
-  const reduced = prefersReducedMotion();
+  const reduced = reducedNow;
   // Phones redraw the maps every other frame: the orbit is slow, the scroll stays at 60.
   const draw = !coarse() || (frame++ & 1) === 0;
   let primary: Mounted | undefined;
   for (const m of mounted) {
     if (m.still) continue;
     if (!primary) primary = m;
-    if (draw && m.visible && !reduced) m.map.render(m.phase(time), time, m.links(time));
+    if (draw && m.view.isActive && !reduced) m.map.render(m.phase(time), time, m.links(time));
   }
   if (primary && readout.length) {
     const p = primary.phase(time);
@@ -111,16 +112,10 @@ function tick(time: number) {
 
 export function startDriver() {
   gsap.ticker.add(tick);
-  onPage(({ intro }) => {
+  onPage(({ intro, media }) => {
     readout = [...document.querySelectorAll<HTMLElement>('[data-readout]')];
-    const reduced = prefersReducedMotion();
+    const reduced = (reducedNow = media.reduce);
     const els = [...document.querySelectorAll<HTMLCanvasElement>('canvas[data-track]')];
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        const m = mounted.find((x) => x.el === e.target);
-        if (m) m.visible = e.isIntersecting;
-      }
-    });
     const ro = new ResizeObserver((entries) => {
       for (const e of entries) {
         const m = mounted.find((x) => x.el === e.target);
@@ -148,9 +143,11 @@ export function startDriver() {
       const links = (t: number) => (isTrips ? phase(t) : still || reduced ? 1 : st.intro);
       // The readout counts revolutions from the one that crosses the place, so it agrees with the page.
       const rev = parseInt(el.dataset.rev ?? '1', 10) - Math.floor(sweep);
-      const m: Mounted = { map, el, visible: true, phase, links, rev, still };
+      // The hero canvas is sticky: its stage is what scrolls through the viewport.
+      const stage = el.closest<HTMLElement>('[data-stage]') ?? el;
+      const view = ScrollTrigger.create({ trigger: stage, start: 'top bottom', end: 'bottom top' });
+      const m: Mounted = { map, el, view, phase, links, rev, still };
       mounted.push(m);
-      io.observe(el);
       ro.observe(el);
       if (still) continue;
       if (!reduced) {
@@ -158,15 +155,14 @@ export function startDriver() {
         // Trips fly when their map scrolls into view; everything else plays with the page intro.
         if (isTrips) ScrollTrigger.create({ trigger: el, start: 'top 75%', once: true, onEnter: () => { tween.play(); } });
         else intro.add(tween, 0.1);
-        const trigger = el.closest<HTMLElement>('[data-stage]') ?? el;
         ScrollTrigger.create({
-          trigger,
+          trigger: stage,
           start: 'top top',
           end: isHero ? 'bottom bottom' : 'bottom top',
           onUpdate: (s) => { st.scroll = s.progress; },
         });
       }
-      if (isHero && !reduced && !isMobile()) {
+      if (isHero && !reduced && !media.mobile) {
         // Pointer leans the map a few pixels: the stage answers before the first scroll.
         const wrap = el.parentElement!;
         const qx = gsap.quickTo(wrap, 'x', { duration: 1.2, ease: ease.soft });
@@ -180,7 +176,6 @@ export function startDriver() {
     document.fonts?.ready.then(() => mounted.forEach((m) => m.map.render(m.phase(gsap.ticker.time), gsap.ticker.time, m.links(gsap.ticker.time))));
 
     return () => {
-      io.disconnect();
       ro.disconnect();
       for (const m of mounted) (m as Mounted & { off?: () => void }).off?.();
       mounted.length = 0;

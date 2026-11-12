@@ -1,9 +1,9 @@
 // Smooth scroll on ONE clock: Lenis is driven by gsap.ticker, ScrollTrigger reads Lenis.
-// Reduced motion → native scroll, no Lenis.
+// Reduced motion → native scroll, no Lenis. gsap.matchMedia swaps between them if the setting changes.
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { prefersReducedMotion } from './env';
+import { media } from './env';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,22 +13,36 @@ const listeners = new Set<(s: ScrollState) => void>();
 export type ScrollState = { y: number; velocity: number; progress: number };
 const state: ScrollState = { y: 0, velocity: 0, progress: 0 };
 
+let started = false;
+
 export function initScroll() {
-  if (lenis || prefersReducedMotion()) {
-    // Still publish native scroll position for the map and the frame.
-    if (!lenis) addEventListener('scroll', nativeTick, { passive: true });
-    return;
-  }
-  lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1, touchMultiplier: 1.2, anchors: true });
-  lenis.on('scroll', (l: Lenis) => {
-    state.y = l.scroll;
-    state.velocity = l.velocity;
-    state.progress = l.limit > 0 ? l.scroll / l.limit : 0; // Lenis reports 1 on pages that cannot scroll
-    ScrollTrigger.update();
-    listeners.forEach((fn) => fn(state));
+  if (started) return;
+  started = true;
+  gsap.matchMedia().add({ reduce: media.reduce, motion: media.motion }, ({ conditions }) => {
+    if (conditions?.reduce) {
+      // Still publish native scroll position for the map and the frame.
+      addEventListener('scroll', nativeTick, { passive: true });
+      return () => removeEventListener('scroll', nativeTick);
+    }
+    const l = new Lenis({ lerp: 0.1, wheelMultiplier: 1, touchMultiplier: 1.2, anchors: true });
+    l.on('scroll', () => {
+      state.y = l.scroll;
+      state.velocity = l.velocity;
+      state.progress = l.limit > 0 ? l.scroll / l.limit : 0; // Lenis reports 1 on pages that cannot scroll
+      ScrollTrigger.update();
+      listeners.forEach((fn) => fn(state));
+    });
+    const raf = (time: number) => l.raf(time * 1000);
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
+    lenis = l;
+    return () => {
+      gsap.ticker.remove(raf);
+      gsap.ticker.lagSmoothing(500, 33);
+      l.destroy();
+      lenis = null;
+    };
   });
-  gsap.ticker.add((time) => lenis?.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
 }
 
 function nativeTick() {

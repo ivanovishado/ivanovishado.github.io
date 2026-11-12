@@ -58,6 +58,7 @@ export function initMenu() {
   const close = menu.querySelector<HTMLButtonElement>('.menu__close')!;
   const lines = () => menu.querySelectorAll('.menu__line > a');
   let open = false;
+  let tween: gsap.core.Animation | null = null; // open or close: the next one kills it, so they never fight
 
   const focusables = () => [...menu.querySelectorAll<HTMLElement>('a, button')];
   const onKey = (e: KeyboardEvent) => {
@@ -77,7 +78,8 @@ export function initMenu() {
     button!.setAttribute('aria-expanded', 'true');
     stopScroll();
     const reduced = prefersReducedMotion();
-    gsap.timeline()
+    tween?.kill();
+    tween = gsap.timeline()
       .fromTo(menu, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: reduced ? 0.01 : 0.9, ease: ease.inOut })
       .fromTo(lines(), { yPercent: 110, x: -14 }, { yPercent: 0, x: 0, duration: reduced ? 0.01 : 1, stagger: 0.06, ease: ease.out }, reduced ? 0 : 0.35);
     document.addEventListener('keydown', onKey);
@@ -89,7 +91,8 @@ export function initMenu() {
     open = false;
     button!.setAttribute('aria-expanded', 'false');
     document.removeEventListener('keydown', onKey);
-    gsap.to(menu, {
+    tween?.kill();
+    tween = gsap.to(menu, {
       clipPath: 'inset(0% 0% 0% 100%)', duration: prefersReducedMotion() ? 0.01 : 0.7, ease: ease.inOut,
       onComplete: () => { menu!.removeAttribute('data-open'); gsap.set(menu, { clearProps: 'clipPath' }); },
     });

@@ -1,18 +1,18 @@
 // Work index: a pass preview follows the pointer and sweeps the track over the row's place.
 import { gsap } from 'gsap';
-import { onPage, onScroll, isTouch, prefersReducedMotion, ease } from '../engine';
+import { onPage, onScroll, ease } from '../engine';
 import { TrackMap } from '../concept/map';
 import { configFor } from '../concept/driver';
 
 export function initPreview() {
-  onPage(() => {
+  onPage(({ media }) => {
     const list = document.querySelector<HTMLElement>('[data-index]');
     const box = document.querySelector<HTMLElement>('.preview');
     const canvas = box?.querySelector('canvas');
-    if (!list || !box || !canvas || isTouch()) return;
+    if (!list || !box || !canvas || media.touch) return;
     const rev = box.querySelector<HTMLElement>('[data-preview-rev]')!;
     const coords = box.querySelector<HTMLElement>('[data-preview-coords]')!;
-    const reduced = prefersReducedMotion();
+    const reduced = media.reduce;
     const x = gsap.quickTo(box, 'x', { duration: reduced ? 0.01 : 0.7, ease: ease.soft });
     const y = gsap.quickTo(box, 'y', { duration: reduced ? 0.01 : 0.7, ease: ease.soft });
     let px = 0;
