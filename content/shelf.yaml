@@ -100,3 +100,8 @@ games:
     year: 2012
     platform: ps3
     cover: fifa-13.jpg
+  - title: "The Legend of Zelda: Twilight Princess"
+    creator: Nintendo
+    year: 2006
+    platform: wii
+    cover: the-legend-of-zelda-twilight-princess.jpg
