@@ -47,9 +47,9 @@ games:
   - title: Kingdom Hearts II Final Mix
     creator: Square Enix
     year: 2007
-    platform: ps3
-    cover: kingdom-hearts-hd-2-5-remix.jpg
-    note: In the HD 2.5 ReMIX collection.
+    platform: ps4
+    cover: kingdom-hearts-hd-1-5-2-5-remix.jpg
+    note: In the HD 1.5 + 2.5 ReMIX collection.
   - title: "The Binding of Isaac: Rebirth"
     creator: Nicalis
     year: 2014
