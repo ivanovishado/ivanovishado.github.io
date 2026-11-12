@@ -151,8 +151,10 @@ Trajectory page: title + lede, 2:1 trips map, legend, every stop as a ledger (wh
 what, coordinates), back to the passes.
 
 Shelf: a personal preference kit (the small kit of personal things astronauts take to orbit).
-Books and game cases stand face-out on hairline planks, labels hang below; thickness is flat
-edges, hover draws the plank amber west to east. Items come from `content/shelf.yaml`.
+Books and game cases stand on hairline planks as flat-shaded 3D objects turned to show their
+east side (a book's page block, a case's opening edge in the platform's colour, with its thumb
+notch); labels hang below. Thickness is true to the object. Hover turns the item square and
+draws the plank amber west to east. Items come from `content/shelf.yaml`.
 
 404: Point Nemo, 48°52′S 123°23′W, the farthest point from land where spacecraft are brought
 down. Track over open ocean, nothing revealed.

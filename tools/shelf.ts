@@ -22,6 +22,7 @@ interface Item {
   platform?: Platform;
   cover?: string;
   note?: string;
+  pages?: number;
 }
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -40,7 +41,8 @@ function toItem(raw: unknown, kind: Kind, i: number): Item {
   if (typeof r.year !== 'number') throw new Error(`${where}: "year" must be a number`);
   const cover = text('cover', false);
   if (cover && !existsSync(resolve(root, 'public/covers', cover))) throw new Error(`${where}: cover not found in public/covers/: ${cover}`);
-  const item: Item = { kind, title, creator, year: r.year, cover, note: text('note', false) };
+  if (r.pages !== undefined && typeof r.pages !== 'number') throw new Error(`${where}: "pages" must be a number`);
+  const item: Item = { kind, title, creator, year: r.year, cover, note: text('note', false), pages: r.pages };
   if (kind === 'game') {
     const p = text('platform', true)!;
     if (!(p in platforms)) throw new Error(`${where}: unknown platform "${p}" (use ${Object.keys(platforms).join(', ')})`);
@@ -62,9 +64,15 @@ function loadShelf(): { books: Item[]; games: Item[] } {
 function renderItem(it: Item): string {
   const platform = it.platform ? platforms[it.platform] : '';
   const cls = `cover cover--${it.kind}`;
-  const attr = it.platform ? ` data-platform="${it.platform}"` : '';
+  const style = [
+    // A book's thickness in mm: about 0.05 mm a page plus the two boards.
+    it.pages ? `--depth:${Math.round(it.pages * 0.05 + 6)}` : '',
+    // A GBA box is printed card: its side carries on from the edge of the front.
+    it.platform === 'gba' && it.cover ? `--art:url('/covers/${esc(it.cover)}')` : '',
+  ].filter(Boolean).join(';');
+  const attr = (it.platform ? ` data-platform="${it.platform}"` : '') + (style ? ` style="${style}"` : '');
   const cover = it.cover
-    ? `<span class="${cls}"${attr}><img src="/covers/${esc(it.cover)}" alt="" loading="lazy" decoding="async" /></span>`
+    ? `<span class="${cls} cover--solid"${attr}><img src="/covers/${esc(it.cover)}" alt="" loading="lazy" decoding="async" /></span>`
     // The typeset cover draws its text from attributes, so the page text holds each title once.
     : `<span class="${cls} cover--type"${attr} data-label="${platform}" data-title="${esc(it.title)}" aria-hidden="true"></span>`;
   return `

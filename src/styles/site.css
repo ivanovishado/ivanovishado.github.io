@@ -671,13 +671,57 @@ html:not(.js) .hero__fallback { display: block; position: absolute; inset: 0; wi
 .cover--type.cover--game { border-right-width: 1px; }
 .cover--type::before { content: attr(data-label); font-family: var(--f-mono); font-size: var(--t-xs); color: var(--c-muted); }
 .cover--type::after { content: attr(data-title); margin-top: auto; font-size: var(--t-s); font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; }
-/* The plank runs to the page edge after the last item. */
+/* Solid covers are real boxes seen from the plank's height: a front and the east side.
+   --depth and --tall are millimetres, so thickness is true to the object. */
+.shelf__stand:has(.cover--solid) { perspective: 62rem; perspective-origin: 50% 100%; }
+.cover--solid {
+  /* --shift brings the far edge back onto the label's hanging line. */
+  --depth: 30; --tall: 240; --yaw: -28deg; --shift: -15%;
+  transform-style: preserve-3d; transform-origin: 100% 100%; transform: translateX(var(--shift)) rotateY(var(--yaw));
+  transition: translate 0.6s var(--e-out), transform 0.9s var(--e-out);
+}
+.cover--solid::after {
+  content: ''; position: absolute; inset: 0 auto 0 100%; aspect-ratio: var(--depth) / var(--tall);
+  transform-origin: 0 50%; transform: rotateY(90deg); background: var(--side);
+}
+/* Books show the page block, set in from the boards. */
+.cover--book.cover--solid {
+  --page: color-mix(in srgb, var(--c-fg) 58%, var(--c-bg)); --board: color-mix(in srgb, var(--c-fg) 14%, var(--c-bg));
+  --side: repeating-linear-gradient(90deg, var(--page) 0 3px, color-mix(in srgb, var(--c-fg) 44%, var(--c-bg)) 3px 4px);
+  border-right: 0;
+}
+.cover--book.cover--solid::after { border: solid var(--board); border-width: 3px 3px 3px 0; }
+/* Game cases show the opening edge in the case's own colour: the seam between its halves
+   and the thumb notch. Black unless the platform says otherwise. */
+.cover--game.cover--solid {
+  --depth: 14; --tall: 170; --case: color-mix(in srgb, var(--c-fg) 13%, var(--c-bg));
+  --dent: color-mix(in srgb, var(--case) 45%, var(--c-bg));
+  --side:
+    radial-gradient(ellipse 34% 8.5% at 50% 50%, var(--dent) 98%, transparent 100%),
+    linear-gradient(90deg, transparent calc(50% - 0.5px), var(--dent) 0 calc(50% + 0.5px), transparent 0)
+    var(--case);
+  outline: 0; margin: 0; width: 100%;
+}
+.cover--solid:is([data-platform='pc'], [data-platform='xbox'], [data-platform='wii'], [data-platform='ngc']) { --tall: 190; }
+.cover--solid[data-platform='switch'] { --depth: 10; }
+.cover--solid[data-platform='nds'] { --tall: 125; --depth: 16; }
+.cover--solid[data-platform='3ds'] { --tall: 125; --depth: 13; }
+.cover--solid:is([data-platform='ps3'], [data-platform='switch']) { --case: color-mix(in srgb, var(--c-fg) 34%, var(--c-bg)); }
+.cover--solid:is([data-platform='ps4'], [data-platform='ps5']) { --case: #1d4f9e; }
+.cover--solid:is([data-platform='wii'], [data-platform='3ds']) { --case: color-mix(in srgb, var(--c-fg) 78%, var(--c-bg)); }
+.cover--solid[data-platform='xbox'] { --case: #2f7a3a; }
+/* A GBA box is card, not a case: no seam or notch, the print carries on round the edge. */
+.cover--game.cover--solid[data-platform='gba'] {
+  --tall: 127; --depth: 22; --shade: color-mix(in srgb, var(--c-bg) 30%, transparent);
+  --side: linear-gradient(var(--shade), var(--shade)), var(--art) 100% 50% / 4000% 100%;
+}/* The plank runs to the page edge after the last item. */
 .shelf__row { overflow-x: clip; }
 .shelf__item:last-child .shelf__stand::before { content: ''; position: absolute; left: 100%; bottom: -1px; width: 100vw; height: 1px; background: var(--c-line); }
 .shelf + .shelf { padding-top: 0; }
 @media (hover: hover) {
   .shelf__item:hover .shelf__stand::after { scale: 1 1; }
   .shelf__item:hover .cover { translate: 0 -4px; }
+  .shelf__item:hover .cover--solid { --yaw: 0deg; --shift: 0%; }
 }
 @media (max-width: 767px) {
   .shelf__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
