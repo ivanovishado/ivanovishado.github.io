@@ -97,6 +97,8 @@ script, an input in `vite.config.ts` and an entry in `tools/sitemap.ts`.
 - One clock: every animation runs on `gsap.ticker` (Lenis, ScrollTrigger, the map).
   No `requestAnimationFrame` loops or scroll listeners of your own.
 - Page effects live in `onPage()` (`src/js/site/engine`) so the router can revert them.
+  They run inside one `gsap.matchMedia()` and re-run when reduced motion, touch or the mobile
+  breakpoint changes: read the `motion-setup` skill before editing motion code.
   Same-origin links are fetched and `<main>` is swapped behind the curtain.
 - Maps are `<canvas data-track="hero|pass|trips">`; the driver mounts them. Guadalajara
   is the home station; passes land where the work is used (DESIGN.md, Station).
