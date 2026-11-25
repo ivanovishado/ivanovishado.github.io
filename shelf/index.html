@@ -27,15 +27,21 @@
 
     <main id="main" tabindex="-1">
       <header class="shelf-head grid">
-        <p class="mono accent c-1-4" data-reveal="sweep" data-intro>Personal preference kit</p>
-        <h1 class="h-xl c-1-8" data-split="lines" data-intro data-delay="0.1">Shelf</h1>
-        <p class="lede c-9-12" data-split="lines" data-intro data-delay="0.3">Astronauts get a small kit for the personal things they take to orbit. This would be mine.</p>
+        <h1 class="shelf-head__title c-1-6" data-split="lines" data-intro data-delay="0.05">Shelf</h1>
+        <div class="shelf-head__aside c-7-12">
+          <p class="shelf-head__lede" data-split="lines" data-intro data-delay="0.2">Astronauts pack a personal preference kit for orbit. These are the books and physical games I would bring, rendered to their real proportions.</p>
+          <div class="segmented" role="tablist" aria-label="Filter shelf items" data-filter-group="shelf">
+            <button class="segmented__tab" type="button" role="tab" aria-selected="true" data-filter="all">All</button>
+            <button class="segmented__tab" type="button" role="tab" aria-selected="false" tabindex="-1" data-filter="books">Books</button>
+            <button class="segmented__tab" type="button" role="tab" aria-selected="false" tabindex="-1" data-filter="games">Games</button>
+          </div>
+        </div>
       </header>
       <!-- shelf:items -->
 
       <nav class="case-next" aria-label="Back to the work">
         <a href="/#work" data-title="Work" data-coords="20.66°N 103.35°W">
-          <span class="mono muted">Back to the passes</span>
+          <span class="mono muted">Back to the portfolio</span>
           <span class="case-next__title">See the work <span class="arrow" aria-hidden="true">→</span></span>
         </a>
       </nav>

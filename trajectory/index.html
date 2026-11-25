@@ -26,9 +26,8 @@
     <main id="main" tabindex="-1">
       <section class="traj" aria-labelledby="traj-title">
         <div class="traj__head grid">
-          <p class="mono accent c-1-4" data-reveal="sweep" data-intro>Home station  20.66°N 103.35°W</p>
-          <h1 class="traj__title c-1-8" id="traj-title" data-split="lines" data-intro data-delay="0.1">Trajectory</h1>
-          <p class="traj__lede lede c-9-12" data-split="lines" data-intro data-delay="0.3">I work from home, in Guadalajara. This is everywhere the work, and I, ended up going.</p>
+          <h1 class="traj__title c-1-8" id="traj-title" data-split="lines" data-intro data-delay="0.05">Trajectory</h1>
+          <p class="traj__lede c-9-12" data-split="lines" data-intro data-delay="0.2">I work from home in Guadalajara (20.66°N 103.35°W). Hover any stop below or move across the map to trace where the work, and I, ended up going.</p>
         </div>
         <div class="traj__map" aria-hidden="true">
           <canvas data-track="trips"></canvas>
@@ -42,53 +41,53 @@
 
       <section class="section section--tight" aria-labelledby="stops-title">
         <header class="section__head grid">
-          <h2 class="h-l c-1-4" id="stops-title">Every stop</h2>
-          <p class="c-5-8 muted">In order, starting from the station.</p>
+          <h2 class="h-section c-1-4" id="stops-title">Every stop</h2>
+          <p class="c-5-12 muted">In chronological order, starting from Guadalajara. Hover a row to illuminate its arc on the map.</p>
         </header>
         <ol class="stops">
-          <li class="stops__row">
+          <li class="stops__row" data-stop-place="gdl" tabindex="0">
             <span class="stops__when mono">Home</span>
             <span class="stops__place"><b>Guadalajara</b>, Mexico</span>
             <span class="stops__what">Home station. Wizeline, the Netflix work and almost everything else on this site was built from here.</span>
             <span class="stops__coords mono muted">20.66°N 103.35°W</span>
           </li>
-          <li class="stops__row">
+          <li class="stops__row" data-stop-place="toronto" tabindex="0">
             <span class="stops__when mono">2015</span>
             <span class="stops__place"><b>Toronto</b>, Canada</span>
             <span class="stops__what">English Language Program at the University of Toronto.</span>
             <span class="stops__coords mono muted">43.66°N 079.40°W</span>
           </li>
-          <li class="stops__row stops__row--signal">
+          <li class="stops__row stops__row--signal" data-stop-place="sao" tabindex="0">
             <span class="stops__when mono">2021 to 2023</span>
             <span class="stops__place"><b>São Paulo</b>, Brazil</span>
             <span class="stops__what">Nubank. Work sent from home: <a class="link" href="/work/nubank/" data-title="How people apply to Nubank" data-coords="23.55°S 046.63°W">how people apply</a>.</span>
             <span class="stops__coords mono muted">23.55°S 046.63°W</span>
           </li>
-          <li class="stops__row">
+          <li class="stops__row" data-stop-place="baku" tabindex="0">
             <span class="stops__when mono">2023</span>
             <span class="stops__place"><b>Baku</b>, Azerbaijan</span>
             <span class="stops__what">International Astronautical Congress, presenting a research paper with Mat X Space.</span>
             <span class="stops__coords mono muted">40.41°N 049.87°E</span>
           </li>
-          <li class="stops__row stops__row--signal">
+          <li class="stops__row stops__row--signal" data-stop-place="bay" tabindex="0">
             <span class="stops__when mono">Since 2023</span>
             <span class="stops__place"><b>Bay Area</b>, United States</span>
             <span class="stops__what">Netflix. Work sent from home: <a class="link" href="/work/netflix/" data-title="Agentic workflows for promotional assets" data-coords="37.39°N 122.08°W">agentic workflows for promotional assets</a>.</span>
             <span class="stops__coords mono muted">37.39°N 122.08°W</span>
           </li>
-          <li class="stops__row">
+          <li class="stops__row" data-stop-place="samara" tabindex="0">
             <span class="stops__when mono">2024</span>
             <span class="stops__place"><b>Samara</b>, Russia</span>
             <span class="stops__what">Summer Space School at Samara University. At 53.2°N it sits just north of anywhere the ISS flies over. <a class="link" href="https://blog.matxspace.com/2025-05-14-mi-aventura-espacial-de-m%C3%A9xico-a-samara/" target="_blank" rel="noopener noreferrer">I wrote about it</a> in Spanish.</span>
             <span class="stops__coords mono muted">53.20°N 050.15°E</span>
           </li>
-          <li class="stops__row">
+          <li class="stops__row" data-stop-place="milan" tabindex="0">
             <span class="stops__when mono">2024</span>
             <span class="stops__place"><b>Milan</b>, Italy</span>
             <span class="stops__what">International Astronautical Congress, a second research paper with Mat X Space.</span>
             <span class="stops__coords mono muted">45.46°N 009.19°E</span>
           </li>
-          <li class="stops__row">
+          <li class="stops__row" data-stop-place="ksc" tabindex="0">
             <span class="stops__when mono">Nov 2024</span>
             <span class="stops__place"><b>Kennedy Space Center</b>, Florida</span>
             <span class="stops__what">The launch of SpaceX CRS-31, carrying our experiment to the ISS: <a class="link" href="/work/mcb-1/" data-title="MCB-1, a material that went to orbit" data-coords="28.61°N 080.60°W">MCB-1</a>.</span>
@@ -99,7 +98,7 @@
 
       <nav class="case-next" aria-label="Back to the work">
         <a href="/#work" data-title="Work" data-coords="20.66°N 103.35°W">
-          <span class="mono muted">Back to the passes</span>
+          <span class="mono muted">Back to the portfolio</span>
           <span class="case-next__title">See the work <span class="arrow" aria-hidden="true">→</span></span>
         </a>
       </nav>

@@ -81,6 +81,16 @@ export function formatCoords(latRad: number, lonRad: number) {
   return `${lat} ${lon}`;
 }
 
+/** Great-circle distance between two places in kilometres. */
+export function distanceKm(a: Place, b: Place) {
+  const la1 = a.lat * DEG;
+  const la2 = b.lat * DEG;
+  const dLat = (b.lat - a.lat) * DEG;
+  const dLon = (b.lon - a.lon) * DEG;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dLon / 2) ** 2;
+  return Math.round(2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h))));
+}
+
 /** Subsolar point (degrees) for a date: low-precision, good to about a degree. */
 export function subsolar(date: Date) {
   const start = Date.UTC(date.getUTCFullYear(), 0, 0);

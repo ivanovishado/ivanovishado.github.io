@@ -26,16 +26,44 @@ export function initFrame() {
   }
 
   onPage(({ path }) => {
-    // Over the amber field the frame switches to ground ink.
+    const root = document.documentElement;
+    root.classList.remove('on-field', 'on-light');
+
+    // Over the amber field the frame switches to deep ground ink.
     const field = document.querySelector('.field');
-    if (field) ScrollTrigger.create({ trigger: field, start: 'top 34px', end: 'bottom 34px', toggleClass: { targets: document.documentElement, className: 'on-field' } });
+    if (field) {
+      ScrollTrigger.create({
+        trigger: field,
+        start: 'top 38px',
+        end: 'bottom 38px',
+        toggleClass: { targets: root, className: 'on-field' },
+      });
+    }
+
+    // Over sunlit lunar-paper chapters the frame switches to dark ink.
+    const lights = [...document.querySelectorAll<HTMLElement>('[data-surface="light"]')];
+    let lightActive = 0;
+    for (const sec of lights) {
+      ScrollTrigger.create({
+        trigger: sec,
+        start: 'top 38px',
+        end: 'bottom 38px',
+        onToggle: (s) => {
+          lightActive += s.isActive ? 1 : -1;
+          root.classList.toggle('on-light', lightActive > 0);
+        },
+      });
+    }
+
     const links = [...document.querySelectorAll<HTMLAnchorElement>('.frame__nav [data-nav]')];
     links.forEach((a) => a.removeAttribute('aria-current'));
     if (path.startsWith('/work/')) links.find((a) => a.dataset.nav === 'work')?.setAttribute('aria-current', 'true');
     if (path.startsWith('/mentorship')) links.find((a) => a.dataset.nav === 'mentorship')?.setAttribute('aria-current', 'page');
     if (path.startsWith('/trajectory')) links.find((a) => a.dataset.nav === 'trajectory')?.setAttribute('aria-current', 'page');
     if (path.startsWith('/shelf')) links.find((a) => a.dataset.nav === 'shelf')?.setAttribute('aria-current', 'page');
-    if (path !== '/') return;
+    if (path !== '/') {
+      return () => { root.classList.remove('on-field', 'on-light'); };
+    }
     // Home: the nav marks the section in view.
     for (const a of links) {
       const id = a.dataset.nav!;
@@ -48,6 +76,7 @@ export function initFrame() {
         onToggle: (s) => { if (s.isActive) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); },
       });
     }
+    return () => { root.classList.remove('on-field', 'on-light'); };
   });
 }
 

@@ -77,76 +77,155 @@
           <div class="hero__map" aria-hidden="true">
             <canvas data-track="hero" data-rev="1"></canvas>
           </div>
-          <p class="hero__caption mono muted cue" style="--d: 1.6s">Ground track at ISS inclination, 51.64°. Night shading follows the real sun.</p>
           <div class="hero__content grid">
             <h1 class="hero__name" id="hero-title"><span class="line"><span style="--d: 0.15s">Ivan</span></span><span class="line"><span style="--d: 0.27s">Galaviz</span></span></h1>
             <div class="hero__aside">
               <p class="hero__lede">Senior software engineer at Netflix, building agentic workflows for promotional assets. Our team’s experiment reached orbit in 2024.</p>
-              <div class="hero__actions cue" style="--d: 0.95s">
-                <a class="btn btn--solid" href="#work">See the work <span class="arrow" aria-hidden="true">→</span></a>
-                <a class="textlink" href="/mentorship/"><span>Mentorship</span></a>
-              </div>
+              <a class="btn btn--solid cue" style="--d: 0.75s" href="#work">See the work <span class="arrow" aria-hidden="true">→</span></a>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="section" id="work" aria-labelledby="work-title">
+      <section class="section work-section" id="work" aria-labelledby="work-title">
         <header class="section__head grid">
-          <h2 class="h-xl c-1-4" id="work-title" data-split="lines">Work</h2>
-          <p class="c-5-8 muted" data-split="lines">Eight years of systems that have to stay up: a streaming service, a bank, an event platform at broadcast scale. And one that left the planet.</p>
-          <p class="c-9-12 mono muted">Each project is one pass of the track over where the work landed. Almost all of it was sent from home, in Guadalajara.</p>
+          <h2 class="h-section c-1-4" id="work-title" data-split="lines">Work</h2>
+          <p class="c-5-12 muted prose" data-split="lines">Eight years of systems that have to stay up: a streaming service, a bank, an event platform at broadcast scale, and an experiment that left the planet. Every pass starts from home in Guadalajara and lands where the work runs.</p>
         </header>
 
-        <ol class="index" data-index>
-          <li class="index__row">
-            <a class="index__link" href="/work/netflix/" data-place="bay" data-rev="1" data-coords="37.39°N 122.08°W" data-title="Agentic workflows for promotional assets">
-              <span class="index__strip" aria-hidden="true"><canvas data-track="pass" data-place="bay" data-static data-rev="1"></canvas></span>
-              <span class="index__meta"><span class="mono">Rev 001</span><span class="mono muted">37.39°N 122.08°W</span></span>
-              <span class="index__title">Agentic workflows for promotional assets</span>
-              <span class="index__end"><span class="mono muted">Netflix · Since 2023</span><span class="arrow" aria-hidden="true">→</span></span>
-            </a>
-          </li>
-          <li class="index__row">
-            <a class="index__link" href="/work/mcb-1/" data-place="ksc" data-rev="2" data-coords="28.61°N 080.60°W" data-title="MCB-1, a material that went to orbit">
-              <span class="index__strip" aria-hidden="true"><canvas data-track="pass" data-place="ksc" data-static data-rev="2"></canvas></span>
-              <span class="index__meta"><span class="mono">Rev 002</span><span class="mono muted">28.61°N 080.60°W</span></span>
-              <span class="index__title">MCB-1, a material that went to orbit</span>
-              <span class="index__end"><span class="mono muted">Mat X Space · 2024</span><span class="arrow" aria-hidden="true">→</span></span>
-            </a>
-          </li>
-          <li class="index__row">
-            <a class="index__link" href="/work/nubank/" data-place="sao" data-rev="3" data-coords="23.55°S 046.63°W" data-title="How people apply to Nubank">
-              <span class="index__strip" aria-hidden="true"><canvas data-track="pass" data-place="sao" data-static data-rev="3"></canvas></span>
-              <span class="index__meta"><span class="mono">Rev 003</span><span class="mono muted">23.55°S 046.63°W</span></span>
-              <span class="index__title">How people apply to Nubank</span>
-              <span class="index__end"><span class="mono muted">Nubank · 2021 to 2023</span><span class="arrow" aria-hidden="true">→</span></span>
-            </a>
-          </li>
-          <li class="index__row">
-            <a class="index__link" href="/work/wizeline/" data-place="gdl" data-descending data-rev="4" data-coords="20.66°N 103.35°W" data-title="Three clients, three systems">
-              <span class="index__strip" aria-hidden="true"><canvas data-track="pass" data-place="gdl" data-descending data-static data-rev="4"></canvas></span>
-              <span class="index__meta"><span class="mono">Rev 004</span><span class="mono muted">20.66°N 103.35°W</span></span>
-              <span class="index__title">Three clients, three systems</span>
-              <span class="index__end"><span class="mono muted">Wizeline · 2018 to 2021</span><span class="arrow" aria-hidden="true">→</span></span>
-            </a>
-          </li>
-          <li class="index__row">
-            <a class="index__link" href="https://expo-playground.ivanovishado.dev/" target="_blank" rel="noopener noreferrer" data-place="gdl" data-rev="5">
-              <span class="index__strip" aria-hidden="true"><canvas data-track="pass" data-place="gdl" data-static data-rev="5"></canvas></span>
-              <span class="index__meta"><span class="mono">Rev 005</span><span class="mono muted">Live project</span></span>
-              <span class="index__title">Expo Playground, an annotated code explorer for beginners</span>
-              <span class="index__end"><span class="mono muted">Independent · 2026</span><span class="arrow arrow--ne" aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span></span>
-            </a>
-          </li>
-        </ol>
-        <div class="preview" aria-hidden="true">
-          <canvas></canvas>
-          <div class="preview__label"><span class="mono" data-preview-rev>Rev 001</span><span class="mono muted" data-preview-coords></span></div>
+        <div class="work-layout grid">
+          <ol class="index" data-index>
+            <li class="index__row">
+              <a
+                class="index__link"
+                href="/work/netflix/"
+                data-place="bay"
+                data-rev="1"
+                data-location="Bay Area"
+                data-coords="37.39°N 122.08°W"
+                data-title="Agentic workflows for promotional assets"
+                data-summary="Agentic workflows layered over the distributed systems carrying Netflix promotional assets from studios to global screens."
+              >
+                <span class="index__strip" aria-hidden="true"><canvas data-track="pass" data-place="bay" data-static data-rev="1"></canvas></span>
+                <span class="index__meta">
+                  <span class="mono index__place">Bay Area · 37.39°N 122.08°W</span>
+                  <span class="mono muted">Netflix · Since 2023</span>
+                </span>
+                <span class="index__main">
+                  <span class="index__title">Agentic workflows for promotional assets</span>
+                  <span class="arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+            </li>
+            <li class="index__row">
+              <a
+                class="index__link"
+                href="/work/mcb-1/"
+                data-place="ksc"
+                data-rev="2"
+                data-location="Kennedy Space Center"
+                data-coords="28.61°N 080.60°W"
+                data-title="MCB-1, a material that went to orbit"
+                data-summary="A biomimetic material built by Mat X Space that launched aboard SpaceX CRS-31 to the ISS MISSE platform."
+              >
+                <span class="index__strip" aria-hidden="true"><canvas data-track="pass" data-place="ksc" data-static data-rev="2"></canvas></span>
+                <span class="index__meta">
+                  <span class="mono index__place">Kennedy Space Center · 28.61°N 080.60°W</span>
+                  <span class="mono muted">Mat X Space · 2024</span>
+                </span>
+                <span class="index__main">
+                  <span class="index__title">MCB-1, a material that went to orbit</span>
+                  <span class="arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+            </li>
+            <li class="index__row">
+              <a
+                class="index__link"
+                href="/work/nubank/"
+                data-place="sao"
+                data-rev="3"
+                data-location="São Paulo"
+                data-coords="23.55°S 046.63°W"
+                data-title="How people apply to Nubank"
+                data-summary="Led the design and operation of application flows in Clojure and Datomic serving millions across Mexico."
+              >
+                <span class="index__strip" aria-hidden="true"><canvas data-track="pass" data-place="sao" data-static data-rev="3"></canvas></span>
+                <span class="index__meta">
+                  <span class="mono index__place">São Paulo · 23.55°S 046.63°W</span>
+                  <span class="mono muted">Nubank · 2021 to 2023</span>
+                </span>
+                <span class="index__main">
+                  <span class="index__title">How people apply to Nubank</span>
+                  <span class="arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+            </li>
+            <li class="index__row">
+              <a
+                class="index__link"
+                href="/work/wizeline/"
+                data-place="gdl"
+                data-descending
+                data-rev="4"
+                data-location="Guadalajara"
+                data-coords="20.66°N 103.35°W"
+                data-title="Three clients, three systems"
+                data-summary="Broadcast event pipelines, entertainment identity systems, and a real-estate chatbot in Go, Python, and AWS."
+              >
+                <span class="index__strip" aria-hidden="true"><canvas data-track="pass" data-place="gdl" data-descending data-static data-rev="4"></canvas></span>
+                <span class="index__meta">
+                  <span class="mono index__place">Guadalajara · 20.66°N 103.35°W</span>
+                  <span class="mono muted">Wizeline · 2018 to 2021</span>
+                </span>
+                <span class="index__main">
+                  <span class="index__title">Three clients, three systems</span>
+                  <span class="arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+            </li>
+            <li class="index__row">
+              <a
+                class="index__link"
+                href="https://expo-playground.ivanovishado.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-place="gdl"
+                data-rev="5"
+                data-location="Guadalajara"
+                data-coords="20.66°N 103.35°W"
+                data-summary="Interactive annotated code explorer built to help beginners read and experiment with Expo projects."
+              >
+                <span class="index__strip" aria-hidden="true"><canvas data-track="pass" data-place="gdl" data-static data-rev="5"></canvas></span>
+                <span class="index__meta">
+                  <span class="mono index__place">Guadalajara · Live project</span>
+                  <span class="mono muted">Independent · 2026</span>
+                </span>
+                <span class="index__main">
+                  <span class="index__title">Expo Playground, an annotated code explorer for beginners</span>
+                  <span class="arrow arrow--ne" aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span>
+                </span>
+              </a>
+            </li>
+          </ol>
+
+          <aside class="work-monitor" aria-hidden="true">
+            <div class="work-monitor__canvas">
+              <canvas></canvas>
+            </div>
+            <div class="work-monitor__body">
+              <div class="work-monitor__top">
+                <span class="mono accent" data-monitor-place>Bay Area</span>
+                <span class="mono muted" data-monitor-coords>37.39°N 122.08°W</span>
+              </div>
+              <p class="mono muted" data-monitor-distance>2,522 km from Guadalajara</p>
+              <p class="work-monitor__summary" data-monitor-summary>Agentic workflows layered over the distributed systems carrying Netflix promotional assets from studios to global screens.</p>
+            </div>
+          </aside>
         </div>
       </section>
 
-      <section class="section" id="space" aria-labelledby="space-title">
+      <section class="section" id="space" data-surface="slate" aria-labelledby="space-title">
         <div class="space grid">
           <figure class="space__figure" data-reveal="sweep">
             <div class="space__frame">
@@ -155,31 +234,37 @@
             <figcaption class="mono muted"><span>Kennedy Space Center, Florida</span><span>28.61°N 080.60°W</span></figcaption>
           </figure>
           <div class="space__text">
-            <p class="mono accent">Rev 002</p>
-            <h2 class="h-xl" id="space-title" data-split="lines">MCB-1 went to orbit.</h2>
-            <p data-split="lines">A biomimetic material inspired by muscle fibres, built by Mat X Space, a collective of young Mexican scientists and engineers. It launched on SpaceX CRS-31 in November 2024 and was tested aboard the International Space Station through the MISSE platform, against the temperature swings of orbit.</p>
+            <h2 class="h-section" id="space-title" data-split="lines">MCB-1 went to orbit.</h2>
+            <p class="prose" data-split="lines">A biomimetic material inspired by muscle fibres, built by Mat X Space, a collective of young Mexican scientists and engineers. It launched on SpaceX CRS-31 in November 2024 and was tested aboard the International Space Station through the MISSE platform, against the temperature swings of orbit.</p>
             <dl class="facts">
               <div><dt class="mono">Mission</dt><dd>SpaceX CRS-31</dd></div>
               <div><dt class="mono">Platform</dt><dd>MISSE, on the ISS</dd></div>
               <div><dt class="mono">Launch</dt><dd>November 2024</dd></div>
               <div><dt class="mono">Covered by</dt><dd>Forbes México, El País</dd></div>
             </dl>
-            <div class="space__links">
-              <a class="textlink" href="/work/mcb-1/" data-coords="28.61°N 080.60°W" data-title="MCB-1, a material that went to orbit"><span>Read the MCB-1 story</span> <span class="arrow" aria-hidden="true">→</span></a>
-              <a class="textlink" href="/trajectory/" data-title="Trajectory" data-coords="20.66°N 103.35°W"><span>See every stop on one map</span> <span class="arrow" aria-hidden="true">→</span></a>
-            </div>
+            <a class="btn btn--solid" href="/work/mcb-1/" data-coords="28.61°N 080.60°W" data-title="MCB-1, a material that went to orbit">Read the MCB-1 story <span class="arrow" aria-hidden="true">→</span></a>
           </div>
         </div>
       </section>
 
-      <section class="section" id="about" aria-labelledby="about-title">
+      <section class="section" id="about" data-surface="light" aria-labelledby="about-title">
         <h2 class="sr-only" id="about-title">About</h2>
         <div class="about grid">
           <p class="statement" data-split="lines">I build distributed systems for a living and teach the craft on the side. Before Netflix I wrote Clojure at Nubank, and at Wizeline I went from trainee to engineer III in three years. I studied computer engineering at the Universidad de Guadalajara.</p>
 
           <figure class="portrait" data-reveal="sweep">
-            <img src="/img/headshot.webp" alt="Portrait of Ivan Galaviz" width="400" height="500" loading="lazy" decoding="async" />
-            <figcaption class="mono muted">Ivan Galaviz</figcaption>
+            <div class="portrait__stage">
+              <svg class="portrait__orbit" viewBox="0 0 400 500" fill="none" aria-hidden="true">
+                <line x1="0" y1="165" x2="400" y2="165" stroke="#0b111a" stroke-opacity="0.08" stroke-width="1" />
+                <line x1="0" y1="335" x2="400" y2="335" stroke="#0b111a" stroke-opacity="0.08" stroke-width="1" />
+                <line x1="200" y1="0" x2="200" y2="500" stroke="#0b111a" stroke-opacity="0.08" stroke-width="1" />
+                <circle cx="200" cy="245" r="142" stroke="#0b111a" stroke-opacity="0.14" stroke-width="1" stroke-dasharray="3 5" />
+                <path d="M-20 355 C 85 355, 130 135, 235 135 S 345 270, 420 270" stroke="#f5a524" stroke-width="1.75" />
+                <circle cx="235" cy="135" r="4" fill="#f5a524" />
+              </svg>
+              <img src="/img/headshot.webp" alt="Portrait of Ivan Galaviz" width="555" height="550" loading="lazy" decoding="async" />
+            </div>
+            <figcaption class="mono muted"><span>Ivan Galaviz</span><span>Guadalajara, Mexico</span></figcaption>
           </figure>
 
           <div class="lists">
@@ -225,27 +310,42 @@
         </div>
       </section>
 
-      <section class="section section--tight" id="record" aria-labelledby="record-title">
-        <header class="section__head grid">
-          <h2 class="h-l c-1-4" id="record-title">Writing, talks and press</h2>
-          <p class="c-5-8 muted">Most of it in Spanish, marked ES.</p>
+      <section class="section section--tight" id="record" data-surface="light" aria-labelledby="record-title">
+        <header class="record-head grid">
+          <h2 class="h-section c-1-6" id="record-title">Writing, talks and press</h2>
+          <div class="record-head__controls">
+            <div class="segmented" role="tablist" aria-label="Filter publications and talks" data-filter-group="record">
+              <button class="segmented__tab" type="button" role="tab" aria-selected="true" data-filter="all">All</button>
+              <button class="segmented__tab" type="button" role="tab" aria-selected="false" tabindex="-1" data-filter="writing">Writing</button>
+              <button class="segmented__tab" type="button" role="tab" aria-selected="false" tabindex="-1" data-filter="press">Press</button>
+              <button class="segmented__tab" type="button" role="tab" aria-selected="false" tabindex="-1" data-filter="talks">Talks & podcasts</button>
+            </div>
+          </div>
+          <div class="record-sub">
+            <p class="muted">Most items are in Spanish, marked ES.</p>
+            <p class="mono muted" data-filter-count="record">9 items</p>
+          </div>
         </header>
         <div class="record">
-          <a href="https://blog.ivanovishado.dev" target="_blank" rel="noopener noreferrer"><span class="record__kind mono">Blog</span><span class="record__title">Notes on systems, craft and the edges of software</span><span class="record__src mono">blog.ivanovishado.dev <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
-          <a href="https://talks.ivanovishado.dev" target="_blank" rel="noopener noreferrer"><span class="record__kind mono">Slides</span><span class="record__title">My lecture deck</span><span class="record__src mono">talks.ivanovishado.dev <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
-          <a href="https://forbes.com.mx/musk-llevara-un-experimento-mexicano-al-espacio-en-octubre/" target="_blank" rel="noopener noreferrer"><span class="record__kind mono">Press · ES</span><span class="record__title">Musk will carry a Mexican experiment to space</span><span class="record__src mono">Forbes México, Oct 2024 <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
-          <a href="https://elpais.com/mexico/2024-12-02/los-chicos-que-sonaban-con-las-estrellas-la-historia-detras-del-ultimo-experimento-de-mexico-en-el-espacio.html" target="_blank" rel="noopener noreferrer"><span class="record__kind mono">Press · ES</span><span class="record__title">The kids who dreamed of the stars</span><span class="record__src mono">El País, Dec 2024 <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
-          <a href="https://blog.matxspace.com/2025-05-14-mi-aventura-espacial-de-m%C3%A9xico-a-samara/" target="_blank" rel="noopener noreferrer"><span class="record__kind mono">Essay · ES</span><span class="record__title">My space adventure: from Mexico to Samara</span><span class="record__src mono">Mat X Space, May 2025 <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
-          <a href="https://www.youtube.com/watch?v=o75pGPjBqmU" target="_blank" rel="noopener noreferrer"><span class="record__kind mono">Talk · ES</span><span class="record__title">Engineering principles at Nubank</span><span class="record__src mono">YouTube <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
-          <a href="https://www.youtube.com/watch?v=YpFuzEAWjJM" target="_blank" rel="noopener noreferrer"><span class="record__kind mono">Talk · ES</span><span class="record__title">Go concurrency patterns</span><span class="record__src mono">YouTube <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
-          <a href="https://open.spotify.com/episode/7InqS8nts57eJIwAMeCdBk" target="_blank" rel="noopener noreferrer"><span class="record__kind mono">Podcast · ES</span><span class="record__title">Detecting hate speech with AI</span><span class="record__src mono">Spotify <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
-          <a href="https://open.spotify.com/episode/0IQna0wz6CNVALdQgy2CmV" target="_blank" rel="noopener noreferrer"><span class="record__kind mono">Podcast · ES</span><span class="record__title">AI against gender violence</span><span class="record__src mono">Spotify <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
+          <a href="https://blog.ivanovishado.dev" target="_blank" rel="noopener noreferrer" data-filter-target="record" data-category="writing"><span class="record__kind mono">Blog</span><span class="record__title">Notes on systems, craft and the edges of software</span><span class="record__src mono">blog.ivanovishado.dev <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
+          <a href="https://talks.ivanovishado.dev" target="_blank" rel="noopener noreferrer" data-filter-target="record" data-category="talks"><span class="record__kind mono">Slides</span><span class="record__title">My lecture deck</span><span class="record__src mono">talks.ivanovishado.dev <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
+          <a href="https://forbes.com.mx/musk-llevara-un-experimento-mexicano-al-espacio-en-octubre/" target="_blank" rel="noopener noreferrer" data-filter-target="record" data-category="press"><span class="record__kind mono">Press · ES</span><span class="record__title">Musk will carry a Mexican experiment to space</span><span class="record__src mono">Forbes México, Oct 2024 <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
+          <a href="https://elpais.com/mexico/2024-12-02/los-chicos-que-sonaban-con-las-estrellas-la-historia-detras-del-ultimo-experimento-de-mexico-en-el-espacio.html" target="_blank" rel="noopener noreferrer" data-filter-target="record" data-category="press"><span class="record__kind mono">Press · ES</span><span class="record__title">The kids who dreamed of the stars</span><span class="record__src mono">El País, Dec 2024 <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
+          <a href="https://blog.matxspace.com/2025-05-14-mi-aventura-espacial-de-m%C3%A9xico-a-samara/" target="_blank" rel="noopener noreferrer" data-filter-target="record" data-category="writing"><span class="record__kind mono">Essay · ES</span><span class="record__title">My space adventure: from Mexico to Samara</span><span class="record__src mono">Mat X Space, May 2025 <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
+          <a href="https://www.youtube.com/watch?v=o75pGPjBqmU" target="_blank" rel="noopener noreferrer" data-filter-target="record" data-category="talks"><span class="record__kind mono">Talk · ES</span><span class="record__title">Engineering principles at Nubank</span><span class="record__src mono">YouTube <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
+          <a href="https://www.youtube.com/watch?v=YpFuzEAWjJM" target="_blank" rel="noopener noreferrer" data-filter-target="record" data-category="talks"><span class="record__kind mono">Talk · ES</span><span class="record__title">Go concurrency patterns</span><span class="record__src mono">YouTube <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
+          <a href="https://open.spotify.com/episode/7InqS8nts57eJIwAMeCdBk" target="_blank" rel="noopener noreferrer" data-filter-target="record" data-category="talks"><span class="record__kind mono">Podcast · ES</span><span class="record__title">Detecting hate speech with AI</span><span class="record__src mono">Spotify <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
+          <a href="https://open.spotify.com/episode/0IQna0wz6CNVALdQgy2CmV" target="_blank" rel="noopener noreferrer" data-filter-target="record" data-category="talks"><span class="record__kind mono">Podcast · ES</span><span class="record__title">AI against gender violence</span><span class="record__src mono">Spotify <span class="arrow--ne" aria-hidden="true">↗</span></span></a>
         </div>
       </section>
 
       <section class="section field" id="mentorship" aria-labelledby="mentor-title">
+        <svg class="field__orbit" viewBox="0 0 1440 360" preserveAspectRatio="none" fill="none" aria-hidden="true">
+          <path d="M0 290 C 240 290, 360 70, 620 70 S 980 290, 1220 290 S 1360 150, 1440 150" stroke="#060a10" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+          <path d="M0 220 C 220 220, 380 40, 660 40 S 1020 260, 1280 260 S 1390 190, 1440 190" stroke="#060a10" stroke-width="1" stroke-dasharray="4 6" vector-effect="non-scaling-stroke" />
+        </svg>
         <div class="field__inner grid">
-          <h2 class="field__title h-xl" id="mentor-title" data-split="lines">Mentorship, in English or Spanish.</h2>
+          <h2 class="field__title h-section" id="mentor-title" data-split="lines">Mentorship, in English or Spanish.</h2>
           <div class="field__text">
             <p>One-on-one sessions on system design, career growth, technical interviews, and moving from Latin America into global tech. 45 minutes, remote, 500 MXN.</p>
             <a class="btn btn--dark" href="/mentorship/">How sessions work <span class="arrow" aria-hidden="true">→</span></a>

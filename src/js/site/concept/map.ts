@@ -2,10 +2,10 @@
 // the graticule and a ghost of the unflown Earth are always visible. Night follows the real sun.
 // Cost per frame is two drawImage calls plus the track strokes: track points are cached per
 // resize, and the swath is added to the reveal mask only as the track advances.
-import { DEG, INCLINATION, greatCircle, subsolar, trackAt, wrap180, type Pass, type Place } from './orbit';
+import { DEG, INCLINATION, distanceKm, formatCoords, greatCircle, subsolar, trackAt, wrap180, type Pass, type Place } from './orbit';
 import { landRowAt } from './land';
 
-export type Link = { to: Place; kind: 'trip' | 'signal'; label?: string };
+export type Link = { to: Place; kind: 'trip' | 'signal'; label?: string; key?: string };
 
 export type MapOptions = {
   /** The ground track. Without one, the map draws only the station and its links. */
@@ -16,6 +16,10 @@ export type MapOptions = {
   links?: Link[];
   /** Mark the farthest latitudes the orbit reaches. */
   reach?: boolean;
+  /** Concentric distance rings for Point Nemo. */
+  oceanRings?: boolean;
+  /** Enable precision pointer reticle and station inspection on desktop. */
+  interactive?: boolean;
   place?: Place;
   /** Phase at which the track crosses `place`. */
   placePhase?: number;
@@ -28,9 +32,11 @@ export type MapOptions = {
 };
 
 const COLOR = {
-  land: '#7a8ca1',
-  night: 'rgba(7, 9, 12, 0.42)',
-  grid: 'rgba(236, 235, 230, 0.07)',
+  land: '#92adc8',
+  night: 'rgba(6, 10, 16, 0.56)',
+  terminator: 'rgba(245, 165, 36, 0.26)',
+  grid: 'rgba(236, 235, 230, 0.065)',
+  tick: 'rgba(236, 235, 230, 0.18)',
   equator: 'rgba(236, 235, 230, 0.16)',
   track: '245, 165, 36',
   ink: '#ecebe6',
@@ -60,6 +66,8 @@ export class TrackMap {
   private linked = -1;
   private narrow = false;
   private baked = false; // arrived links are drawn into the ground layer once
+  private pointer: { x: number; y: number } | null = null;
+  private highlight: string | null = null;
 
   constructor(private canvas: HTMLCanvasElement, private o: MapOptions) {
     this.ctx = canvas.getContext('2d')!;
@@ -142,7 +150,7 @@ export class TrackMap {
     g.fill();
     g.globalCompositeOperation = 'source-over';
 
-    // Base: graticule every 30° (equator brighter) and a ghost of the unflown Earth.
+    // Base: graticule every 30° (equator brighter), fiducial ticks, terminator line, and ghost Earth.
     const b = this.base.getContext('2d')!;
     b.clearRect(0, 0, this.w, this.h);
     b.lineWidth = Math.max(1, this.dpr * 0.75);
@@ -151,14 +159,58 @@ export class TrackMap {
     for (let lon = -180; lon < 180; lon += 30) { const x = this.x(lon); b.moveTo(x, 0); b.lineTo(x, this.h); }
     for (let lat = -60; lat <= 60; lat += 30) if (lat) { const y = this.y(lat); b.moveTo(0, y); b.lineTo(this.w, y); }
     b.stroke();
+
+    // Tiny cartographic crosshairs at 30° graticule intersections.
+    const tick = 2.5 * this.dpr;
+    b.strokeStyle = COLOR.tick;
+    b.beginPath();
+    for (let lon = -180; lon < 180; lon += 30) {
+      const gx = this.x(lon);
+      if (gx < 0 || gx > this.w) continue;
+      for (let lat = -60; lat <= 60; lat += 30) {
+        const gy = this.y(lat);
+        if (gy < 0 || gy > this.h) continue;
+        b.moveTo(gx - tick, gy); b.lineTo(gx + tick, gy);
+        b.moveTo(gx, gy - tick); b.lineTo(gx, gy + tick);
+      }
+    }
+    b.stroke();
+
     b.strokeStyle = COLOR.equator;
     b.beginPath(); b.moveTo(0, this.y(0)); b.lineTo(this.w, this.y(0)); b.stroke();
+
+    // Subtle real-time solar terminator line across the map.
+    b.setLineDash([this.dpr * 3, this.dpr * 5]);
+    b.strokeStyle = COLOR.terminator;
+    b.lineWidth = Math.max(1, this.dpr * 0.85);
+    b.beginPath();
+    for (let i = 0; i <= cols; i++) {
+      const px = (i / cols) * this.w;
+      const lon = this.c.lon + (px - this.w / 2) / this.k;
+      const py = this.y(Math.atan(-Math.cos((lon - sun.lon) * DEG) / Math.tan(d)) / DEG);
+      if (i === 0) b.moveTo(px, py); else b.lineTo(px, py);
+    }
+    b.stroke();
+    b.setLineDash([]);
+
+    if (this.o.oceanRings && this.o.place) {
+      const nx = this.x(this.o.place.lon);
+      const ny = this.y(this.o.place.lat);
+      b.setLineDash([this.dpr * 2, this.dpr * 6]);
+      b.strokeStyle = 'rgba(146, 173, 200, 0.2)';
+      b.lineWidth = Math.max(1, this.dpr * 0.8);
+      for (const degR of [9, 18, 24.2]) {
+        b.beginPath(); b.arc(nx, ny, degR * this.k, 0, Math.PI * 2); b.stroke();
+      }
+      b.setLineDash([]);
+    }
+
     if (this.o.reach) {
       const lim = INCLINATION / DEG;
       b.setLineDash([this.dpr * 3, this.dpr * 6]);
-      b.strokeStyle = `rgba(${COLOR.track}, 0.4)`;
+      b.strokeStyle = `rgba(${COLOR.track}, 0.42)`;
       b.font = `${11 * this.dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
-      b.fillStyle = `rgba(${COLOR.track}, 0.75)`;
+      b.fillStyle = `rgba(${COLOR.track}, 0.78)`;
       for (const lat of [lim, -lim]) {
         const y = this.y(lat);
         b.beginPath(); b.moveTo(0, y); b.lineTo(this.w, y); b.stroke();
@@ -166,7 +218,7 @@ export class TrackMap {
       }
       b.setLineDash([]);
     }
-    b.globalAlpha = 0.09;
+    b.globalAlpha = 0.11;
     b.drawImage(this.land, 0, 0);
     b.globalAlpha = 1;
 
@@ -293,6 +345,20 @@ export class TrackMap {
     if (this.baked) g.drawImage(this.deco, 0, 0);
   }
 
+  setPointer(clientX: number | null, clientY: number | null) {
+    if (clientX === null || clientY === null) { this.pointer = null; return; }
+    const r = this.canvas.getBoundingClientRect();
+    if (clientX < r.left || clientX > r.right || clientY < r.top || clientY > r.bottom) {
+      this.pointer = null;
+      return;
+    }
+    this.pointer = { x: (clientX - r.left) * this.dpr, y: (clientY - r.top) * this.dpr };
+  }
+
+  setHighlight(key: string | null) {
+    this.highlight = key;
+  }
+
   coordsAt(phase: number) {
     if (this.o.pass) return trackAt(this.o.pass, phase);
     const p = this.o.station ?? { lat: 0, lon: 0 };
@@ -318,6 +384,8 @@ export class TrackMap {
       }
       this.drawLinks(g, 1, time, 'packets');
     } else this.drawLinks(g, links, time, 'all');
+
+    this.drawHighlightAndPointer(g, time);
     if (!this.o.pass) return;
 
     // Flown track: older revolutions fade.
@@ -326,7 +394,7 @@ export class TrackMap {
     for (let a = Math.floor(start / CHUNK) * CHUNK; a < phase; a += CHUNK) {
       const age = phase - (a + CHUNK / 2);
       g.strokeStyle = `rgba(${COLOR.track}, ${Math.max(0.14, Math.min(1, 1 - age / 2.2))})`;
-      g.lineWidth = dpr * (age < 0.8 ? 1.5 : 1);
+      g.lineWidth = dpr * (age < 0.8 ? 1.65 : 1);
       g.beginPath();
       this.path(g, Math.max(a, start), Math.min(a + CHUNK, phase));
       g.stroke();
@@ -355,55 +423,165 @@ export class TrackMap {
       g.beginPath(); g.moveTo(x - s, y); g.lineTo(x + s, y); g.moveTo(x, y - s); g.lineTo(x, y + s); g.stroke();
       if (reached > 0) {
         g.globalAlpha = reached;
-        g.font = `500 ${12 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
-        g.fillStyle = COLOR.ink;
-        const right = x + 160 * dpr > this.w;
-        g.textAlign = right ? 'right' : 'left';
-        g.fillText(o.place.name, right ? x - 12 * dpr : x + 12 * dpr, y - 8 * dpr);
-        g.textAlign = 'left';
+        this.label(g, x, y, this.narrow ? o.place.short ?? o.place.name : o.place.name);
         g.globalAlpha = 1;
       }
     }
 
-    // Marker, with a slow ping.
+    // Marker, swath footprint ring, and slow ping.
     const [mx, my] = this.point(phase);
+    const footR = this.o.swath * 0.45 * this.k;
+    if (footR > 12 * dpr && footR < 140 * dpr) {
+      g.strokeStyle = `rgba(${COLOR.track}, 0.2)`;
+      g.lineWidth = dpr * 0.85;
+      g.beginPath(); g.arc(mx, my, footR, 0, Math.PI * 2); g.stroke();
+    }
     g.fillStyle = `rgb(${COLOR.track})`;
-    g.beginPath(); g.arc(mx, my, 3.5 * dpr, 0, Math.PI * 2); g.fill();
+    g.beginPath(); g.arc(mx, my, 3.75 * dpr, 0, Math.PI * 2); g.fill();
     const pulse = (time * 0.5) % 1;
     g.strokeStyle = `rgba(${COLOR.track}, ${0.55 * (1 - pulse)})`;
     g.lineWidth = dpr;
-    g.beginPath(); g.arc(mx, my, (6 + pulse * 16) * dpr, 0, Math.PI * 2); g.stroke();
+    g.beginPath(); g.arc(mx, my, (6 + pulse * 18) * dpr, 0, Math.PI * 2); g.stroke();
+  }
+
+  private drawHighlightAndPointer(g: CanvasRenderingContext2D, time: number) {
+    const o = this.o;
+    const dpr = this.dpr;
+
+    // Resolve either external ledger highlight or nearby pointer hover target.
+    let activeKey = this.highlight;
+    let snapped: { x: number; y: number; name: string; sub: string } | null = null;
+
+    if (o.interactive && this.pointer && !this.narrow) {
+      const { x: px, y: py } = this.pointer;
+      const hitR = 44 * dpr;
+      let bestDist = hitR;
+      if (o.station) {
+        const sx = this.x(o.station.lon);
+        const sy = this.y(o.station.lat);
+        const d = Math.hypot(px - sx, py - sy);
+        if (d < bestDist) {
+          bestDist = d;
+          activeKey = 'gdl';
+          snapped = { x: sx, y: sy, name: o.station.name, sub: 'Home station' };
+        }
+      }
+      for (const l of o.links ?? []) {
+        const lx = this.x(l.to.lon);
+        const ly = this.y(l.to.lat);
+        const d = Math.hypot(px - lx, py - ly);
+        if (d < bestDist) {
+          bestDist = d;
+          activeKey = l.key ?? null;
+          const km = o.station ? `${distanceKm(o.station, l.to).toLocaleString('en-US')} km from Guadalajara` : '';
+          snapped = { x: lx, y: ly, name: l.to.name, sub: km };
+        }
+      }
+
+      // Precision reticle + live coordinate telemetry under pointer.
+      const rx = snapped ? snapped.x : px;
+      const ry = snapped ? snapped.y : py;
+      const arm = snapped ? 16 * dpr : 14 * dpr;
+      g.strokeStyle = snapped ? `rgba(${COLOR.track}, 0.85)` : 'rgba(236, 235, 230, 0.28)';
+      g.lineWidth = dpr;
+      g.beginPath();
+      g.moveTo(rx - arm, ry); g.lineTo(rx - 5 * dpr, ry);
+      g.moveTo(rx + 5 * dpr, ry); g.lineTo(rx + arm, ry);
+      g.moveTo(rx, ry - arm); g.lineTo(rx, ry - 5 * dpr);
+      g.moveTo(rx, ry + 5 * dpr); g.lineTo(rx, ry + arm);
+      g.stroke();
+
+      if (!snapped) {
+        const lonDeg = wrap180(this.c.lon + (px - this.w / 2) / this.k);
+        const latDeg = Math.max(-89, Math.min(89, this.c.lat + (this.h / 2 - py) / this.k));
+        const coordText = formatCoords(latDeg * DEG, lonDeg * DEG);
+        g.font = `500 ${11 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
+        const tw = g.measureText(coordText).width;
+        const flip = px + tw + 26 * dpr > this.w;
+        const tx = flip ? px - tw - 14 * dpr : px + 14 * dpr;
+        const ty = py < 36 * dpr ? py + 20 * dpr : py - 10 * dpr;
+        g.lineWidth = 3.5 * dpr;
+        g.strokeStyle = 'rgba(6, 10, 16, 0.9)';
+        g.strokeText(coordText, tx, ty);
+        g.fillStyle = 'rgba(236, 235, 230, 0.72)';
+        g.fillText(coordText, tx, ty);
+      } else if (snapped.sub) {
+        g.font = `500 ${11 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
+        const tw = g.measureText(snapped.sub).width;
+        const flip = snapped.x + tw + 30 * dpr > this.w;
+        const tx = flip ? snapped.x - tw - 16 * dpr : snapped.x + 16 * dpr;
+        const ty = snapped.y + 24 * dpr;
+        g.lineWidth = 4 * dpr;
+        g.strokeStyle = 'rgba(6, 10, 16, 0.92)';
+        g.strokeText(snapped.sub, tx, ty);
+        g.fillStyle = `rgb(${COLOR.track})`;
+        g.fillText(snapped.sub, tx, ty);
+      }
+    }
+
+    // Highlight active link arc + target ring (from ledger hover or pointer snap).
+    if (!activeKey || !o.station) return;
+    if (activeKey === 'gdl') {
+      const sx = this.x(o.station.lon);
+      const sy = this.y(o.station.lat);
+      const pulse = (time * 0.7) % 1;
+      g.strokeStyle = `rgba(${COLOR.track}, ${0.85 * (1 - pulse * 0.5)})`;
+      g.lineWidth = dpr * 1.5;
+      g.beginPath(); g.arc(sx, sy, (8 + pulse * 14) * dpr, 0, Math.PI * 2); g.stroke();
+      return;
+    }
+    const target = (o.links ?? []).find((l) => l.key === activeKey);
+    if (!target) return;
+    g.strokeStyle = `rgb(${COLOR.track})`;
+    g.lineWidth = dpr * 2.2;
+    g.setLineDash(target.kind === 'trip' ? [] : [dpr * 5, dpr * 4]);
+    g.beginPath();
+    const end = this.arc(g, target.to, 1);
+    g.stroke();
+    g.setLineDash([]);
+    const pulse = (time * 0.75) % 1;
+    g.strokeStyle = `rgba(${COLOR.track}, ${0.85 * (1 - pulse * 0.5)})`;
+    g.lineWidth = dpr * 1.5;
+    g.beginPath(); g.arc(end.x, end.y, (7 + pulse * 14) * dpr, 0, Math.PI * 2); g.stroke();
+    g.fillStyle = `rgb(${COLOR.track})`;
+    g.beginPath(); g.arc(end.x, end.y, 3.2 * dpr, 0, Math.PI * 2); g.fill();
   }
 
   private label(g: CanvasRenderingContext2D, x: number, y: number, text: string, sub?: string) {
     const dpr = this.dpr;
-    const right = x + 170 * dpr > this.w;
-    g.textAlign = right ? 'right' : 'left';
-    const tx = right ? x - 12 * dpr : x + 12 * dpr;
-    // Narrow frames: smaller labels set below the cross, clear of the arcs above it.
+    const pad = 12 * dpr;
     if (this.narrow) {
-      g.lineWidth = 3 * dpr;
-      g.strokeStyle = 'rgba(7, 9, 12, 0.85)';
-      g.font = `500 ${10 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
+      g.lineWidth = 3.5 * dpr;
+      g.strokeStyle = 'rgba(6, 10, 16, 0.9)';
+      g.font = `500 ${11 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
+      const tw = g.measureText(text).width;
+      const cx = Math.max(pad + tw / 2, Math.min(this.w - pad - tw / 2, x));
+      const cy = Math.max(20 * dpr, Math.min(this.h - 10 * dpr, y + 18 * dpr));
       g.textAlign = 'center';
-      g.strokeText(text, x, y + 16 * dpr);
+      g.strokeText(text, cx, cy);
       g.fillStyle = COLOR.ink;
-      g.fillText(text, x, y + 16 * dpr);
+      g.fillText(text, cx, cy);
       g.textAlign = 'left';
       return;
     }
+    g.font = `500 ${12 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
+    const tw = Math.max(g.measureText(text).width, sub ? g.measureText(sub).width : 0);
+    const right = x + tw + 24 * dpr > this.w;
+    g.textAlign = right ? 'right' : 'left';
+    const rawX = right ? x - 12 * dpr : x + 12 * dpr;
+    const tx = right ? Math.max(pad + tw, rawX) : Math.min(this.w - pad - tw, rawX);
+    const ty = Math.max(24 * dpr, Math.min(this.h - 24 * dpr, y - 8 * dpr));
     // A ground-colored halo keeps labels legible where the track crosses them.
     g.lineWidth = 4 * dpr;
-    g.strokeStyle = 'rgba(7, 9, 12, 0.85)';
-    g.font = `500 ${12 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
-    g.strokeText(text, tx, y - 8 * dpr);
+    g.strokeStyle = 'rgba(6, 10, 16, 0.9)';
+    g.strokeText(text, tx, ty);
     g.fillStyle = COLOR.ink;
-    g.fillText(text, tx, y - 8 * dpr);
-    if (sub && !this.narrow) {
+    g.fillText(text, tx, ty);
+    if (sub) {
       g.font = `${11 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
-      g.strokeText(sub, tx, y + 8 * dpr);
-      g.fillStyle = 'rgba(236, 235, 230, 0.6)';
-      g.fillText(sub, tx, y + 8 * dpr);
+      g.strokeText(sub, tx, ty + 16 * dpr);
+      g.fillStyle = 'rgba(236, 235, 230, 0.65)';
+      g.fillText(sub, tx, ty + 16 * dpr);
     }
     g.textAlign = 'left';
   }
@@ -460,14 +638,16 @@ export class TrackMap {
       g.strokeStyle = COLOR.ink;
       g.lineWidth = dpr;
       g.beginPath(); g.moveTo(ex - s, ey); g.lineTo(ex + s, ey); g.moveTo(ex, ey - s); g.lineTo(ex, ey + s); g.stroke();
-      if (o.labels) this.label(g, ex, ey, this.narrow ? l.to.short ?? l.to.name : l.to.name, l.label);
+      const inView = ex >= -16 * dpr && ex <= this.w + 16 * dpr && ey >= 12 * dpr && ey <= this.h - 12 * dpr;
+      if (o.labels && inView) this.label(g, ex, ey, this.narrow ? l.to.short ?? l.to.name : l.to.name, l.label);
     });
 
+    const stationInView = sx >= -16 * dpr && sx <= this.w + 16 * dpr && sy >= 12 * dpr && sy <= this.h - 12 * dpr;
     g.strokeStyle = COLOR.ink;
     g.fillStyle = COLOR.ink;
     g.lineWidth = dpr * 1.5;
     g.beginPath(); g.arc(sx, sy, 4.5 * dpr, 0, Math.PI * 2); g.stroke();
     g.beginPath(); g.arc(sx, sy, 1.5 * dpr, 0, Math.PI * 2); g.fill();
-    if (o.labels && !this.narrow) this.label(g, sx, sy, o.station.name, 'home station');
+    if (o.labels && !this.narrow && stationInView) this.label(g, sx, sy, o.station.name, 'home station');
   }
 }

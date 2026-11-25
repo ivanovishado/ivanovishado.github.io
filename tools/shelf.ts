@@ -90,9 +90,9 @@ function renderItem(it: Item): string {
 function renderGroup(id: string, heading: string, items: Item[]): string {
   if (!items.length) return '';
   return `
-      <section class="section section--tight shelf" aria-labelledby="shelf-${id}">
+      <section class="section section--tight shelf" data-filter-target="shelf" data-category="${id}" aria-labelledby="shelf-${id}">
         <header class="section__head grid">
-          <h2 class="h-l c-1-4" id="shelf-${id}">${heading}</h2>
+          <h2 class="h-section c-1-4" id="shelf-${id}">${heading}</h2>
           <p class="mono muted c-9-12">${items.length} ${items.length === 1 ? 'item' : 'items'}</p>
         </header>
         <ul class="shelf__row" data-reveal="sweep">${items.map(renderItem).join('')}
