@@ -151,6 +151,25 @@ assert.equal(mcpFit.status, 200);
 const fitJson = (await mcpFit.json()) as { result: { structuredContent: { bookingUrl: string } } };
 assert.equal(fitJson.result.structuredContent.bookingUrl, 'https://cal.com/ivan-galaviz-qtcayv/mentoring');
 
+const mcpPrefill = await worker.fetch(
+  new Request(`${origin}/mcp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: 3,
+      method: 'tools/call',
+      params: { name: 'get_booking_link', arguments: { slot: '2026-11-29T18:00:00.000-06:00', name: 'Ana', notes: 'AI system design' } },
+    }),
+  }),
+  env,
+);
+assert.equal(mcpPrefill.status, 200);
+const prefillJson = (await mcpPrefill.json()) as { result: { structuredContent: { bookingUrl: string; eventTypeId: number } } };
+assert(prefillJson.result.structuredContent.bookingUrl.includes('slot=2026-11-29'));
+assert(prefillJson.result.structuredContent.bookingUrl.includes('name=Ana'));
+assert.equal(prefillJson.result.structuredContent.eventTypeId, 4355389);
+
 const mcpTooLarge = await worker.fetch(
   new Request(`${origin}/mcp`, {
     method: 'POST',

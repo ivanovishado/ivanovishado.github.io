@@ -1,5 +1,9 @@
 import {
+  BOOKING_MD_URL,
   BOOKING_URL,
+  CAL_EVENT_TYPE_ID,
+  CAL_SLOTS_API_URL,
+  CAL_SLOTS_API_VERSION,
   CONTACT_EMAIL,
   IVAN_PROFILE,
   MCP_PROTOCOL_VERSION,
@@ -80,7 +84,94 @@ async function fetchAssetText(env: Env, origin: string, assetPath: string): Prom
   return res.text();
 }
 
-function runTool(name: string, args: Record<string, unknown>) {
+function buildBookingUrl(opts: { slot?: string; name?: string; email?: string; notes?: string } = {}): string {
+  const url = new URL(BOOKING_URL);
+  if (opts.slot) url.searchParams.set('slot', opts.slot);
+  if (opts.name) url.searchParams.set('name', opts.name);
+  if (opts.email) url.searchParams.set('email', opts.email);
+  if (opts.notes) url.searchParams.set('notes', opts.notes);
+  return url.toString();
+}
+
+function isoDate(d: Date): string {
+  return d.toISOString().split('T')[0]!;
+}
+
+async function fetchLiveSlots(args: Record<string, unknown>) {
+  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+  const now = new Date();
+  const startStr = typeof args.start === 'string' && datePattern.test(args.start) ? args.start : isoDate(now);
+  const startDate = new Date(`${startStr}T00:00:00Z`);
+  const defaultEnd = new Date(startDate.getTime() + 7 * 86_400_000);
+  let endStr = typeof args.end === 'string' && datePattern.test(args.end) ? args.end : isoDate(defaultEnd);
+  const endDate = new Date(`${endStr}T00:00:00Z`);
+  if (Number.isNaN(endDate.getTime()) || endDate < startDate) {
+    endStr = isoDate(defaultEnd);
+  } else if (endDate.getTime() - startDate.getTime() > 30 * 86_400_000) {
+    endStr = isoDate(new Date(startDate.getTime() + 30 * 86_400_000));
+  }
+  const timeZone = typeof args.timeZone === 'string' && args.timeZone.trim() ? args.timeZone.trim() : 'America/Mexico_City';
+
+  const query = new URL(CAL_SLOTS_API_URL);
+  query.searchParams.set('eventTypeId', String(CAL_EVENT_TYPE_ID));
+  query.searchParams.set('start', startStr);
+  query.searchParams.set('end', endStr);
+  query.searchParams.set('timeZone', timeZone);
+
+  try {
+    const res = await fetch(query.toString(), {
+      headers: { 'cal-api-version': CAL_SLOTS_API_VERSION, Accept: 'application/json' },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) throw new Error(`Cal.com returned HTTP ${res.status}`);
+    const data = (await res.json()) as { data?: Record<string, { start: string }[]> };
+    const byDate = data.data ?? {};
+    const slots = Object.entries(byDate).flatMap(([date, list]) =>
+      (list ?? []).map((item) => ({
+        date,
+        start: item.start,
+        bookingUrl: buildBookingUrl({ slot: item.start }),
+      })),
+    );
+    const payload = {
+      eventTypeId: CAL_EVENT_TYPE_ID,
+      start: startStr,
+      end: endStr,
+      timeZone,
+      totalSlots: slots.length,
+      slots,
+      bookingPage: BOOKING_URL,
+      calMdUrl: BOOKING_MD_URL,
+      paymentNote: 'Payment (500 MXN, approx. $25 to $30 USD) is collected on the Cal.com checkout page when clicking a slot link.',
+    };
+    const text =
+      slots.length > 0
+        ? [
+            `Found ${slots.length} open 45-minute mentorship slots (${startStr} to ${endStr}, ${timeZone}):`,
+            ...slots.slice(0, 12).map((s) => `- ${s.start} → ${s.bookingUrl}`),
+            slots.length > 12 ? `...and ${slots.length - 12} more slots on ${BOOKING_URL}` : '',
+            'Tip: call get_booking_link with slot, name, email, and notes to generate a pre-filled checkout URL.',
+          ]
+            .filter(Boolean)
+            .join('\n')
+        : `No open slots found between ${startStr} and ${endStr} (${timeZone}). Try a later date range or view the full calendar at ${BOOKING_URL}.`;
+    return { content: [{ type: 'text', text }], structuredContent: payload };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unable to reach Cal.com';
+    const payload = {
+      error: message,
+      bookingPage: BOOKING_URL,
+      calMdUrl: BOOKING_MD_URL,
+      eventTypeId: CAL_EVENT_TYPE_ID,
+    };
+    return {
+      content: [{ type: 'text', text: `Could not fetch live slots (${message}). View live availability and book directly at ${BOOKING_URL} (agent docs: ${BOOKING_MD_URL}).` }],
+      structuredContent: payload,
+    };
+  }
+}
+
+async function runTool(name: string, args: Record<string, unknown>) {
   switch (name) {
     case 'get_mentorship_overview': {
       const payload = { ...MENTORSHIP_OVERVIEW, topics: MENTORSHIP_TOPICS };
@@ -168,14 +259,25 @@ function runTool(name: string, args: Record<string, unknown>) {
       return { content: [{ type: 'text', text }], structuredContent: IVAN_PROFILE };
     }
 
+    case 'get_available_slots':
+      return fetchLiveSlots(args);
+
     case 'get_booking_link': {
+      const slot = typeof args.slot === 'string' && args.slot.trim() ? args.slot.trim() : undefined;
+      const name = typeof args.name === 'string' && args.name.trim() ? args.name.trim() : undefined;
+      const email = typeof args.email === 'string' && args.email.trim() ? args.email.trim() : undefined;
+      const notes = typeof args.notes === 'string' && args.notes.trim() ? args.notes.trim() : undefined;
+      const prefilledUrl = buildBookingUrl({ slot, name, email, notes });
       const payload = {
-        bookingUrl: BOOKING_URL,
+        bookingUrl: prefilledUrl,
+        baseBookingUrl: BOOKING_URL,
+        calMdUrl: BOOKING_MD_URL,
+        eventTypeId: CAL_EVENT_TYPE_ID,
         mentorshipPage: `${SITE_ORIGIN}/mentorship/`,
         profileImageUrl: MENTORSHIP_OVERVIEW.profileImageUrl,
         price: '500 MXN (approx. $25 to $30 USD) per 45-minute session (pay-per-session, no subscription)',
         languages: ['English', 'Spanish'],
-        platform: 'Google Meet (calendar invite sent automatically)',
+        platform: 'Google Meet (calendar invite sent automatically after checkout)',
         preparation: [
           'Share a short note in the Cal.com booking form describing what you want to work on.',
           'Bring a resume, architecture sketch, agentic workflow design, mock interview target, or career question if applicable.',
@@ -183,7 +285,7 @@ function runTool(name: string, args: Record<string, unknown>) {
         rescheduling: MENTORSHIP_OVERVIEW.rescheduling,
         contactEmail: CONTACT_EMAIL,
       };
-      const text = `Book a 45-minute 1-on-1 software & AI engineering mentorship session (500 MXN, approx. $25 to $30 USD, English or Spanish, Google Meet): ${BOOKING_URL}\nDetails: ${SITE_ORIGIN}/mentorship/\nQuestions: ${CONTACT_EMAIL}`;
+      const text = `Book a 45-minute 1-on-1 software & AI engineering mentorship session (500 MXN, approx. $25 to $30 USD, English or Spanish, Google Meet): ${prefilledUrl}\nCal.com agent endpoint: ${BOOKING_MD_URL}\nDetails: ${SITE_ORIGIN}/mentorship/\nQuestions: ${CONTACT_EMAIL}`;
       return { content: [{ type: 'text', text }], structuredContent: payload };
     }
 
@@ -263,7 +365,7 @@ async function handleMcpPost(request: Request, env: Env, origin: string): Promis
     case 'tools/call': {
       const toolName = typeof params.name === 'string' ? params.name : '';
       const toolArgs = (params.arguments && typeof params.arguments === 'object' ? params.arguments : {}) as Record<string, unknown>;
-      const result = runTool(toolName, toolArgs);
+      const result = await runTool(toolName, toolArgs);
       if (!result) return err(-32602, `Unknown tool: ${toolName}`);
       return ok(result);
     }

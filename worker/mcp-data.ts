@@ -1,5 +1,9 @@
 export const SITE_ORIGIN = 'https://www.ivanovishado.dev';
 export const BOOKING_URL = 'https://cal.com/ivan-galaviz-qtcayv/mentoring';
+export const BOOKING_MD_URL = 'https://cal.com/ivan-galaviz-qtcayv/mentoring.md';
+export const CAL_EVENT_TYPE_ID = 4355389;
+export const CAL_SLOTS_API_URL = 'https://api.cal.com/v2/slots';
+export const CAL_SLOTS_API_VERSION = '2024-09-04';
 export const CONTACT_EMAIL = 'me@ivanovishado.dev';
 export const MCP_PROTOCOL_VERSION = '2025-11-25';
 
@@ -287,12 +291,32 @@ export const MCP_TOOLS = [
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   },
   {
-    name: 'get_booking_link',
-    title: 'Get mentorship booking link',
-    description: 'Return the direct Cal.com booking URL, pricing, session preparation checklist, rescheduling policy, and email for 1-on-1 mentorship with Ivan Galaviz.',
+    name: 'get_available_slots',
+    title: 'Get live available mentorship time slots',
+    description: 'Fetch real-time open 45-minute mentorship time slots from Cal.com (event 4355389) for a date range and IANA time zone, with pre-filled checkout links for each slot.',
     inputSchema: {
       type: 'object',
-      properties: {},
+      properties: {
+        start: { type: 'string', description: 'Start date in YYYY-MM-DD format (defaults to today UTC).' },
+        end: { type: 'string', description: 'End date in YYYY-MM-DD format (defaults to 7 days after start; max 30-day window).' },
+        timeZone: { type: 'string', description: 'IANA time zone for returned slots, e.g. America/Mexico_City, America/New_York, Europe/Madrid (defaults to America/Mexico_City).' },
+      },
+      additionalProperties: false,
+    },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  {
+    name: 'get_booking_link',
+    title: 'Get or pre-fill mentorship booking link',
+    description: 'Return the Cal.com booking URL (optionally pre-filled with slot, attendee name, email, and session notes), pricing, session prep checklist, Cal.com .md endpoint, and rescheduling policy.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        slot: { type: 'string', description: 'Optional ISO 8601 slot start timestamp from get_available_slots to pre-select on Cal.com.' },
+        name: { type: 'string', description: 'Optional attendee name to pre-fill on the booking form.' },
+        email: { type: 'string', description: 'Optional attendee email to pre-fill on the booking form.' },
+        notes: { type: 'string', description: 'Optional session topic or goal to pre-fill on the booking form.' },
+      },
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
