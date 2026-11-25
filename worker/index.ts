@@ -203,10 +203,20 @@ interface JsonRpcRequest {
   params?: Record<string, unknown>;
 }
 
+const MAX_MCP_BODY_BYTES = 8192;
+
 async function handleMcpPost(request: Request, env: Env, origin: string): Promise<Response> {
+  const contentLength = Number(request.headers.get('Content-Length') ?? '0');
+  if (Number.isFinite(contentLength) && contentLength > MAX_MCP_BODY_BYTES) {
+    return jsonResponse({ jsonrpc: '2.0', id: null, error: { code: -32600, message: 'Payload too large (max 8 KiB)' } }, 413);
+  }
+  const rawBody = await request.text();
+  if (rawBody.length > MAX_MCP_BODY_BYTES) {
+    return jsonResponse({ jsonrpc: '2.0', id: null, error: { code: -32600, message: 'Payload too large (max 8 KiB)' } }, 413);
+  }
   let body: JsonRpcRequest;
   try {
-    body = (await request.json()) as JsonRpcRequest;
+    body = JSON.parse(rawBody) as JsonRpcRequest;
   } catch {
     return jsonResponse({ jsonrpc: '2.0', id: null, error: { code: -32700, message: 'Parse error: invalid JSON' } }, 400);
   }

@@ -16,11 +16,11 @@ After changes, run:
 
 ```sh
 bun run typecheck
-bunx --no-install vite build
+bun run build
 bun run tools/check-seo.ts
 ```
 
-The check verifies built HTML, canonical URLs, sitemap inclusion, JSON-LD entity references, FAQ parity, image files, pricing presence, and 404 noindex. This is a local regression check, not Google's Rich Results Test or proof of indexing.
+The build generates `public/sitemap.xml`, production HTML, and agent discovery outputs in `dist/` (`llms.txt`, `llms-full.txt`, `sitemap.md`, per-page `.md` mirrors, `404.md`, and MCP discovery cards). `tools/check-seo.ts` verifies built HTML, canonical URLs, sitemap inclusion, entity references, FAQ parity, `/privacy/`, Markdown alternates, Worker content negotiation (`Accept: text/markdown` and AI User-Agent), Markdown 404s, and the `/mcp` JSON-RPC tools. For a live local readability audit, run `bun run preview:worker` and `bunx @vercel/agent-readability audit http://localhost:4173/mentorship/`.
 
 The deployment build regenerates the sitemap using committed page modification dates. Commit page changes before the deployment build so `lastmod` reflects the actual revision. Do not bump dates without meaningful content changes.
 

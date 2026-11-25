@@ -148,4 +148,14 @@ assert.equal(mcpFit.status, 200);
 const fitJson = (await mcpFit.json()) as { result: { structuredContent: { bookingUrl: string } } };
 assert.equal(fitJson.result.structuredContent.bookingUrl, 'https://cal.com/ivan-galaviz-qtcayv/mentoring');
 
+const mcpTooLarge = await worker.fetch(
+  new Request(`${origin}/mcp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: 'x'.repeat(9000),
+  }),
+  env,
+);
+assert.equal(mcpTooLarge.status, 413);
+
 console.log('SEO & agentic checks passed: canonical URLs, sitemap, entity references, FAQ parity, privacy, llms.txt, .md mirrors, Worker negotiation, 404 Markdown, and MCP server.');

@@ -14,13 +14,15 @@ bun run dev        # http://localhost:5173
 ## Building for Production
 
 ```bash
-bun run build      # outputs to dist/
-bun run preview    # preview the production build
+bun run build          # sitemap + Vite build + agent discovery files → dist/
+bun run preview        # static Vite preview
+bun run preview:worker # local Worker preview (Markdown negotiation, 404s, /mcp)
 ```
 
 ## Tech Stack
 
 - **Vite** — build tool and dev server
+- **Cloudflare Workers (Static Assets)** — edge hosting, `Accept: text/markdown` content negotiation, Markdown 404s, and a read-only Mentorship MCP server (`/mcp`)
 - **Plain CSS** with design tokens (`src/styles/site.css`)
 - **GSAP** — scroll reveals, parallax, hero entrance (ScrollTrigger)
 - **Lenis** — smooth scrolling
@@ -29,18 +31,21 @@ bun run preview    # preview the production build
 ## Project Structure
 
 ```
-├── index.html, work/*/, trajectory/, mentorship/, 404.html   # pages
+├── index.html, work/*/, trajectory/, mentorship/, shelf/, privacy/, 404.html
+├── worker/                # Cloudflare Worker (Markdown negotiation + /mcp)
+├── wrangler.jsonc         # Cloudflare Workers Static Assets config
 ├── src/
 │   ├── styles/site.css    # the design system
 │   └── js/site/           # engine, ground-track concept, transitions, UI
+├── tools/                 # sitemap, shelf, agent discovery files, SEO checks, local Worker server
 ├── DESIGN.md              # concept, palette, type, motion rules
 ├── img/, public/          # images, favicon, OG, sitemap, robots
-└── .github/workflows/     # GitHub Pages deploy (Bun)
+└── .github/workflows/     # Cloudflare Workers deploy (Bun + Wrangler)
 ```
 
 ## Deployment
 
-Pushed to `main` → GitHub Actions (`deploy.yml`) builds with Bun and deploys `dist/` to GitHub Pages at https://www.ivanovishado.dev.
+Pushes to `main` run GitHub Actions (`deploy.yml`), which typechecks, builds, runs `tools/check-seo.ts`, and deploys `dist/` + `worker/index.ts` to Cloudflare Workers at https://www.ivanovishado.dev. Pull requests upload preview versions automatically.
 
 ## License
 

@@ -24,11 +24,12 @@ const pages: { loc: string; file: string; priority: string }[] = [
 ];
 
 function lastmod(file: string): string {
+  const today = new Date().toISOString().split('T')[0] ?? '';
   try {
     return execSync(`git log -1 --format=%cI -- ${file}`, { cwd: root })
-      .toString().trim().split('T')[0] ?? '';
+      .toString().trim().split('T')[0] || today;
   } catch {
-    return new Date().toISOString().split('T')[0] ?? '';
+    return today;
   }
 }
 
