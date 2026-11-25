@@ -32,10 +32,11 @@ bun run build                # sitemap + vite build + agent discovery files → 
 bun run preview              # preview the production build (static Vite preview)
 bun run preview:worker       # local Worker preview (Markdown negotiation, 404s, /mcp) → http://localhost:4173
 bun run typecheck            # tsc --noEmit (strict) — run before declaring done
+bun run tools/check-tokens.ts # enforce design tokens across CSS, TS, HTML, and DESIGN.md
 bun run tools/check-seo.ts   # after a build: canonicals, sitemap, JSON-LD, FAQ parity, llms.txt, Worker & MCP checks
 ```
 
-Always run `bun run typecheck` after touching any `.ts` file.
+Always run `bun run typecheck` after touching any `.ts` file, and `bun run tools/check-tokens.ts` after changing styles, HTML, canvas colors, or `DESIGN.md`.
 
 ## Project layout
 
@@ -69,6 +70,7 @@ tools/
   shelf.ts                  # validates content/shelf.yaml, renders the shelf markup and JSON-LD
   agent-files.ts            # generates dist/llms.txt, llms-full.txt, sitemap.md, .md mirrors, 404.md, MCP cards
   serve-worker.ts           # local Bun server running worker/index.ts against dist/
+  check-tokens.ts           # validates design token usage and DESIGN.md palette parity
   check-seo.ts              # validates dist/, JSON-LD, FAQ parity, agent files, Worker negotiation & MCP
   fonts/                    # Neue Montreal source files
 vite.config.ts              # one input per page; base '/'; partials plugin
@@ -117,14 +119,16 @@ script, an input in `vite.config.ts` and an entry in `tools/sitemap.ts`.
 ## Styling conventions
 
 - Plain CSS tokens in `src/styles/site.css` (`--c-*`, `--t-*`, grid helpers `.c-1-4` etc.).
-  Use the existing tokens — do not introduce ad-hoc colors.
+  `:root` in `src/styles/site.css` is the source of truth, enforced by `bun run tools/check-tokens.ts`.
+  Use existing tokens (or `color-mix()` for alpha variants) — do not introduce ad-hoc colors in CSS, TS, or HTML.
+  Legitimate non-palette exceptions (such as canvas alpha-mask strokes) require a `token-ok: <reason>` comment.
 - Component classes (BEM-ish: `.index__row`, `.case-hero__title`), not utilities in markup.
 - Respect `prefers-reduced-motion` in any new motion.
 
 ## Build & deploy
 
 - Push to `main` → `deploy.yml` runs `bun install --frozen-lockfile` → `bun run typecheck`
-  → `bun run build` → `bun run tools/check-seo.ts` → deploys to Cloudflare Workers
+  → `bun run tools/check-tokens.ts` → `bun run build` → `bun run tools/check-seo.ts` → deploys to Cloudflare Workers
   (requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets).
 - Pull requests upload a Cloudflare Workers preview version so `bunx is-agentic <preview-url>`
   can be run before merging.

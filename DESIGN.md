@@ -67,15 +67,29 @@ Screenshot:  the hero: "Ivan Galaviz" at poster size over three amber revolution
 
 ### Palette
 
-| Role | Hex | Source |
+Source of truth: `:root` in `src/styles/site.css`.
+
+| Token | Value | Role |
 |---|---|---|
-| ground (Eclipse) | `#07090c` | the night side of the map |
-| ink (Sunlit) | `#ecebe6` | cool ivory of a lit display |
-| muted | `#8f959d` | console secondary text (AA on ground, 6.7:1) |
-| line | `rgb(236 235 230 / 0.12)` | graticule hairlines |
-| terrain | `#33404d` | land scanlines (decorative only) |
-| accent (Track) | `#f5a524` | the ground-track trace, focus ring, the one field section |
-| curtain | `#0c1015` | transitions, slightly lifted night |
+| `--c-bg` | `#060a10` | eclipse ground (the night side of the map) |
+| `--c-surface` | `#0c131d` | elevated launch slate chapters |
+| `--c-surface-hi` | `#121c2a` | active row tint and hover surface |
+| `--c-fg` | `#f0efe9` | sunlit ink on dark surfaces |
+| `--c-muted` | `#94a0ae` | console secondary text on dark surfaces |
+| `--c-line` | `rgb(240 239 233 / 0.12)` | hairline rules on dark surfaces |
+| `--c-line-strong` | `rgb(240 239 233 / 0.22)` | stronger frames and monitor borders |
+| `--c-paper` | `#f3f1ea` | sunlit lunar paper (light editorial chapters) |
+| `--c-paper-soft` | `#e6e2d7` | recessed paper stage (portrait backing) |
+| `--c-paper-fg` | `#0b111a` | primary ink on paper chapters |
+| `--c-paper-muted` | `#4b5665` | secondary ink on paper chapters |
+| `--c-paper-line` | `rgb(11 17 26 / 0.14)` | hairline rules on paper chapters |
+| `--c-paper-accent` | `#a66200` | high-contrast amber accent on paper |
+| `--c-accent` | `#f5a524` | solar ground-track trace, focus ring, the one field section |
+| `--c-accent-ink` | `#060a10` | ink on solar accent fills |
+| `--c-curtain` | `#0a1019` | page transitions, slightly lifted night |
+| `--c-land` | `#92adc8` | map land scanlines (decorative canvas tone) |
+| `--c-platform-ps` | `#1d4f9e` | PlayStation shelf case spine (PS4, PS5) |
+| `--c-platform-xbox` | `#2f7a3a` | Xbox shelf case spine |
 
 Near-black + one warm accent is a known default. It stays because the accent is not decoration:
 it is the track itself, the only moving trace on a mission map, and it is used only where the
@@ -83,11 +97,14 @@ orbit is (track, marker, focus, the mentorship field). No glow, no gradient wash
 
 ### Type
 
-- **Neue Montreal** (owner's files, Regular 400 + Medium 500): display and text. Display mega
-  `clamp(4.25rem, 0.6rem + 15.4vw, 17rem)`, tracking −0.055em, leading 0.84, optical
-  `margin-left: -0.065em`. Headings `--t-xl` tracking −0.04em. Body 17–18 px, 1.5 leading.
+- **Neue Montreal** (owner's files, Regular 400 + Medium 500): display and text. Hero display
+  `--t-hero` (`clamp(4.25rem, 0.85rem + 13.8vw, 15.25rem)`), tracking −0.058em, leading 0.83,
+  optical `margin-left: -0.06em`; sub-page hero `--t-hero-sub` (`clamp(2.85rem, 1.1rem + 5.8vw, 7.25rem)`);
+  navbar wordmark `--t-brand` (`1.125rem`). Below the hero, strictly 3 sizes (all >= 14 px):
+  headings `--t-heading` (`clamp(1.625rem, 1.05rem + 1.75vw, 2.625rem)`, tracking −0.036em, leading 1.04),
+  body `--t-body` (`1.0625rem` / 17 px, leading 1.55), and small `--t-sm` (`0.875rem` / 14 px).
 - **JetBrains Mono Variable**: telemetry only (coordinates, revolution numbers, years, dates).
-  12–13 px, tabular figures, +0.02em. Mono carries data, never decorative labels.
+  `--t-sm` (`0.875rem` / 14 px), tabular figures, +0.01em, leading 1.45. Mono carries data, never decorative labels.
 - No uppercase eyebrows. Section labels are coordinates, which are real information.
 
 ### Grid and rhythm
@@ -134,7 +151,7 @@ WORK (index list, cursor-following pass preview; inline mini track on touch)
  ...
 MCB-1 (asymmetric pair)
  [ photo 7 cols, Kennedy VAB ]     MCB-1 / story / facts (col 9)
-STATEMENT (8–10 col paragraph at t-l) + portrait col 1–4 + instruments list
+STATEMENT (8–10 col paragraph at --t-heading) + portrait col 1–4 + instruments list
 RECORD (tight 3-col ledger: kind / title / source)
 MENTORSHIP (amber field, ink text, big line + CTA)
 FOOTER (giant email, links, Point Nemo coordinates small)

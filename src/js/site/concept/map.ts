@@ -31,22 +31,72 @@ export type MapOptions = {
   labels?: boolean;
 };
 
-const COLOR = {
-  land: '#92adc8',
-  night: 'rgba(6, 10, 16, 0.56)',
-  terminator: 'rgba(245, 165, 36, 0.26)',
-  grid: 'rgba(236, 235, 230, 0.065)',
-  tick: 'rgba(236, 235, 230, 0.18)',
-  equator: 'rgba(236, 235, 230, 0.16)',
-  track: '245, 165, 36',
-  ink: '#ecebe6',
+type Rgb = readonly [number, number, number];
+
+type Palette = {
+  bg: Rgb;
+  fg: Rgb;
+  accent: Rgb;
+  landSolid: string;
+  inkSolid: string;
+  accentSolid: string;
+  night: string;
+  terminator: string;
+  grid: string;
+  tick: string;
+  equator: string;
+  oceanRing: string;
+  halo: string;
 };
+
+function parseRgb(raw: string): Rgb {
+  const s = raw.trim();
+  if (s.startsWith('#')) {
+    const h = s.slice(1);
+    const full = h.length === 3 ? h.replace(/./g, (c) => c + c) : h;
+    return [parseInt(full.slice(0, 2), 16), parseInt(full.slice(2, 4), 16), parseInt(full.slice(4, 6), 16)];
+  }
+  const m = s.match(/\d+/g);
+  return m && m.length >= 3 ? [Number(m[0]), Number(m[1]), Number(m[2])] : [0, 0, 0];
+}
+
+function alpha([r, g, b]: Rgb, a: number): string {
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
+function readPalette(): Palette {
+  const cs = getComputedStyle(document.documentElement);
+  const read = (name: string) => {
+    const raw = cs.getPropertyValue(name).trim();
+    return { raw, rgb: parseRgb(raw) };
+  };
+  const bg = read('--c-bg');
+  const fg = read('--c-fg');
+  const accent = read('--c-accent');
+  const land = read('--c-land');
+  return {
+    bg: bg.rgb,
+    fg: fg.rgb,
+    accent: accent.rgb,
+    landSolid: land.raw,
+    inkSolid: fg.raw,
+    accentSolid: accent.raw,
+    night: alpha(bg.rgb, 0.56),
+    terminator: alpha(accent.rgb, 0.26),
+    grid: alpha(fg.rgb, 0.065),
+    tick: alpha(fg.rgb, 0.18),
+    equator: alpha(fg.rgb, 0.16),
+    oceanRing: alpha(land.rgb, 0.2),
+    halo: alpha(bg.rgb, 0.9),
+  };
+}
 
 const STEP = 1 / 360; // one cached sample per degree of orbit
 const CHUNK = 0.25; // flown track is stroked in quarter revolutions, fading with age
 
 export class TrackMap {
   private ctx: CanvasRenderingContext2D;
+  private pal: Palette;
   private ground: HTMLCanvasElement; // on-screen layer under the track: base + lit land
   private land = document.createElement('canvas'); // full-tone scanline Earth
   private base = document.createElement('canvas'); // graticule + ghost Earth
@@ -71,6 +121,7 @@ export class TrackMap {
 
   constructor(private canvas: HTMLCanvasElement, private o: MapOptions) {
     this.ctx = canvas.getContext('2d')!;
+    this.pal = readPalette();
     // The ground layer only changes when the swath grows; the track layer redraws every frame.
     const prev = canvas.previousElementSibling;
     if (prev instanceof HTMLCanvasElement && prev.dataset.ground !== undefined) this.ground = prev;
@@ -114,7 +165,7 @@ export class TrackMap {
   private buildLand() {
     const g = this.land.getContext('2d')!;
     g.clearRect(0, 0, this.w, this.h);
-    g.fillStyle = COLOR.land;
+    g.fillStyle = this.pal.landSolid;
     const gap = Math.max(3, Math.round(2.6 * this.dpr));
     const t = Math.max(1, Math.round(this.dpr));
     const span = 360 * this.k;
@@ -134,7 +185,7 @@ export class TrackMap {
     const sun = subsolar(new Date());
     const d = (Math.abs(sun.lat) < 0.5 ? 0.5 : sun.lat) * DEG;
     g.globalCompositeOperation = 'source-atop';
-    g.fillStyle = COLOR.night;
+    g.fillStyle = this.pal.night;
     g.beginPath();
     const cols = 96;
     for (let i = 0; i <= cols; i++) {
@@ -154,7 +205,7 @@ export class TrackMap {
     const b = this.base.getContext('2d')!;
     b.clearRect(0, 0, this.w, this.h);
     b.lineWidth = Math.max(1, this.dpr * 0.75);
-    b.strokeStyle = COLOR.grid;
+    b.strokeStyle = this.pal.grid;
     b.beginPath();
     for (let lon = -180; lon < 180; lon += 30) { const x = this.x(lon); b.moveTo(x, 0); b.lineTo(x, this.h); }
     for (let lat = -60; lat <= 60; lat += 30) if (lat) { const y = this.y(lat); b.moveTo(0, y); b.lineTo(this.w, y); }
@@ -162,7 +213,7 @@ export class TrackMap {
 
     // Tiny cartographic crosshairs at 30° graticule intersections.
     const tick = 2.5 * this.dpr;
-    b.strokeStyle = COLOR.tick;
+    b.strokeStyle = this.pal.tick;
     b.beginPath();
     for (let lon = -180; lon < 180; lon += 30) {
       const gx = this.x(lon);
@@ -176,12 +227,12 @@ export class TrackMap {
     }
     b.stroke();
 
-    b.strokeStyle = COLOR.equator;
+    b.strokeStyle = this.pal.equator;
     b.beginPath(); b.moveTo(0, this.y(0)); b.lineTo(this.w, this.y(0)); b.stroke();
 
     // Subtle real-time solar terminator line across the map.
     b.setLineDash([this.dpr * 3, this.dpr * 5]);
-    b.strokeStyle = COLOR.terminator;
+    b.strokeStyle = this.pal.terminator;
     b.lineWidth = Math.max(1, this.dpr * 0.85);
     b.beginPath();
     for (let i = 0; i <= cols; i++) {
@@ -197,7 +248,7 @@ export class TrackMap {
       const nx = this.x(this.o.place.lon);
       const ny = this.y(this.o.place.lat);
       b.setLineDash([this.dpr * 2, this.dpr * 6]);
-      b.strokeStyle = 'rgba(146, 173, 200, 0.2)';
+      b.strokeStyle = this.pal.oceanRing;
       b.lineWidth = Math.max(1, this.dpr * 0.8);
       for (const degR of [9, 18, 24.2]) {
         b.beginPath(); b.arc(nx, ny, degR * this.k, 0, Math.PI * 2); b.stroke();
@@ -208,9 +259,9 @@ export class TrackMap {
     if (this.o.reach) {
       const lim = INCLINATION / DEG;
       b.setLineDash([this.dpr * 3, this.dpr * 6]);
-      b.strokeStyle = `rgba(${COLOR.track}, 0.42)`;
+      b.strokeStyle = alpha(this.pal.accent, 0.42);
       b.font = `${11 * this.dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
-      b.fillStyle = `rgba(${COLOR.track}, 0.78)`;
+      b.fillStyle = alpha(this.pal.accent, 0.78);
       for (const lat of [lim, -lim]) {
         const y = this.y(lat);
         b.beginPath(); b.moveTo(0, y); b.lineTo(this.w, y); b.stroke();
@@ -306,7 +357,7 @@ export class TrackMap {
     m.lineCap = 'round';
     m.lineJoin = 'round';
     m.lineWidth = this.o.swath * this.k;
-    m.strokeStyle = '#000';
+    m.strokeStyle = '#000'; // token-ok: alpha mask for destination-in compositing
     m.beginPath();
     this.o.links.forEach((l, i) => { const t = this.linkAt(i, p); if (l.kind === 'trip' && t > 0) this.arc(m, l.to, t); });
     m.stroke();
@@ -322,7 +373,7 @@ export class TrackMap {
     m.lineCap = 'round';
     m.lineJoin = 'round';
     m.lineWidth = this.o.swath * this.k;
-    m.strokeStyle = '#000';
+    m.strokeStyle = '#000'; // token-ok: alpha mask for destination-in compositing
     m.beginPath();
     this.path(m, Math.max(0, this.revealed - 0.004), phase);
     m.stroke();
@@ -393,7 +444,7 @@ export class TrackMap {
     const start = Math.max(0, phase - 3);
     for (let a = Math.floor(start / CHUNK) * CHUNK; a < phase; a += CHUNK) {
       const age = phase - (a + CHUNK / 2);
-      g.strokeStyle = `rgba(${COLOR.track}, ${Math.max(0.14, Math.min(1, 1 - age / 2.2))})`;
+      g.strokeStyle = alpha(this.pal.accent, Math.max(0.14, Math.min(1, 1 - age / 2.2)));
       g.lineWidth = dpr * (age < 0.8 ? 1.65 : 1);
       g.beginPath();
       this.path(g, Math.max(a, start), Math.min(a + CHUNK, phase));
@@ -402,7 +453,7 @@ export class TrackMap {
 
     // Predicted path, dashed.
     g.setLineDash([dpr * 2, dpr * 5]);
-    g.strokeStyle = `rgba(${COLOR.track}, 0.45)`;
+    g.strokeStyle = alpha(this.pal.accent, 0.45);
     g.lineWidth = dpr;
     g.beginPath();
     this.path(g, phase, phase + 0.22);
@@ -417,7 +468,7 @@ export class TrackMap {
       const x = this.x(o.place.lon);
       const y = this.y(o.place.lat);
       const reached = Math.max(0, Math.min(1, (phase - (o.placePhase ?? 0)) * 12 + 0.5));
-      g.strokeStyle = `rgba(236, 235, 230, ${0.35 + reached * 0.65})`;
+      g.strokeStyle = alpha(this.pal.fg, 0.35 + reached * 0.65);
       g.lineWidth = dpr;
       const s = 6 * dpr;
       g.beginPath(); g.moveTo(x - s, y); g.lineTo(x + s, y); g.moveTo(x, y - s); g.lineTo(x, y + s); g.stroke();
@@ -432,14 +483,14 @@ export class TrackMap {
     const [mx, my] = this.point(phase);
     const footR = this.o.swath * 0.45 * this.k;
     if (footR > 12 * dpr && footR < 140 * dpr) {
-      g.strokeStyle = `rgba(${COLOR.track}, 0.2)`;
+      g.strokeStyle = alpha(this.pal.accent, 0.2);
       g.lineWidth = dpr * 0.85;
       g.beginPath(); g.arc(mx, my, footR, 0, Math.PI * 2); g.stroke();
     }
-    g.fillStyle = `rgb(${COLOR.track})`;
+    g.fillStyle = this.pal.accentSolid;
     g.beginPath(); g.arc(mx, my, 3.75 * dpr, 0, Math.PI * 2); g.fill();
     const pulse = (time * 0.5) % 1;
-    g.strokeStyle = `rgba(${COLOR.track}, ${0.55 * (1 - pulse)})`;
+    g.strokeStyle = alpha(this.pal.accent, 0.55 * (1 - pulse));
     g.lineWidth = dpr;
     g.beginPath(); g.arc(mx, my, (6 + pulse * 18) * dpr, 0, Math.PI * 2); g.stroke();
   }
@@ -482,7 +533,7 @@ export class TrackMap {
       const rx = snapped ? snapped.x : px;
       const ry = snapped ? snapped.y : py;
       const arm = snapped ? 16 * dpr : 14 * dpr;
-      g.strokeStyle = snapped ? `rgba(${COLOR.track}, 0.85)` : 'rgba(236, 235, 230, 0.28)';
+      g.strokeStyle = snapped ? alpha(this.pal.accent, 0.85) : alpha(this.pal.fg, 0.28);
       g.lineWidth = dpr;
       g.beginPath();
       g.moveTo(rx - arm, ry); g.lineTo(rx - 5 * dpr, ry);
@@ -501,9 +552,9 @@ export class TrackMap {
         const tx = flip ? px - tw - 14 * dpr : px + 14 * dpr;
         const ty = py < 36 * dpr ? py + 20 * dpr : py - 10 * dpr;
         g.lineWidth = 3.5 * dpr;
-        g.strokeStyle = 'rgba(6, 10, 16, 0.9)';
+        g.strokeStyle = this.pal.halo;
         g.strokeText(coordText, tx, ty);
-        g.fillStyle = 'rgba(236, 235, 230, 0.72)';
+        g.fillStyle = alpha(this.pal.fg, 0.72);
         g.fillText(coordText, tx, ty);
       } else if (snapped.sub) {
         g.font = `500 ${11 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
@@ -512,9 +563,9 @@ export class TrackMap {
         const tx = flip ? snapped.x - tw - 16 * dpr : snapped.x + 16 * dpr;
         const ty = snapped.y + 24 * dpr;
         g.lineWidth = 4 * dpr;
-        g.strokeStyle = 'rgba(6, 10, 16, 0.92)';
+        g.strokeStyle = alpha(this.pal.bg, 0.92);
         g.strokeText(snapped.sub, tx, ty);
-        g.fillStyle = `rgb(${COLOR.track})`;
+        g.fillStyle = this.pal.accentSolid;
         g.fillText(snapped.sub, tx, ty);
       }
     }
@@ -525,14 +576,14 @@ export class TrackMap {
       const sx = this.x(o.station.lon);
       const sy = this.y(o.station.lat);
       const pulse = (time * 0.7) % 1;
-      g.strokeStyle = `rgba(${COLOR.track}, ${0.85 * (1 - pulse * 0.5)})`;
+      g.strokeStyle = alpha(this.pal.accent, 0.85 * (1 - pulse * 0.5));
       g.lineWidth = dpr * 1.5;
       g.beginPath(); g.arc(sx, sy, (8 + pulse * 14) * dpr, 0, Math.PI * 2); g.stroke();
       return;
     }
     const target = (o.links ?? []).find((l) => l.key === activeKey);
     if (!target) return;
-    g.strokeStyle = `rgb(${COLOR.track})`;
+    g.strokeStyle = this.pal.accentSolid;
     g.lineWidth = dpr * 2.2;
     g.setLineDash(target.kind === 'trip' ? [] : [dpr * 5, dpr * 4]);
     g.beginPath();
@@ -540,10 +591,10 @@ export class TrackMap {
     g.stroke();
     g.setLineDash([]);
     const pulse = (time * 0.75) % 1;
-    g.strokeStyle = `rgba(${COLOR.track}, ${0.85 * (1 - pulse * 0.5)})`;
+    g.strokeStyle = alpha(this.pal.accent, 0.85 * (1 - pulse * 0.5));
     g.lineWidth = dpr * 1.5;
     g.beginPath(); g.arc(end.x, end.y, (7 + pulse * 14) * dpr, 0, Math.PI * 2); g.stroke();
-    g.fillStyle = `rgb(${COLOR.track})`;
+    g.fillStyle = this.pal.accentSolid;
     g.beginPath(); g.arc(end.x, end.y, 3.2 * dpr, 0, Math.PI * 2); g.fill();
   }
 
@@ -552,14 +603,14 @@ export class TrackMap {
     const pad = 12 * dpr;
     if (this.narrow) {
       g.lineWidth = 3.5 * dpr;
-      g.strokeStyle = 'rgba(6, 10, 16, 0.9)';
+      g.strokeStyle = this.pal.halo;
       g.font = `500 ${11 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
       const tw = g.measureText(text).width;
       const cx = Math.max(pad + tw / 2, Math.min(this.w - pad - tw / 2, x));
       const cy = Math.max(20 * dpr, Math.min(this.h - 10 * dpr, y + 18 * dpr));
       g.textAlign = 'center';
       g.strokeText(text, cx, cy);
-      g.fillStyle = COLOR.ink;
+      g.fillStyle = this.pal.inkSolid;
       g.fillText(text, cx, cy);
       g.textAlign = 'left';
       return;
@@ -573,14 +624,14 @@ export class TrackMap {
     const ty = Math.max(24 * dpr, Math.min(this.h - 24 * dpr, y - 8 * dpr));
     // A ground-colored halo keeps labels legible where the track crosses them.
     g.lineWidth = 4 * dpr;
-    g.strokeStyle = 'rgba(6, 10, 16, 0.9)';
+    g.strokeStyle = this.pal.halo;
     g.strokeText(text, tx, ty);
-    g.fillStyle = COLOR.ink;
+    g.fillStyle = this.pal.inkSolid;
     g.fillText(text, tx, ty);
     if (sub) {
       g.font = `${11 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
       g.strokeText(sub, tx, ty + 16 * dpr);
-      g.fillStyle = 'rgba(236, 235, 230, 0.65)';
+      g.fillStyle = alpha(this.pal.fg, 0.65);
       g.fillText(sub, tx, ty + 16 * dpr);
     }
     g.textAlign = 'left';
@@ -596,7 +647,7 @@ export class TrackMap {
       (o.links ?? []).forEach((l, i) => {
         const pts = this.arcPts(l.to);
         const pk = pts[Math.round(((time / 5 + i * 0.37) % 1) * (pts.length - 1))]!;
-        g.fillStyle = l.kind === 'trip' ? `rgba(${COLOR.track}, 0.9)` : 'rgba(236, 235, 230, 0.8)';
+        g.fillStyle = l.kind === 'trip' ? alpha(this.pal.accent, 0.9) : alpha(this.pal.fg, 0.8);
         g.beginPath(); g.arc(pk.x, pk.y, 2 * dpr, 0, Math.PI * 2); g.fill();
       });
       return;
@@ -605,7 +656,7 @@ export class TrackMap {
     const sy = this.y(o.station.lat);
     // Coverage: roughly the 2,000 km a ground station can see of a low orbit.
     g.setLineDash([dpr * 2, dpr * 4]);
-    g.strokeStyle = 'rgba(236, 235, 230, 0.35)';
+    g.strokeStyle = alpha(this.pal.fg, 0.35);
     g.lineWidth = dpr;
     g.beginPath(); g.arc(sx, sy, 18 * this.k, 0, Math.PI * 2); g.stroke();
     g.setLineDash([]);
@@ -614,7 +665,7 @@ export class TrackMap {
       const t = this.linkAt(i, p);
       if (t <= 0) return;
       const trip = l.kind === 'trip';
-      g.strokeStyle = trip ? `rgba(${COLOR.track}, 0.9)` : 'rgba(236, 235, 230, 0.7)';
+      g.strokeStyle = trip ? alpha(this.pal.accent, 0.9) : alpha(this.pal.fg, 0.7);
       g.lineWidth = dpr * (trip ? 1.5 : 1);
       g.setLineDash(trip ? [] : [dpr * 4, dpr * 4]);
       g.beginPath();
@@ -624,18 +675,18 @@ export class TrackMap {
       const ex = end.x;
       const ey = end.y;
       if (t < 1) {
-        g.fillStyle = trip ? `rgb(${COLOR.track})` : COLOR.ink;
+        g.fillStyle = trip ? this.pal.accentSolid : this.pal.inkSolid;
         g.beginPath(); g.arc(ex, ey, 3 * dpr, 0, Math.PI * 2); g.fill();
         return;
       }
       if (part === 'all') {
         const pts = this.arcPts(l.to);
         const pk = pts[Math.round(((time / 5 + i * 0.37) % 1) * (pts.length - 1))]!;
-        g.fillStyle = trip ? `rgba(${COLOR.track}, 0.9)` : 'rgba(236, 235, 230, 0.8)';
+        g.fillStyle = trip ? alpha(this.pal.accent, 0.9) : alpha(this.pal.fg, 0.8);
         g.beginPath(); g.arc(pk.x, pk.y, 2 * dpr, 0, Math.PI * 2); g.fill();
       }
       const s = 5 * dpr;
-      g.strokeStyle = COLOR.ink;
+      g.strokeStyle = this.pal.inkSolid;
       g.lineWidth = dpr;
       g.beginPath(); g.moveTo(ex - s, ey); g.lineTo(ex + s, ey); g.moveTo(ex, ey - s); g.lineTo(ex, ey + s); g.stroke();
       const inView = ex >= -16 * dpr && ex <= this.w + 16 * dpr && ey >= 12 * dpr && ey <= this.h - 12 * dpr;
@@ -643,8 +694,8 @@ export class TrackMap {
     });
 
     const stationInView = sx >= -16 * dpr && sx <= this.w + 16 * dpr && sy >= 12 * dpr && sy <= this.h - 12 * dpr;
-    g.strokeStyle = COLOR.ink;
-    g.fillStyle = COLOR.ink;
+    g.strokeStyle = this.pal.inkSolid;
+    g.fillStyle = this.pal.inkSolid;
     g.lineWidth = dpr * 1.5;
     g.beginPath(); g.arc(sx, sy, 4.5 * dpr, 0, Math.PI * 2); g.stroke();
     g.beginPath(); g.arc(sx, sy, 1.5 * dpr, 0, Math.PI * 2); g.fill();
