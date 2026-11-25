@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "dev:host": "vite --host",
-    "build": "bun run tools/sitemap.ts && vite build",
+    "build": "bun run tools/sitemap.ts && vite build && bun run tools/agent-files.ts",
     "preview": "vite preview --host",
+    "preview:worker": "bun run tools/serve-worker.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

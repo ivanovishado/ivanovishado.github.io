@@ -16,6 +16,7 @@ const pages: { loc: string; file: string; priority: string }[] = [
   { loc: 'https://www.ivanovishado.dev/mentorship/', file: 'mentorship/index.html', priority: '0.9' },
   { loc: 'https://www.ivanovishado.dev/trajectory/', file: 'trajectory/index.html', priority: '0.7' },
   { loc: 'https://www.ivanovishado.dev/shelf/', file: 'content/shelf.yaml', priority: '0.5' },
+  { loc: 'https://www.ivanovishado.dev/privacy/', file: 'privacy/index.html', priority: '0.3' },
   { loc: 'https://www.ivanovishado.dev/work/netflix/', file: 'work/netflix/index.html', priority: '0.7' },
   { loc: 'https://www.ivanovishado.dev/work/mcb-1/', file: 'work/mcb-1/index.html', priority: '0.7' },
   { loc: 'https://www.ivanovishado.dev/work/nubank/', file: 'work/nubank/index.html', priority: '0.7' },

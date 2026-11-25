@@ -8,6 +8,7 @@
     <meta name="author" content="Ivan Galaviz" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://www.ivanovishado.dev/mentorship/" />
+    <link rel="alternate" type="text/markdown" href="https://www.ivanovishado.dev/mentorship/index.md" />
     <meta name="google-site-verification" content="TLmX5S2mQjoqW4TzBzEn6QtUxsstvwyrZtv6UxGQPE8" />
 
     <meta property="og:title" content="Software Engineering Mentorship | Ivan Galaviz" />
@@ -33,7 +34,8 @@
       "@type": "Service",
       "@id": "https://www.ivanovishado.dev/mentorship/#service",
       "name": "Software Engineering Mentorship",
-      "serviceType": "Mentoring",
+      "alternateName": "Mentoría de Ingeniería de Software 1 a 1",
+      "serviceType": "1-on-1 Software Engineering Mentorship",
       "category": "Career & Technical Mentorship",
       "provider": {
         "@type": "Person",
@@ -42,13 +44,42 @@
         "jobTitle": "Senior Software Engineer",
         "worksFor": {
           "@type": "Organization",
-          "name": "Netflix"
+          "name": "Netflix",
+          "url": "https://www.netflix.com"
         },
         "url": "https://www.ivanovishado.dev/",
         "image": "https://www.ivanovishado.dev/profile.webp",
+        "email": "me@ivanovishado.dev",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Guadalajara",
+          "addressRegion": "Jalisco",
+          "addressCountry": "MX"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "me@ivanovishado.dev",
+          "contactType": "mentorship",
+          "availableLanguage": ["English", "Spanish"],
+          "url": "https://cal.com/ivan-galaviz-qtcayv/mentoring"
+        },
         "sameAs": [
           "https://github.com/ivanovishado",
-          "https://linkedin.com/in/ivanovishado", "https://x.com/ivanovishado"
+          "https://linkedin.com/in/ivanovishado",
+          "https://x.com/ivanovishado"
+        ],
+        "knowsAbout": [
+          "System Design",
+          "Distributed Systems",
+          "Agentic Workflows",
+          "LLM Orchestration",
+          "MCP Servers",
+          "Big-Tech Interviews",
+          "Career Growth",
+          "Go",
+          "Java",
+          "Clojure",
+          "Python"
         ],
         "knowsLanguage": [
           "English",
@@ -56,18 +87,39 @@
         ]
       },
       "areaServed": "Worldwide",
+      "availableLanguage": ["English", "Spanish"],
       "audience": {
         "@type": "Audience",
-        "audienceType": "Software Engineers"
+        "audienceType": "Software Engineers (junior to senior, Latin America and worldwide)"
       },
-      "description": "One-on-one mentorship with a Netflix Senior Software Engineer: career growth from junior to senior, system design and distributed systems, big-tech interview preparation, Go, Java, Clojure and Python, moving from Latin America to global companies, and aerospace side projects.",
+      "serviceOutput": "45-minute live Google Meet session plus written follow-up notes, resources, and concrete next steps.",
+      "description": "One-on-one mentorship in English or Spanish with Ivan Galaviz, Netflix Senior Software Engineer (ex-Nubank, ex-Wizeline): career growth from junior to senior, system design and distributed systems, agentic workflows and AI engineering, big-tech interview preparation and mock interviews, Go, Java, Clojure and Python, moving from Latin America to global companies, and aerospace side projects. Pay-per-session, 500 MXN per 45-minute call.",
       "url": "https://www.ivanovishado.dev/mentorship/",
       "offers": {
         "@type": "Offer",
         "price": "500",
         "priceCurrency": "MXN",
-        "description": "500 MXN per 45-minute session, including the first one.",
+        "availability": "https://schema.org/InStock",
+        "eligibleRegion": "Worldwide",
+        "description": "500 MXN per 45-minute session, including the first one. Pay-per-session with no subscription required.",
         "url": "https://cal.com/ivan-galaviz-qtcayv/mentoring"
+      },
+      "potentialAction": {
+        "@type": "ReserveAction",
+        "name": "Book a 45-minute mentorship session",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://cal.com/ivan-galaviz-qtcayv/mentoring",
+          "inLanguage": ["en", "es"],
+          "actionPlatform": [
+            "http://schema.org/DesktopWebPlatform",
+            "http://schema.org/MobileWebPlatform"
+          ]
+        },
+        "result": {
+          "@type": "Reservation",
+          "name": "45-minute 1-on-1 Software Engineering Mentorship Session"
+        }
       },
       "mainEntityOfPage": {
         "@id": "https://www.ivanovishado.dev/mentorship/#webpage"
@@ -91,10 +143,34 @@
         },
         {
           "@type": "Question",
+          "name": "Is mentorship a subscription or pay-per-session?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pay-per-session. Book a single session whenever you need it, with no recurring fee or long-term commitment."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Who is this mentorship for?",
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Engineers at any stage, from juniors aiming at their first big-tech interview to mid-level engineers working toward senior. If you’re building distributed systems, preparing for big-tech loops, or trying to move from Latin America into a global company, we’ll have plenty to talk about."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can we do mock interviews or resume reviews?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We can run mock system design, coding or behavioral interviews, review your resume and LinkedIn profile, or walk through a real architecture problem from your work."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you mentor on AI engineering and agentic workflows?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. I build agentic workflows in production at Netflix and can help with LLM orchestration, sub-agents, MCP servers, evaluation, and integrating AI into distributed systems."
           }
         },
         {
@@ -123,6 +199,14 @@
         },
         {
           "@type": "Question",
+          "name": "How should I prepare for a session?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "When you book on cal.com, share a brief note on what you want to work on. Bring your resume, a system design prompt, or the specific career decision you are stuck on."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Can you guarantee me a job at Netflix or FAANG?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -135,6 +219,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Reschedule or cancel anytime through the cal.com link in your confirmation email. No questions asked."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Las sesiones pueden ser completamente en español?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Podemos llevar toda la sesión, los simulacros de entrevista y las notas de seguimiento en español, o practicar entrevistas técnicas en inglés si te estás preparando para empresas globales."
           }
         }
       ]
@@ -163,7 +255,7 @@
       "url": "https://www.ivanovishado.dev/mentorship/",
       "name": "Software Engineering Mentorship | Ivan Galaviz",
       "description": "1-on-1 mentorship with Ivan Galaviz, Netflix Senior Software Engineer. System design, career growth and interviews. English or Spanish. 500 MXN per session.",
-      "inLanguage": "en",
+      "inLanguage": ["en", "es"],
       "isPartOf": {
         "@id": "https://www.ivanovishado.dev/#website"
       },
@@ -244,6 +336,10 @@
             <p class="topics__d">How to think about scale, failure and trade-offs, from event pipelines processing hundreds of billions of events to the asset systems behind a streaming service.</p>
           </li>
           <li class="topics__row">
+            <h3 class="topics__t">Agentic workflows and AI engineering</h3>
+            <p class="topics__d">Designing reliable LLM orchestration, sub-agents, MCP servers, and evaluation loops layered over real production backend services.</p>
+          </li>
+          <li class="topics__row">
             <h3 class="topics__t">Interviewing at big tech</h3>
             <p class="topics__d">Coding, system design and behavioral loops. How to prepare, what interviewers actually look for, and how to frame a non-traditional background as an advantage.</p>
           </li>
@@ -298,8 +394,20 @@
             <p class="faq__a">Each 45-minute session costs 500 MXN, including the first session. Sessions take place remotely over Google Meet, in English or Spanish.</p>
           </details>
           <details class="faq__item">
+            <summary>Is mentorship a subscription or pay-per-session?</summary>
+            <p class="faq__a">Pay-per-session. Book a single session whenever you need it, with no recurring fee or long-term commitment.</p>
+          </details>
+          <details class="faq__item">
             <summary>Who is this mentorship for?</summary>
             <p class="faq__a">Engineers at any stage, from juniors aiming at their first big-tech interview to mid-level engineers working toward senior. If you’re building distributed systems, preparing for big-tech loops, or trying to move from Latin America into a global company, we’ll have plenty to talk about.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Can we do mock interviews or resume reviews?</summary>
+            <p class="faq__a">Yes. We can run mock system design, coding or behavioral interviews, review your resume and LinkedIn profile, or walk through a real architecture problem from your work.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Do you mentor on AI engineering and agentic workflows?</summary>
+            <p class="faq__a">Yes. I build agentic workflows in production at Netflix and can help with LLM orchestration, sub-agents, MCP servers, evaluation, and integrating AI into distributed systems.</p>
           </details>
           <details class="faq__item">
             <summary>Do I need to be in Latin America?</summary>
@@ -314,6 +422,10 @@
             <p class="faq__a">45 minutes over Google Meet. You’ll get a calendar invite and a meeting link when you book through cal.com.</p>
           </details>
           <details class="faq__item">
+            <summary>How should I prepare for a session?</summary>
+            <p class="faq__a">When you book on cal.com, share a brief note on what you want to work on. Bring your resume, a system design prompt, or the specific career decision you are stuck on.</p>
+          </details>
+          <details class="faq__item">
             <summary>Can you guarantee me a job at Netflix or FAANG?</summary>
             <p class="faq__a">No, and I’d be wary of anyone who does. What I can do is help you build the skills, system-design intuition and interview story that make you a strong candidate.</p>
           </details>
@@ -321,6 +433,32 @@
             <summary>What if I need to reschedule?</summary>
             <p class="faq__a">Reschedule or cancel anytime through the cal.com link in your confirmation email. No questions asked.</p>
           </details>
+          <details class="faq__item" lang="es">
+            <summary>¿Las sesiones pueden ser completamente en español?</summary>
+            <p class="faq__a">Sí. Podemos llevar toda la sesión, los simulacros de entrevista y las notas de seguimiento en español, o practicar entrevistas técnicas en inglés si te estás preparando para empresas globales.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="section section--tight" id="espanol" lang="es" data-surface="light" aria-labelledby="es-title">
+        <header class="section__head grid">
+          <h2 class="h-section c-1-6" id="es-title">Mentoría en español</h2>
+          <p class="c-7-12 muted">Sesiones 1 a 1 de ingeniería de software para desarrolladores en México, Latinoamérica y cualquier parte del mundo.</p>
+        </header>
+        <div class="about grid">
+          <div class="prose c-1-8">
+            <p>Ofrezco mentoría individual de 45 minutos por Google Meet (500 MXN por sesión, sin suscripción) enfocada en crecimiento de carrera de junior a senior, diseño de sistemas distribuidos, workflows agénticos e ingeniería de IA, preparación de entrevistas técnicas y conductuales para empresas globales y FAANG, revisión de CV y transición laboral desde Latinoamérica.</p>
+            <p>Al terminar cada sesión recibes notas escritas con los temas tratados, recursos y siguientes pasos concretos. Puedes agendar directamente en <a class="link" href="https://cal.com/ivan-galaviz-qtcayv/mentoring" target="_blank" rel="noopener noreferrer">cal.com</a> o escribirme a <a class="link" href="mailto:me@ivanovishado.dev">me@ivanovishado.dev</a>.</p>
+          </div>
+          <div class="list c-9-12">
+            <h3>Resumen</h3>
+            <ul>
+              <li><span>500 MXN por sesión</span> <span class="mono">costo</span></li>
+              <li><span>45 minutos, sin suscripción</span> <span class="mono">formato</span></li>
+              <li><span>Español o inglés</span> <span class="mono">idioma</span></li>
+              <li><span>Google Meet, remoto</span> <span class="mono">lugar</span></li>
+            </ul>
+          </div>
         </div>
       </section>
 

@@ -1,7 +1,9 @@
-/* Validate the production HTML and discoverability files after a Vite build. */
+/* Validate the production HTML, agent discovery files, schema, and Worker behavior after a Vite build. */
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
+import worker from '../worker/index';
+import { createDistAssets } from './serve-worker';
 
 const root = resolve(import.meta.dirname, '../dist');
 const origin = 'https://www.ivanovishado.dev';
@@ -28,6 +30,7 @@ for (const path of ['', 'mentorship/']) {
   const html = read(`${path}index.html`);
   const canonical = `${origin}/${path}`;
   assert(html.includes(`rel="canonical" href="${canonical}"`), `Canonical: ${path}`);
+  assert(html.includes('rel="alternate" type="text/markdown"'), `Markdown alternate link: ${path}`);
   assert(sitemap.includes(`<loc>${canonical}</loc>`), `Sitemap missing ${canonical}`);
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
   assert(!/content="[^"]*noindex/.test(html));
@@ -38,7 +41,16 @@ for (const path of ['', 'mentorship/']) {
   inspect(graph);
   const og = html.match(/property="og:image" content="([^"]+)"/)?.[1];
   assert(og && existsSync(resolve(root, new URL(og).pathname.slice(1))), 'Missing OG image');
-  if (path) {
+  if (path === '') {
+    const org = graph['@graph'].find((node) => {
+      const t = node['@type'];
+      return t === 'Organization' || (Array.isArray(t) && t.includes('Organization'));
+    });
+    assert(org, 'Missing top-level Organization schema node');
+    assert(org.contactPoint, 'Organization schema missing contactPoint');
+    assert(org.address, 'Organization schema missing address');
+  }
+  if (path === 'mentorship/') {
     const faq = graph['@graph'].find(node => node['@type'] === 'FAQPage');
     const questions = faq?.mainEntity as { name: string; acceptedAnswer: { text: string } }[];
     const clean = (text: string) => text.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').replace(/&amp;/g, '&').trim();
@@ -55,4 +67,85 @@ for (const path of ['', 'mentorship/']) {
 references.forEach(id => assert(ids.has(id), `Unresolved entity: ${id}`));
 assert(read('404.html').includes('content="noindex, follow"'));
 assert(read('robots.txt').includes(`Sitemap: ${origin}/sitemap.xml`));
-console.log('SEO checks passed: canonical URLs, sitemap, entity references, FAQ parity, pricing, images, and 404 indexing.');
+
+// Verify /privacy/ trust anchor (>500 chars visible text, in sitemap & footer).
+const privacyHtml = read('privacy/index.html');
+const privacyText = privacyHtml.match(/<main[\s\S]*?<\/main>/)?.[0]?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
+assert(privacyText.length >= 500, `Privacy page too short (${privacyText.length} chars)`);
+assert(sitemap.includes(`<loc>${origin}/privacy/</loc>`), 'Sitemap missing /privacy/');
+assert(read('index.html').includes('href="/privacy/"'), 'Footer missing /privacy/ link');
+
+// Verify all pages have Markdown alternates and .md mirrors with frontmatter.
+const pagePaths = ['', 'mentorship/', 'work/netflix/', 'work/mcb-1/', 'work/nubank/', 'work/wizeline/', 'trajectory/', 'shelf/', 'privacy/'];
+for (const p of pagePaths) {
+  assert(read(`${p}index.html`).includes('rel="alternate" type="text/markdown"'), `Missing alternate link on /${p}`);
+  const md = read(`${p}index.md`);
+  assert(md.startsWith('---\n'), `Missing frontmatter in ${p}index.md`);
+}
+assert(read('404.md').length >= 100 && read('404.md').includes('/llms.txt'), '404.md missing recovery guidance');
+
+// Verify llms.txt, llms-full.txt, sitemap.md, and MCP discovery manifests.
+const llms = read('llms.txt');
+assert(llms.startsWith('# '), 'llms.txt must start with H1');
+assert(/\n> .+/.test(llms), 'llms.txt must include blockquote summary');
+assert(/when to (use|recommend)/i.test(llms), 'llms.txt missing when-to-use guidance');
+assert(read('llms-full.txt').includes('https://cal.com/ivan-galaviz-qtcayv/mentoring'), 'llms-full.txt missing booking URL');
+assert(read('sitemap.md').includes(`${origin}/mentorship/`), 'sitemap.md missing mentorship link');
+
+for (const manifest of ['.well-known/mcp/server-card.json', '.well-known/mcp.json', '.well-known/ai-catalog.json', 'mcp/server-card']) {
+  assert(JSON.parse(read(manifest)), `Invalid JSON in ${manifest}`);
+}
+
+// Verify Worker behavior in-process against dist/.
+const env = { ASSETS: createDistAssets(root) };
+
+const mdHome = await worker.fetch(new Request(`${origin}/`, { headers: { Accept: 'text/markdown' } }), env);
+assert.equal(mdHome.status, 200);
+assert(mdHome.headers.get('Content-Type')?.startsWith('text/markdown'));
+assert(mdHome.headers.get('Vary')?.toLowerCase().includes('accept'));
+assert((await mdHome.text()).includes('# Ivan Galaviz'));
+
+const htmlHome = await worker.fetch(new Request(`${origin}/`, { headers: { Accept: 'text/html' } }), env);
+assert.equal(htmlHome.status, 200);
+assert(htmlHome.headers.get('Content-Type')?.startsWith('text/html'));
+assert(htmlHome.headers.get('Vary')?.toLowerCase().includes('accept'));
+
+const uaHome = await worker.fetch(new Request(`${origin}/mentorship/`, { headers: { 'User-Agent': 'ClaudeBot/1.0' } }), env);
+assert.equal(uaHome.status, 200);
+assert(uaHome.headers.get('Content-Type')?.startsWith('text/markdown'));
+
+const md404 = await worker.fetch(new Request(`${origin}/definitely-missing-route`, { headers: { Accept: 'text/markdown' } }), env);
+assert.equal(md404.status, 404);
+assert(md404.headers.get('Content-Type')?.startsWith('text/markdown'));
+assert((await md404.text()).includes('/llms.txt'));
+
+const mcpInit = await worker.fetch(
+  new Request(`${origin}/mcp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'initialize', params: {} }),
+  }),
+  env,
+);
+assert.equal(mcpInit.status, 200);
+const initJson = (await mcpInit.json()) as { result: { serverInfo: { name: string } } };
+assert.equal(initJson.result.serverInfo.name, 'ivanovishado-mentorship');
+
+const mcpFit = await worker.fetch(
+  new Request(`${origin}/mcp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: 2,
+      method: 'tools/call',
+      params: { name: 'check_mentorship_fit', arguments: { goal: 'system design interview in Spanish', language: 'es' } },
+    }),
+  }),
+  env,
+);
+assert.equal(mcpFit.status, 200);
+const fitJson = (await mcpFit.json()) as { result: { structuredContent: { bookingUrl: string } } };
+assert.equal(fitJson.result.structuredContent.bookingUrl, 'https://cal.com/ivan-galaviz-qtcayv/mentoring');
+
+console.log('SEO & agentic checks passed: canonical URLs, sitemap, entity references, FAQ parity, privacy, llms.txt, .md mirrors, Worker negotiation, 404 Markdown, and MCP server.');

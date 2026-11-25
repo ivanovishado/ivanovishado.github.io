@@ -8,6 +8,7 @@
     <meta name="author" content="Ivan Galaviz" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://www.ivanovishado.dev/" />
+    <link rel="alternate" type="text/markdown" href="https://www.ivanovishado.dev/index.md" />
     <meta name="google-site-verification" content="TLmX5S2mQjoqW4TzBzEn6QtUxsstvwyrZtv6UxGQPE8" />
 
     <meta property="og:title" content="Ivan Galaviz | Senior Software Engineer at Netflix" />
@@ -38,19 +39,64 @@
       "jobTitle": "Senior Software Engineer",
       "worksFor": { "@type": "Organization", "name": "Netflix", "url": "https://www.netflix.com" },
       "alumniOf": { "@type": "EducationalOrganization", "name": "Universidad de Guadalajara" },
-      "knowsAbout": ["Java", "Python", "Go", "Clojure", "TypeScript", "Distributed Systems", "AWS", "GCP", "Azure", "LLM Orchestration", "Microservices", "Event-Driven Architecture", "Functional Programming"],
+      "knowsAbout": ["Java", "Python", "Go", "Clojure", "TypeScript", "Distributed Systems", "AWS", "GCP", "Azure", "LLM Orchestration", "Agentic Workflows", "MCP Servers", "Microservices", "Event-Driven Architecture", "Functional Programming", "Software Engineering Mentorship", "System Design", "Technical Interviews"],
       "knowsLanguage": ["English", "Spanish"],
       "sameAs": ["https://github.com/ivanovishado", "https://linkedin.com/in/ivanovishado", "https://x.com/ivanovishado"],
       "email": "me@ivanovishado.dev",
-      "description": "Senior Software Engineer at Netflix with 8+ years building distributed systems. Previously at Nubank (Clojure) and Wizeline (Go, Python, AWS). Member of Mat X Space, whose MCB-1 experiment flew aboard SpaceX CRS-31 to the International Space Station."
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Guadalajara",
+        "addressRegion": "Jalisco",
+        "addressCountry": "MX"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "me@ivanovishado.dev",
+        "contactType": "mentorship and inquiries",
+        "availableLanguage": ["English", "Spanish"],
+        "url": "https://www.ivanovishado.dev/mentorship/"
+      },
+      "makesOffer": {
+        "@type": "Offer",
+        "name": "1-on-1 Software Engineering Mentorship (English & Spanish)",
+        "price": "500",
+        "priceCurrency": "MXN",
+        "availability": "https://schema.org/InStock",
+        "url": "https://cal.com/ivan-galaviz-qtcayv/mentoring",
+        "itemOffered": { "@id": "https://www.ivanovishado.dev/mentorship/#service" }
+      },
+      "description": "Senior Software Engineer at Netflix with 8+ years building distributed systems and agentic workflows. Previously at Nubank (Clojure) and Wizeline (Go, Python, AWS). Offers 1-on-1 software engineering mentorship in English and Spanish (500 MXN per 45-minute session). Member of Mat X Space, whose MCB-1 experiment flew aboard SpaceX CRS-31 to the International Space Station."
+    },
+    {
+      "@type": ["Organization", "ProfessionalService"],
+      "@id": "https://www.ivanovishado.dev/#practice",
+      "name": "Ivan Galaviz Mentorship",
+      "url": "https://www.ivanovishado.dev/mentorship/",
+      "description": "One-on-one software engineering mentorship in English and Spanish with Ivan Galaviz, Senior Software Engineer at Netflix.",
+      "founder": { "@id": "https://www.ivanovishado.dev/#person" },
+      "email": "me@ivanovishado.dev",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Guadalajara",
+        "addressRegion": "Jalisco",
+        "addressCountry": "MX"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "me@ivanovishado.dev",
+        "contactType": "mentorship",
+        "availableLanguage": ["English", "Spanish"],
+        "url": "https://cal.com/ivan-galaviz-qtcayv/mentoring"
+      },
+      "sameAs": ["https://github.com/ivanovishado", "https://linkedin.com/in/ivanovishado", "https://x.com/ivanovishado"]
     },
     {
       "@type": "WebSite",
       "@id": "https://www.ivanovishado.dev/#website",
       "name": "Ivan Galaviz",
       "url": "https://www.ivanovishado.dev/",
-      "inLanguage": "en",
-      "publisher": { "@id": "https://www.ivanovishado.dev/#person" }
+      "inLanguage": ["en", "es"],
+      "publisher": { "@id": "https://www.ivanovishado.dev/#practice" }
     },
     {
       "@type": "ProfilePage",

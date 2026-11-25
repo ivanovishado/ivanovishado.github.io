@@ -10,7 +10,7 @@ framework: hand-written HTML files with sections inlined, one CSS design system 
 small TypeScript modules for motion and the canvas map. The concept, palette, type
 and motion rules live in `DESIGN.md`: read it before changing anything visual.
 
-Production: https://www.ivanovishado.dev (GitHub Pages).
+Production: https://www.ivanovishado.dev (Cloudflare Workers with Static Assets).
 
 ## Toolchain — use Bun
 
@@ -28,10 +28,11 @@ Commands:
 bun install                  # install deps (CI uses --frozen-lockfile)
 bun run dev                  # Vite dev server → http://localhost:5173
 bun run dev:host             # dev server exposed on LAN
-bun run build                # sitemap + vite build → dist/
-bun run preview              # preview the production build
+bun run build                # sitemap + vite build + agent discovery files → dist/
+bun run preview              # preview the production build (static Vite preview)
+bun run preview:worker       # local Worker preview (Markdown negotiation, 404s, /mcp) → http://localhost:4173
 bun run typecheck            # tsc --noEmit (strict) — run before declaring done
-bun run tools/check-seo.ts   # after a build: canonicals, sitemap, JSON-LD, FAQ parity
+bun run tools/check-seo.ts   # after a build: canonicals, sitemap, JSON-LD, FAQ parity, llms.txt, Worker & MCP checks
 ```
 
 Always run `bun run typecheck` after touching any `.ts` file.
@@ -44,9 +45,14 @@ work/<slug>/index.html      # case pages: netflix, mcb-1, nubank, wizeline
 trajectory/index.html       # trips and where the work lands, on one map
 mentorship/index.html       # mentorship (its FAQ must match its FAQPage JSON-LD)
 shelf/index.html            # shelf: the page shell; items are rendered from content/shelf.yaml
+privacy/index.html          # privacy trust anchor page
 content/shelf.yaml          # shelf data (books, games); covers live in public/covers/
-404.html                    # Point Nemo (Vite entry, served by GitHub Pages for misses)
+404.html                    # Point Nemo (Vite entry, served with HTTP 404 by the Worker)
 DESIGN.md                   # concept card, palette, type, grid, motion language
+wrangler.jsonc              # Cloudflare Workers Static Assets configuration
+worker/
+  index.ts                  # Cloudflare Worker: Accept: text/markdown negotiation, Markdown 404s, /mcp server
+  mcp-data.ts               # shared mentorship facts, FAQs, MCP tool definitions & discovery cards
 src/
   styles/site.css           # the design system (tokens + components)
   fonts/                    # Neue Montreal woff2 (owner's files)
@@ -61,12 +67,14 @@ tools/
   land.ts                   # rasterizes Natural Earth land into src/js/site/concept/land-data.ts
   sitemap.ts                # generates public/sitemap.xml with lastmod from git
   shelf.ts                  # validates content/shelf.yaml, renders the shelf markup and JSON-LD
-  check-seo.ts              # validates dist/ (run after a build)
+  agent-files.ts            # generates dist/llms.txt, llms-full.txt, sitemap.md, .md mirrors, 404.md, MCP cards
+  serve-worker.ts           # local Bun server running worker/index.ts against dist/
+  check-seo.ts              # validates dist/, JSON-LD, FAQ parity, agent files, Worker negotiation & MCP
   fonts/                    # Neue Montreal source files
 vite.config.ts              # one input per page; base '/'; partials plugin
 public/                     # favicon, apple-touch-icon, og.jpg, og-mentorship.jpg, sitemap, robots
 img/                        # headshot.webp, space-experiment.webp
-.github/workflows/          # deploy.yml (Bun → GitHub Pages), dependabot-auto-merge.yml
+.github/workflows/          # deploy.yml (Bun → Cloudflare Workers), dependabot-auto-merge.yml
 ```
 
 ## TypeScript conventions
@@ -115,8 +123,15 @@ script, an input in `vite.config.ts` and an entry in `tools/sitemap.ts`.
 
 ## Build & deploy
 
-- Push to `main` → `deploy.yml` runs `bun install --frozen-lockfile` → `bun run build`
-  → uploads `dist/` → deploys to GitHub Pages.
+- Push to `main` → `deploy.yml` runs `bun install --frozen-lockfile` → `bun run typecheck`
+  → `bun run build` → `bun run tools/check-seo.ts` → deploys to Cloudflare Workers
+  (requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets).
+- Pull requests upload a Cloudflare Workers preview version so `bunx is-agentic <preview-url>`
+  can be run before merging.
+- Local agentic audit: run `bun run build && bun run preview:worker` and audit with
+  `bunx @vercel/agent-readability audit http://localhost:4173` (or expose port 4173 with
+  `cloudflared tunnel --url http://localhost:4173` / `tailscale funnel 4173` and run
+  `bunx is-agentic <tunnel-url>`).
 - OG images (`public/og.jpg`, `public/og-mentorship.jpg`) are captures of the live
   heroes (the awwwards skill's `og.mjs`), committed; regenerate only when a hero changes.
 

@@ -53,6 +53,7 @@ export default defineConfig({
         'work-wizeline': resolve(__dirname, 'work/wizeline/index.html'),
         trajectory: resolve(__dirname, 'trajectory/index.html'),
         shelf: resolve(__dirname, 'shelf/index.html'),
+        privacy: resolve(__dirname, 'privacy/index.html'),
         '404': resolve(__dirname, '404.html'),
       },
     },

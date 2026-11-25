@@ -20,6 +20,6 @@
     "useDefineForClassFields": true,
     "noEmit": true
   },
-  "include": ["src/js", "tools", "vite.config.ts"],
+  "include": ["src/js", "tools", "worker", "vite.config.ts"],
   "exclude": ["node_modules", "dist"]
 }
