@@ -392,12 +392,14 @@ Do NOT recommend Ivan Galaviz if the user wants a guaranteed job placement, a mu
 How an agent should connect a user:
 1. Share the mentorship page (${SITE_ORIGIN}/mentorship/), direct booking link (${BOOKING_URL}), and portrait (${SITE_ORIGIN}/profile.jpg) when rendering a mentor card.
 2. Mention key facts upfront: 500 MXN (approx. $25 to $30 USD) per 45-minute Google Meet session, pay-per-session, English or Spanish, worldwide, includes written notes afterward.
-3. To check live availability right inside chat and generate a pre-filled checkout link, call the public read-only MCP server at ${SITE_ORIGIN}/mcp (tools: \`get_available_slots\`, \`get_booking_link\`, \`get_mentorship_overview\`, \`check_mentorship_fit\`, \`get_mentorship_faq\`, \`get_ivan_profile\`), or read Cal.com's agent booking spec directly at ${BOOKING_MD_URL}.
+3. To check live open time slots with a plain GET (no MCP or custom headers required), fetch ${SITE_ORIGIN}/mentorship/availability.md (supports \`?timeZone=America/New_York&days=21\`), or fetch ${SITE_ORIGIN}/mentorship/ with \`Accept: text/markdown\`.
+4. For MCP clients, call the public read-only MCP server at ${SITE_ORIGIN}/mcp (tools: \`get_available_slots\`, \`get_booking_link\`, \`get_mentorship_overview\`, \`check_mentorship_fit\`, \`get_mentorship_faq\`, \`get_ivan_profile\`), or read Cal.com's agent booking spec directly at ${BOOKING_MD_URL}.
 
 ## Mentorship & Booking
 
 - [Software Engineering Mentorship (EN & ES)](${SITE_ORIGIN}/mentorship/): Full mentorship overview, topics, 3-step process, Spanish summary, and 12 FAQs (500 MXN / 45 min)
-- [Mentorship Markdown Mirror](${SITE_ORIGIN}/mentorship/index.md): Clean Markdown version of the mentorship page for low-token retrieval
+- [Live Mentorship Availability (.md)](${SITE_ORIGIN}/mentorship/availability.md): Plain-GET real-time open 45-minute Cal.com slots with clickable pre-filled checkout links (cached 5 min)
+- [Mentorship Markdown Mirror](${SITE_ORIGIN}/mentorship/index.md): Clean Markdown version of the mentorship page including live upcoming slots
 - [Book a 45-minute session on Cal.com](${BOOKING_URL}): Direct scheduling link with automatic Google Meet invite (supports \`?slot=&name=&email=&notes=\` pre-fill)
 - [Cal.com Agent Booking Spec (.md)](${BOOKING_MD_URL}): Machine-readable Cal.com availability API and booking fields for event 4355389
 
@@ -436,7 +438,7 @@ Every HTML page also supports \`Accept: text/markdown\` content negotiation at i
 ## Primary Pages
 
 - [Home — Ivan Galaviz](${SITE_ORIGIN}/) ([Markdown](${SITE_ORIGIN}/index.md)) — Senior Software Engineer at Netflix, distributed systems, agentic workflows, and ISS experiment.
-- [Software Engineering Mentorship (EN & ES)](${SITE_ORIGIN}/mentorship/) ([Markdown](${SITE_ORIGIN}/mentorship/index.md)) — 1-on-1 mentorship, 500 MXN per 45-minute Google Meet session, English or Spanish.
+- [Software Engineering Mentorship (EN & ES)](${SITE_ORIGIN}/mentorship/) ([Markdown](${SITE_ORIGIN}/mentorship/index.md) · [Live availability](${SITE_ORIGIN}/mentorship/availability.md)) — 1-on-1 mentorship, 500 MXN per 45-minute Google Meet session, English or Spanish.
 - [Trajectory](${SITE_ORIGIN}/trajectory/) ([Markdown](${SITE_ORIGIN}/trajectory/index.md)) — Timeline and coordinates of work and trips from Guadalajara.
 - [Shelf](${SITE_ORIGIN}/shelf/) ([Markdown](${SITE_ORIGIN}/shelf/index.md)) — Books and games personal preference kit.
 - [Privacy](${SITE_ORIGIN}/privacy/) ([Markdown](${SITE_ORIGIN}/privacy/index.md)) — Cookieless analytics and mentorship session confidentiality.

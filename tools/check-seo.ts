@@ -180,4 +180,12 @@ const mcpTooLarge = await worker.fetch(
 );
 assert.equal(mcpTooLarge.status, 413);
 
-console.log('SEO & agentic checks passed: canonical URLs, sitemap, entity references, FAQ parity, privacy, llms.txt, .md mirrors, Worker negotiation, 404 Markdown, and MCP server.');
+const availRes = await worker.fetch(new Request(`${origin}/mentorship/availability.md`), env);
+assert.equal(availRes.status, 200);
+assert(availRes.headers.get('Content-Type')?.startsWith('text/markdown'));
+assert(availRes.headers.get('Cache-Control')?.includes('max-age=300'));
+const availBody = await availRes.text();
+assert(availBody.includes('Live Mentorship Availability'));
+assert(availBody.includes('https://cal.com/ivan-galaviz-qtcayv/mentoring'));
+
+console.log('SEO & agentic checks passed: canonical URLs, sitemap, entity references, FAQ parity, privacy, llms.txt, .md mirrors, Worker negotiation, 404 Markdown, live availability, and MCP server.');

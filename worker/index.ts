@@ -97,20 +97,54 @@ function isoDate(d: Date): string {
   return d.toISOString().split('T')[0]!;
 }
 
-async function fetchLiveSlots(args: Record<string, unknown>) {
+interface CalSlot {
+  date: string;
+  start: string;
+  bookingUrl: string;
+}
+
+interface CalSlotsResult {
+  ok: boolean;
+  start: string;
+  end: string;
+  timeZone: string;
+  checkedAt: string;
+  slots: CalSlot[];
+  error?: string;
+}
+
+const SLOTS_CACHE_TTL = 300;
+
+function getEdgeCache(): Cache | undefined {
+  return (globalThis as { caches?: { default?: Cache } }).caches?.default;
+}
+
+async function queryCalSlots(opts: { start?: string; end?: string; days?: number; timeZone?: string }): Promise<CalSlotsResult> {
   const datePattern = /^\d{4}-\d{2}-\d{2}$/;
   const now = new Date();
-  const startStr = typeof args.start === 'string' && datePattern.test(args.start) ? args.start : isoDate(now);
+  const days = Math.min(30, Math.max(1, Number.isFinite(opts.days) ? Math.floor(opts.days!) : 14));
+  const startStr = opts.start && datePattern.test(opts.start) ? opts.start : isoDate(now);
   const startDate = new Date(`${startStr}T00:00:00Z`);
-  const defaultEnd = new Date(startDate.getTime() + 7 * 86_400_000);
-  let endStr = typeof args.end === 'string' && datePattern.test(args.end) ? args.end : isoDate(defaultEnd);
+  const defaultEnd = new Date(startDate.getTime() + days * 86_400_000);
+  let endStr = opts.end && datePattern.test(opts.end) ? opts.end : isoDate(defaultEnd);
   const endDate = new Date(`${endStr}T00:00:00Z`);
   if (Number.isNaN(endDate.getTime()) || endDate < startDate) {
     endStr = isoDate(defaultEnd);
   } else if (endDate.getTime() - startDate.getTime() > 30 * 86_400_000) {
     endStr = isoDate(new Date(startDate.getTime() + 30 * 86_400_000));
   }
-  const timeZone = typeof args.timeZone === 'string' && args.timeZone.trim() ? args.timeZone.trim() : 'America/Mexico_City';
+  const timeZone = opts.timeZone?.trim() || 'America/Mexico_City';
+
+  const cache = getEdgeCache();
+  const cacheKey = new Request(
+    `https://cache.ivanovishado.dev/cal-slots?event=${CAL_EVENT_TYPE_ID}&start=${encodeURIComponent(startStr)}&end=${encodeURIComponent(endStr)}&tz=${encodeURIComponent(timeZone)}`,
+  );
+  if (cache) {
+    const cached = await cache.match(cacheKey);
+    if (cached) {
+      return (await cached.json()) as CalSlotsResult;
+    }
+  }
 
   const query = new URL(CAL_SLOTS_API_URL);
   query.searchParams.set('eventTypeId', String(CAL_EVENT_TYPE_ID));
@@ -121,54 +155,146 @@ async function fetchLiveSlots(args: Record<string, unknown>) {
   try {
     const res = await fetch(query.toString(), {
       headers: { 'cal-api-version': CAL_SLOTS_API_VERSION, Accept: 'application/json' },
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(4000),
     });
     if (!res.ok) throw new Error(`Cal.com returned HTTP ${res.status}`);
     const data = (await res.json()) as { data?: Record<string, { start: string }[]> };
     const byDate = data.data ?? {};
-    const slots = Object.entries(byDate).flatMap(([date, list]) =>
+    const slots: CalSlot[] = Object.entries(byDate).flatMap(([date, list]) =>
       (list ?? []).map((item) => ({
         date,
         start: item.start,
         bookingUrl: buildBookingUrl({ slot: item.start }),
       })),
     );
-    const payload = {
-      eventTypeId: CAL_EVENT_TYPE_ID,
+    const result: CalSlotsResult = {
+      ok: true,
       start: startStr,
       end: endStr,
       timeZone,
-      totalSlots: slots.length,
+      checkedAt: new Date().toISOString(),
       slots,
-      bookingPage: BOOKING_URL,
-      calMdUrl: BOOKING_MD_URL,
-      paymentNote: 'Payment (500 MXN, approx. $25 to $30 USD) is collected on the Cal.com checkout page when clicking a slot link.',
     };
-    const text =
-      slots.length > 0
-        ? [
-            `Found ${slots.length} open 45-minute mentorship slots (${startStr} to ${endStr}, ${timeZone}):`,
-            ...slots.slice(0, 12).map((s) => `- ${s.start} → ${s.bookingUrl}`),
-            slots.length > 12 ? `...and ${slots.length - 12} more slots on ${BOOKING_URL}` : '',
-            'Tip: call get_booking_link with slot, name, email, and notes to generate a pre-filled checkout URL.',
-          ]
-            .filter(Boolean)
-            .join('\n')
-        : `No open slots found between ${startStr} and ${endStr} (${timeZone}). Try a later date range or view the full calendar at ${BOOKING_URL}.`;
-    return { content: [{ type: 'text', text }], structuredContent: payload };
+    if (cache) {
+      await cache.put(
+        cacheKey,
+        new Response(JSON.stringify(result), {
+          headers: { 'Content-Type': 'application/json', 'Cache-Control': `public, max-age=${SLOTS_CACHE_TTL}` },
+        }),
+      );
+    }
+    return result;
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unable to reach Cal.com';
+    return {
+      ok: false,
+      start: startStr,
+      end: endStr,
+      timeZone,
+      checkedAt: new Date().toISOString(),
+      slots: [],
+      error: error instanceof Error ? error.message : 'Unable to reach Cal.com',
+    };
+  }
+}
+
+function formatAvailabilitySection(res: CalSlotsResult): string {
+  const lines = [
+    `## Live Upcoming Availability (${res.timeZone})`,
+    '',
+    `Checked live from Cal.com (event ${CAL_EVENT_TYPE_ID}) at \`${res.checkedAt}\` for **${res.start} to ${res.end}**. Each 45-minute 1-on-1 session is **500 MXN (approx. $25 to $30 USD)**, paid on checkout. Click any slot to open pre-filled booking on Cal.com:`,
+    '',
+  ];
+  if (!res.ok) {
+    lines.push(`Live slots could not be loaded right now (${res.error}). View open times and book directly at [${BOOKING_URL}](${BOOKING_URL}).`);
+    return lines.join('\n');
+  }
+  if (res.slots.length === 0) {
+    lines.push(`No open slots between ${res.start} and ${res.end}. Check later dates directly at [${BOOKING_URL}](${BOOKING_URL}) or pass \`?days=30\`.`);
+    return lines.join('\n');
+  }
+  for (const s of res.slots.slice(0, 24)) {
+    lines.push(`- \`${s.start}\` — [Book this slot](${s.bookingUrl})`);
+  }
+  if (res.slots.length > 24) {
+    lines.push(`- ...and ${res.slots.length - 24} more open slots at [${BOOKING_URL}](${BOOKING_URL})`);
+  }
+  lines.push(
+    '',
+    `Need another time zone or date range? Fetch \`${SITE_ORIGIN}/mentorship/availability.md?timeZone=America/New_York&days=21\` or book directly at [${BOOKING_URL}](${BOOKING_URL}).`,
+  );
+  return lines.join('\n');
+}
+
+function formatAvailabilityDocument(res: CalSlotsResult): string {
+  const frontmatter = [
+    '---',
+    'title: "Live Mentorship Availability | Ivan Galaviz"',
+    'description: "Real-time open 45-minute 1-on-1 software and AI engineering mentorship slots with Ivan Galaviz (500 MXN, approx. $25 to $30 USD, English or Spanish)."',
+    `canonical_url: "${SITE_ORIGIN}/mentorship/"`,
+    `last_updated: "${res.checkedAt.split('T')[0]}"`,
+    'language: "en, es"',
+    '---',
+    '',
+    '# Live Mentorship Availability — Ivan Galaviz',
+    '',
+    `- **Mentor:** Ivan Galaviz (Senior Software Engineer at Netflix, Guadalajara, Mexico)`,
+    `- **Price:** 500 MXN (approx. $25 to $30 USD) per 45-minute session (pay-per-session, no subscription)`,
+    `- **Languages:** English or Spanish`,
+    `- **Location:** Google Meet, worldwide`,
+    `- **Full mentorship guide:** [${SITE_ORIGIN}/mentorship/](${SITE_ORIGIN}/mentorship/)`,
+    `- **Direct booking calendar:** [${BOOKING_URL}](${BOOKING_URL})`,
+    '',
+  ].join('\n');
+  return `${frontmatter}${formatAvailabilitySection(res)}\n`;
+}
+
+async function fetchLiveSlots(args: Record<string, unknown>) {
+  const res = await queryCalSlots({
+    start: typeof args.start === 'string' ? args.start : undefined,
+    end: typeof args.end === 'string' ? args.end : undefined,
+    days: 7,
+    timeZone: typeof args.timeZone === 'string' ? args.timeZone : undefined,
+  });
+
+  if (!res.ok) {
     const payload = {
-      error: message,
+      error: res.error,
       bookingPage: BOOKING_URL,
+      availabilityUrl: `${SITE_ORIGIN}/mentorship/availability.md`,
       calMdUrl: BOOKING_MD_URL,
       eventTypeId: CAL_EVENT_TYPE_ID,
     };
     return {
-      content: [{ type: 'text', text: `Could not fetch live slots (${message}). View live availability and book directly at ${BOOKING_URL} (agent docs: ${BOOKING_MD_URL}).` }],
+      content: [{ type: 'text', text: `Could not fetch live slots (${res.error}). View live availability and book directly at ${BOOKING_URL} (agent docs: ${BOOKING_MD_URL}).` }],
       structuredContent: payload,
     };
   }
+
+  const payload = {
+    eventTypeId: CAL_EVENT_TYPE_ID,
+    start: res.start,
+    end: res.end,
+    timeZone: res.timeZone,
+    checkedAt: res.checkedAt,
+    totalSlots: res.slots.length,
+    slots: res.slots,
+    bookingPage: BOOKING_URL,
+    availabilityUrl: `${SITE_ORIGIN}/mentorship/availability.md`,
+    calMdUrl: BOOKING_MD_URL,
+    paymentNote: 'Payment (500 MXN, approx. $25 to $30 USD) is collected on the Cal.com checkout page when clicking a slot link.',
+  };
+  const text =
+    res.slots.length > 0
+      ? [
+          `Found ${res.slots.length} open 45-minute mentorship slots (${res.start} to ${res.end}, ${res.timeZone}):`,
+          ...res.slots.slice(0, 12).map((s) => `- ${s.start} → ${s.bookingUrl}`),
+          res.slots.length > 12 ? `...and ${res.slots.length - 12} more slots on ${BOOKING_URL}` : '',
+          'Tip: call get_booking_link with slot, name, email, and notes to generate a pre-filled checkout URL.',
+        ]
+          .filter(Boolean)
+          .join('\n')
+      : `No open slots found between ${res.start} and ${res.end} (${res.timeZone}). Try a later date range or view the full calendar at ${BOOKING_URL}.`;
+  return { content: [{ type: 'text', text }], structuredContent: payload };
 }
 
 async function runTool(name: string, args: Record<string, unknown>) {
@@ -390,8 +516,16 @@ async function handleMcpPost(request: Request, env: Env, origin: string): Promis
 }
 
 async function serveMarkdown(env: Env, origin: string, mdAssetPath: string, status = 200, isHead = false, canonicalUrl?: string): Promise<Response | null> {
-  const text = await fetchAssetText(env, origin, mdAssetPath);
+  let text = await fetchAssetText(env, origin, mdAssetPath);
   if (text === null) return null;
+  let cacheMaxAge = 600;
+  if (status === 200 && mdAssetPath === '/mentorship/index.md') {
+    const live = await queryCalSlots({ days: 14 });
+    if (live.ok) {
+      text = `${text.trimEnd()}\n\n${formatAvailabilitySection(live)}\n`;
+      cacheMaxAge = SLOTS_CACHE_TTL;
+    }
+  }
   const links = [`<${SITE_ORIGIN}/llms.txt>; rel="describedby"; type="text/markdown"`];
   if (canonicalUrl) links.unshift(`<${canonicalUrl}>; rel="canonical"`);
   const headers = new Headers({
@@ -399,7 +533,7 @@ async function serveMarkdown(env: Env, origin: string, mdAssetPath: string, stat
     'Vary': 'Accept, User-Agent',
     'x-markdown-tokens': estimateTokens(text),
     'Link': links.join(', '),
-    'Cache-Control': status === 404 ? 'no-cache' : 'public, max-age=600',
+    'Cache-Control': status === 404 ? 'no-cache' : `public, max-age=${cacheMaxAge}`,
     ...CORS_HEADERS,
   });
   return new Response(isHead ? null : text, { status, headers });
@@ -453,6 +587,28 @@ export default {
         'application/json; charset=utf-8',
         { Allow: 'POST, OPTIONS' },
       );
+    }
+
+    // Plain-GET live mentorship availability for ChatGPT / Perplexity / Claude web browsing (no MCP or custom headers needed).
+    if (norm === '/mentorship/availability.md' || norm === '/mentorship/availability') {
+      const daysParam = url.searchParams.get('days');
+      const live = await queryCalSlots({
+        start: url.searchParams.get('start') ?? undefined,
+        end: url.searchParams.get('end') ?? undefined,
+        days: daysParam ? Number(daysParam) : 14,
+        timeZone: url.searchParams.get('timeZone') ?? undefined,
+      });
+      const body = formatAvailabilityDocument(live);
+      return new Response(isHead ? null : body, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/markdown; charset=utf-8',
+          'Cache-Control': `public, max-age=${SLOTS_CACHE_TTL}`,
+          'x-markdown-tokens': estimateTokens(body),
+          'Link': `<${SITE_ORIGIN}/mentorship/>; rel="canonical", <${SITE_ORIGIN}/llms.txt>; rel="describedby"; type="text/markdown"`,
+          ...CORS_HEADERS,
+        },
+      });
     }
 
     // Direct .md URLs: support both /mentorship/index.md and /mentorship.md (and /index.md, /sitemap.md).
