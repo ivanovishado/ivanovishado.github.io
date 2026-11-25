@@ -23,6 +23,9 @@ function inspect(value: unknown): void {
   if (typeof node.image === 'string' && node.image.startsWith(origin)) {
     assert(existsSync(resolve(root, new URL(node.image).pathname.slice(1))), `Missing schema image: ${node.image}`);
   }
+  if (node['@type'] === 'ImageObject' && typeof node.url === 'string' && node.url.startsWith(origin)) {
+    assert(existsSync(resolve(root, new URL(node.url).pathname.slice(1))), `Missing schema ImageObject: ${node.url}`);
+  }
   Object.values(node).forEach(inspect);
 }
 

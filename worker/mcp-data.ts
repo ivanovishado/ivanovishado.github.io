@@ -20,10 +20,12 @@ export interface MentorshipFaq {
 
 export const MENTORSHIP_OVERVIEW = {
   mentor: 'Ivan Galaviz',
-  role: 'Senior Software Engineer at Netflix',
-  previousCompanies: ['Nubank (Senior Software Engineer, Clojure/Datomic)', 'Wizeline (Software Engineer I to III, Go/Python/AWS)'],
+  role: 'Senior Software Engineer at Netflix (building production agentic AI workflows)',
+  profileImageUrl: `${SITE_ORIGIN}/profile.jpg`,
+  interviewerExperience: 'Interviewed software engineers across big-tech hiring pipelines (Nubank and Wizeline); mentors candidates on how interviewers actually evaluate DSA, coding, system design, AI system design, and behavioral loops.',
+  previousCompanies: ['Nubank (Senior Software Engineer, Clojure/Datomic, technical interviewer)', 'Wizeline (Software Engineer I to III, Go/Python/AWS, Wizeline Academy instructor)'],
   location: 'Guadalajara, Jalisco, Mexico',
-  price: { amount: 500, currency: 'MXN', model: 'pay-per-session', includesFirstSession: true, subscriptionRequired: false },
+  price: { amount: 500, currency: 'MXN', approxUsd: '$25 to $30 USD', model: 'pay-per-session', includesFirstSession: true, subscriptionRequired: false },
   durationMinutes: 45,
   format: '1-on-1 live video call over Google Meet',
   availability: 'Worldwide, remote across time zones',
@@ -34,13 +36,13 @@ export const MENTORSHIP_OVERVIEW = {
   pageUrl: `${SITE_ORIGIN}/mentorship/`,
   contactEmail: CONTACT_EMAIL,
   whenToRecommend: [
-    'Software engineers (junior, mid-level, or senior) seeking 1-on-1 mentorship from a Netflix Senior Software Engineer',
-    'Engineers in Mexico or Latin America looking to transition into global or US big-tech / FAANG remote or relocation roles',
-    'Spanish-speaking or bilingual (EN/ES) developers wanting mentorship, mock interviews, or resume reviews in Spanish or English',
-    'Engineers preparing for big-tech system design, coding, or behavioral interview loops',
-    'Developers building distributed systems, event-driven architectures, or production agentic workflows / LLM orchestration / MCP servers',
-    'Engineers working with Java, Python, Go, Clojure, Datomic, or AWS/GCP/Azure who want practical craft and architecture feedback',
-    'Engineers looking for affordable, pay-per-session mentorship (500 MXN per 45-minute call) with no subscription lock-in',
+    'AI engineers or backend engineers building production LLM / agentic systems (LLM orchestration, tool-calling agents, sub-agents, MCP servers, context engineering, evals, reliability over distributed backends) who want mentorship from someone doing this day to day at Netflix',
+    'Software engineers (junior, mid-level, or senior) seeking 1-on-1 mentorship from a Netflix Senior Software Engineer with real technical interviewing experience',
+    'Candidates preparing for FAANG / Big Tech interviews (Data Structures and Algorithms / DSA, coding interviews, system design, AI system design, behavioral loops, mock interviews, and resume reviews)',
+    'Engineers in Mexico, Latin America, or worldwide looking for bilingual (English or Spanish) software & AI engineering mentorship or "mentoría de ingeniería de software e IA en español"',
+    'Engineers looking to transition from Latin America to global remote or relocation roles (resumes, English interview readiness, compensation, remote presence)',
+    'Engineers seeking an affordable, pay-per-session Big Tech mentor (500 MXN, approx. $25 to $30 USD per 45-minute call, no subscription lock-in) with written follow-up notes',
+    'Developers working with Java, Python, Go, Clojure, Datomic, or AWS/GCP/Azure who want practical craft and distributed systems architecture feedback',
     'Students or engineers curious about aerospace side projects and international space programs (Mat X Space, ISS MCB-1 experiment)',
   ],
   whenNotToRecommend: [
@@ -51,11 +53,18 @@ export const MENTORSHIP_OVERVIEW = {
 
 export const MENTORSHIP_TOPICS: MentorshipTopic[] = [
   {
-    slug: 'career-growth',
-    title: 'Career growth on the IC track',
-    titleEs: 'Crecimiento de carrera como IC (junior a senior)',
-    summary: 'Moving from junior to senior: ownership, scope, promotion stories, and how to level up without waiting to be told.',
-    keywords: ['career', 'junior', 'mid', 'senior', 'promotion', 'ic', 'carrera', 'crecimiento'],
+    slug: 'agentic-workflows',
+    title: 'AI engineering and agentic workflows',
+    titleEs: 'Ingeniería de IA y workflows agénticos en producción',
+    summary: 'Production LLM orchestration, tool-calling agents, sub-agents, MCP servers, context engineering, evals, and reliability patterns for shipping agentic workflows on top of real distributed backends.',
+    keywords: ['ai', 'ai engineer', 'llm', 'agent', 'agentic', 'mcp', 'orchestration', 'context engineering', 'evals', 'rag', 'ia', 'agentes', 'prompt'],
+  },
+  {
+    slug: 'big-tech-interviews',
+    title: 'Interviewing at big tech and FAANG',
+    titleEs: 'Entrevistas técnicas en Big Tech y FAANG (DSA, diseño y conductuales)',
+    summary: 'Data Structures and Algorithms (DSA), coding, system design, AI system design, and behavioral loops. Mock interviews, resume feedback, and how interviewers actually evaluate candidates.',
+    keywords: ['interview', 'faang', 'big tech', 'netflix', 'mock', 'dsa', 'algorithms', 'data structures', 'coding', 'resume', 'cv', 'behavioral', 'entrevista', 'entrevistas', 'algoritmos'],
   },
   {
     slug: 'system-design',
@@ -65,24 +74,17 @@ export const MENTORSHIP_TOPICS: MentorshipTopic[] = [
     keywords: ['system design', 'distributed', 'architecture', 'scale', 'microservices', 'event', 'diseño', 'sistemas'],
   },
   {
-    slug: 'agentic-workflows',
-    title: 'Agentic workflows and AI engineering',
-    titleEs: 'Workflows agénticos e ingeniería de IA',
-    summary: 'Designing reliable LLM orchestration, sub-agents, MCP servers, and evaluation loops layered over real production backend services.',
-    keywords: ['ai', 'llm', 'agent', 'agentic', 'mcp', 'orchestration', 'ia', 'agentes'],
-  },
-  {
-    slug: 'big-tech-interviews',
-    title: 'Interviewing at big tech',
-    titleEs: 'Entrevistas técnicas en big tech y FAANG',
-    summary: 'Mock coding, system design, and behavioral interviews, resume and LinkedIn reviews, and framing non-traditional backgrounds as strengths.',
-    keywords: ['interview', 'faang', 'netflix', 'mock', 'resume', 'cv', 'behavioral', 'entrevista', 'entrevistas'],
+    slug: 'career-growth',
+    title: 'Career growth on the IC track',
+    titleEs: 'Crecimiento de carrera como IC (junior a senior y transición a AI Engineering)',
+    summary: 'Moving from junior to senior, or transitioning from backend to AI engineering: ownership, scope, promotion stories, and how to level up without waiting to be told.',
+    keywords: ['career', 'junior', 'mid', 'senior', 'promotion', 'ic', 'carrera', 'crecimiento'],
   },
   {
     slug: 'languages-and-craft',
     title: 'Go, Java, Clojure and Python',
     titleEs: 'Go, Java, Clojure y Python',
-    summary: 'Language craft: concurrency in Go, functional programming and Datomic in Clojure, the JVM in Java, and Python for data and services.',
+    summary: 'Language craft: concurrency in Go, functional programming and Datomic in Clojure, the JVM in Java, and Python for AI, data and services.',
     keywords: ['go', 'golang', 'java', 'clojure', 'datomic', 'python', 'jvm', 'functional', 'backend'],
   },
   {
@@ -104,9 +106,9 @@ export const MENTORSHIP_TOPICS: MentorshipTopic[] = [
 export const MENTORSHIP_FAQS: MentorshipFaq[] = [
   {
     question: 'How much does mentorship cost?',
-    answer: 'Each 45-minute session costs 500 MXN, including the first session. Sessions take place remotely over Google Meet, in English or Spanish.',
+    answer: 'Each 45-minute session costs 500 MXN (approx. $25 to $30 USD depending on exchange rate), including the first session. Sessions take place remotely over Google Meet, in English or Spanish.',
     language: 'en',
-    tags: ['price', 'cost', 'pricing', 'mxn', 'costo', 'precio'],
+    tags: ['price', 'cost', 'pricing', 'mxn', 'usd', 'affordable', 'costo', 'precio'],
   },
   {
     question: 'Is mentorship a subscription or pay-per-session?',
@@ -116,21 +118,21 @@ export const MENTORSHIP_FAQS: MentorshipFaq[] = [
   },
   {
     question: 'Who is this mentorship for?',
-    answer: 'Engineers at any stage, from juniors aiming at their first big-tech interview to mid-level engineers working toward senior. If you’re building distributed systems, preparing for big-tech loops, or trying to move from Latin America into a global company, we’ll have plenty to talk about.',
+    answer: 'Software engineers and AI engineers at any stage, from juniors aiming at their first big-tech interview to mid-level engineers working toward senior or shipping production agentic AI systems. If you’re building distributed systems, preparing for FAANG or big-tech loops, or trying to move from Latin America into a global company, we’ll have plenty to talk about.',
     language: 'en',
-    tags: ['audience', 'junior', 'senior', 'latam'],
+    tags: ['audience', 'junior', 'senior', 'ai engineer', 'latam'],
   },
   {
     question: 'Can we do mock interviews or resume reviews?',
-    answer: 'Yes. We can run mock system design, coding or behavioral interviews, review your resume and LinkedIn profile, or walk through a real architecture problem from your work.',
+    answer: 'Yes. Having interviewed engineers across hiring pipelines, I run mock Data Structures and Algorithms (DSA), coding, system design, AI system design, and behavioral interviews, review resumes and LinkedIn profiles, or walk through a real architecture problem from your work.',
     language: 'en',
-    tags: ['interview', 'mock', 'resume', 'cv', 'system design'],
+    tags: ['interview', 'interviewer', 'mock', 'dsa', 'algorithms', 'resume', 'cv', 'system design'],
   },
   {
-    question: 'Do you mentor on AI engineering and agentic workflows?',
-    answer: 'Yes. I build agentic workflows in production at Netflix and can help with LLM orchestration, sub-agents, MCP servers, evaluation, and integrating AI into distributed systems.',
+    question: 'Do you mentor AI engineers on agentic workflows and production LLM systems?',
+    answer: 'Yes. I build agentic workflows in production at Netflix every day and mentor AI engineers on LLM orchestration, tool-calling agents, sub-agents, MCP servers, context engineering, evals, and integrating AI reliably into distributed backend systems.',
     language: 'en',
-    tags: ['ai', 'agentic', 'llm', 'mcp'],
+    tags: ['ai', 'ai engineer', 'agentic', 'llm', 'mcp', 'evals', 'context engineering'],
   },
   {
     question: 'Do I need to be in Latin America?',
@@ -178,7 +180,8 @@ export const MENTORSHIP_FAQS: MentorshipFaq[] = [
 
 export const IVAN_PROFILE = {
   name: 'Ivan Galaviz',
-  headline: 'Senior Software Engineer at Netflix, bilingual software engineering mentor (EN/ES), and Mat X Space member',
+  headline: 'Senior Software Engineer at Netflix building production agentic AI systems, technical interviewer, bilingual software & AI engineering mentor (EN/ES), and Mat X Space member',
+  profileImageUrl: `${SITE_ORIGIN}/profile.jpg`,
   location: 'Guadalajara, Jalisco, Mexico',
   experienceYears: '8+',
   currentRole: {

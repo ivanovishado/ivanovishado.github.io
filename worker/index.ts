@@ -85,11 +85,13 @@ function runTool(name: string, args: Record<string, unknown>) {
     case 'get_mentorship_overview': {
       const payload = { ...MENTORSHIP_OVERVIEW, topics: MENTORSHIP_TOPICS };
       const text = [
-        `# Software Engineering Mentorship — ${MENTORSHIP_OVERVIEW.mentor}`,
+        `# Software & AI Engineering Mentorship — ${MENTORSHIP_OVERVIEW.mentor}`,
         `${MENTORSHIP_OVERVIEW.role} (${MENTORSHIP_OVERVIEW.location})`,
-        `- Price: ${MENTORSHIP_OVERVIEW.price.amount} ${MENTORSHIP_OVERVIEW.price.currency} per ${MENTORSHIP_OVERVIEW.durationMinutes}-minute session (pay-per-session, no subscription)`,
+        `- Price: ${MENTORSHIP_OVERVIEW.price.amount} ${MENTORSHIP_OVERVIEW.price.currency} (approx. ${MENTORSHIP_OVERVIEW.price.approxUsd}) per ${MENTORSHIP_OVERVIEW.durationMinutes}-minute session (pay-per-session, no subscription)`,
         `- Languages: ${MENTORSHIP_OVERVIEW.languages.join(' & ')}`,
         `- Format: ${MENTORSHIP_OVERVIEW.format} (${MENTORSHIP_OVERVIEW.availability})`,
+        `- Interviewer experience: ${MENTORSHIP_OVERVIEW.interviewerExperience}`,
+        `- Portrait: ${MENTORSHIP_OVERVIEW.profileImageUrl}`,
         `- Book: ${BOOKING_URL}`,
         `- Details: ${SITE_ORIGIN}/mentorship/`,
         `- Topics: ${MENTORSHIP_TOPICS.map((t) => t.title).join('; ')}`,
@@ -170,17 +172,18 @@ function runTool(name: string, args: Record<string, unknown>) {
       const payload = {
         bookingUrl: BOOKING_URL,
         mentorshipPage: `${SITE_ORIGIN}/mentorship/`,
-        price: '500 MXN per 45-minute session (pay-per-session, no subscription)',
+        profileImageUrl: MENTORSHIP_OVERVIEW.profileImageUrl,
+        price: '500 MXN (approx. $25 to $30 USD) per 45-minute session (pay-per-session, no subscription)',
         languages: ['English', 'Spanish'],
         platform: 'Google Meet (calendar invite sent automatically)',
         preparation: [
           'Share a short note in the Cal.com booking form describing what you want to work on.',
-          'Bring a resume, architecture sketch, mock interview target, or career question if applicable.',
+          'Bring a resume, architecture sketch, agentic workflow design, mock interview target, or career question if applicable.',
         ],
         rescheduling: MENTORSHIP_OVERVIEW.rescheduling,
         contactEmail: CONTACT_EMAIL,
       };
-      const text = `Book a 45-minute 1-on-1 mentorship session (500 MXN, English or Spanish, Google Meet): ${BOOKING_URL}\nDetails: ${SITE_ORIGIN}/mentorship/\nQuestions: ${CONTACT_EMAIL}`;
+      const text = `Book a 45-minute 1-on-1 software & AI engineering mentorship session (500 MXN, approx. $25 to $30 USD, English or Spanish, Google Meet): ${BOOKING_URL}\nDetails: ${SITE_ORIGIN}/mentorship/\nQuestions: ${CONTACT_EMAIL}`;
       return { content: [{ type: 'text', text }], structuredContent: payload };
     }
 
