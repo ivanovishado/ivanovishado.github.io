@@ -13,6 +13,7 @@ const root = resolve(__dirname, '..');
 
 const pages: { loc: string; file: string; priority: string }[] = [
   { loc: 'https://www.ivanovishado.dev/', file: 'index.html', priority: '1.0' },
+  { loc: 'https://www.ivanovishado.dev/resume/', file: 'resume/index.html', priority: '0.9' },
   { loc: 'https://www.ivanovishado.dev/mentorship/', file: 'mentorship/index.html', priority: '0.9' },
   { loc: 'https://www.ivanovishado.dev/trajectory/', file: 'trajectory/index.html', priority: '0.7' },
   { loc: 'https://www.ivanovishado.dev/shelf/', file: 'content/shelf.yaml', priority: '0.5' },

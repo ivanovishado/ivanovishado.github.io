@@ -29,7 +29,7 @@ function inspect(value: unknown): void {
   Object.values(node).forEach(inspect);
 }
 
-for (const path of ['', 'mentorship/']) {
+for (const path of ['', 'mentorship/', 'resume/']) {
   const html = read(`${path}index.html`);
   const canonical = `${origin}/${path}`;
   assert(html.includes(`rel="canonical" href="${canonical}"`), `Canonical: ${path}`);
@@ -53,23 +53,33 @@ for (const path of ['', 'mentorship/']) {
     assert(org.contactPoint, 'Organization schema missing contactPoint');
     assert(org.address, 'Organization schema missing address');
   }
-  if (path === 'mentorship/') {
+  if (path === 'mentorship/' || path === 'resume/') {
     const faq = graph['@graph'].find(node => node['@type'] === 'FAQPage');
     const questions = faq?.mainEntity as { name: string; acceptedAnswer: { text: string } }[];
     const clean = (text: string) => text.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').replace(/&amp;/g, '&').trim();
     const visible = [...html.matchAll(/<summary>(.*?)<\/summary>\s*<p class="faq__a">([\s\S]*?)<\/p>/g)];
-    assert.equal(questions.length, visible.length);
+    assert.equal(questions.length, visible.length, `FAQ count mismatch on ${path}`);
     visible.forEach((match, i) => {
-      assert.equal(questions[i]?.name, clean(match[1]!));
-      assert.equal(questions[i]?.acceptedAnswer.text, clean(match[2]!));
+      assert.equal(questions[i]?.name, clean(match[1]!), `FAQ question mismatch on ${path} #${i}`);
+      assert.equal(questions[i]?.acceptedAnswer.text, clean(match[2]!), `FAQ answer mismatch on ${path} #${i}`);
     });
+  }
+  if (path === 'mentorship/') {
     assert(html.includes('500 MXN'));
     assert(!/first conversation is on me|first session is free/i.test(html));
+  }
+  if (path === 'resume/') {
+    const profilePage = graph['@graph'].find(node => node['@type'] === 'ProfilePage');
+    const person = graph['@graph'].find(node => node['@type'] === 'Person');
+    assert(profilePage, 'Resume page missing ProfilePage schema node');
+    assert(person && person.hasOccupation, 'Resume page Person schema missing hasOccupation');
+    assert(!/[—–]/.test(html), 'resume/index.html must not contain em or en dashes');
   }
 }
 references.forEach(id => assert(ids.has(id), `Unresolved entity: ${id}`));
 assert(read('404.html').includes('content="noindex, follow"'));
 assert(read('robots.txt').includes(`Sitemap: ${origin}/sitemap.xml`));
+assert(read('index.html').includes('href="/resume/"'), 'Home / footer missing /resume/ link');
 
 // Verify /privacy/ trust anchor (>500 chars visible text, in sitemap & footer).
 const privacyHtml = read('privacy/index.html');
@@ -79,11 +89,15 @@ assert(sitemap.includes(`<loc>${origin}/privacy/</loc>`), 'Sitemap missing /priv
 assert(read('index.html').includes('href="/privacy/"'), 'Footer missing /privacy/ link');
 
 // Verify all pages have Markdown alternates and .md mirrors with frontmatter.
-const pagePaths = ['', 'mentorship/', 'work/netflix/', 'work/mcb-1/', 'work/nubank/', 'work/wizeline/', 'trajectory/', 'shelf/', 'privacy/'];
+const pagePaths = ['', 'resume/', 'mentorship/', 'work/netflix/', 'work/mcb-1/', 'work/nubank/', 'work/wizeline/', 'trajectory/', 'shelf/', 'privacy/'];
 for (const p of pagePaths) {
   assert(read(`${p}index.html`).includes('rel="alternate" type="text/markdown"'), `Missing alternate link on /${p}`);
   const md = read(`${p}index.md`);
   assert(md.startsWith('---\n'), `Missing frontmatter in ${p}index.md`);
+}
+const resumeMd = read('resume/index.md');
+for (const key of ['title:', 'description:', 'canonical_url:', 'last_updated:']) {
+  assert(resumeMd.includes(key), `resume/index.md missing frontmatter key ${key}`);
 }
 assert(read('404.md').length >= 100 && read('404.md').includes('/llms.txt'), '404.md missing recovery guidance');
 
@@ -92,8 +106,11 @@ const llms = read('llms.txt');
 assert(llms.startsWith('# '), 'llms.txt must start with H1');
 assert(/\n> .+/.test(llms), 'llms.txt must include blockquote summary');
 assert(/when to (use|recommend)/i.test(llms), 'llms.txt missing when-to-use guidance');
+assert(llms.includes(`${origin}/resume/`), 'llms.txt missing /resume/ link');
 assert(read('llms-full.txt').includes('https://cal.com/ivan-galaviz-qtcayv/mentoring'), 'llms-full.txt missing booking URL');
+assert(read('llms-full.txt').includes(`${origin}/resume/`), 'llms-full.txt missing /resume/ content');
 assert(read('sitemap.md').includes(`${origin}/mentorship/`), 'sitemap.md missing mentorship link');
+assert(read('sitemap.md').includes(`${origin}/resume/`), 'sitemap.md missing resume link');
 
 for (const manifest of ['.well-known/mcp/server-card.json', '.well-known/mcp.json', '.well-known/ai-catalog.json', 'mcp/server-card']) {
   assert(JSON.parse(read(manifest)), `Invalid JSON in ${manifest}`);
@@ -116,6 +133,21 @@ assert(htmlHome.headers.get('Vary')?.toLowerCase().includes('accept'));
 const uaHome = await worker.fetch(new Request(`${origin}/mentorship/`, { headers: { 'User-Agent': 'ClaudeBot/1.0' } }), env);
 assert.equal(uaHome.status, 200);
 assert(uaHome.headers.get('Content-Type')?.startsWith('text/markdown'));
+
+const mdResume = await worker.fetch(new Request(`${origin}/resume/`, { headers: { Accept: 'text/markdown' } }), env);
+assert.equal(mdResume.status, 200);
+assert(mdResume.headers.get('Content-Type')?.startsWith('text/markdown'));
+assert(mdResume.headers.get('Vary')?.toLowerCase().includes('accept'));
+assert((await mdResume.text()).includes('# Resume & Engineering Profile'));
+
+const uaResume = await worker.fetch(new Request(`${origin}/resume/`, { headers: { 'User-Agent': 'ClaudeBot/1.0' } }), env);
+assert.equal(uaResume.status, 200);
+assert(uaResume.headers.get('Content-Type')?.startsWith('text/markdown'));
+
+const htmlResume = await worker.fetch(new Request(`${origin}/resume/`, { headers: { Accept: 'text/html' } }), env);
+assert.equal(htmlResume.status, 200);
+assert(htmlResume.headers.get('Content-Type')?.startsWith('text/html'));
+assert(htmlResume.headers.get('Vary')?.toLowerCase().includes('accept'));
 
 const md404 = await worker.fetch(new Request(`${origin}/definitely-missing-route`, { headers: { Accept: 'text/markdown' } }), env);
 assert.equal(md404.status, 404);
@@ -169,6 +201,69 @@ const prefillJson = (await mcpPrefill.json()) as { result: { structuredContent: 
 assert(prefillJson.result.structuredContent.bookingUrl.includes('slot=2026-11-29'));
 assert(prefillJson.result.structuredContent.bookingUrl.includes('name=Ana'));
 assert.equal(prefillJson.result.structuredContent.eventTypeId, 4355389);
+
+const mcpCandidate = await worker.fetch(
+  new Request(`${origin}/mcp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: 4,
+      method: 'tools/call',
+      params: { name: 'get_candidate_profile', arguments: { focus: 'ai', language: 'es' } },
+    }),
+  }),
+  env,
+);
+assert.equal(mcpCandidate.status, 200);
+const candidateJson = (await mcpCandidate.json()) as {
+  result: { structuredContent: { recruiterIntake: { email: string }; language: string; competencies: { slug: string }[] } };
+};
+assert.equal(candidateJson.result.structuredContent.recruiterIntake.email, 'me@ivanovishado.dev');
+assert.equal(candidateJson.result.structuredContent.language, 'Spanish');
+assert.equal(candidateJson.result.structuredContent.competencies.length, 1);
+assert.equal(candidateJson.result.structuredContent.competencies[0]?.slug, 'ai-engineering');
+
+const mcpRoleFit = await worker.fetch(
+  new Request(`${origin}/mcp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: 5,
+      method: 'tools/call',
+      params: {
+        name: 'evaluate_role_fit',
+        arguments: { roleTitle: 'Staff AI Systems Engineer', requirements: ['LLM orchestration', 'MCP', 'distributed systems', 'Java'], level: 'staff', location: 'US remote' },
+      },
+    }),
+  }),
+  env,
+);
+assert.equal(mcpRoleFit.status, 200);
+const roleFitJson = (await mcpRoleFit.json()) as {
+  result: { structuredContent: { fit: string; resumeUrl: string; matchedCompetencies: { slug: string }[] } };
+};
+assert.equal(roleFitJson.result.structuredContent.fit, 'strong_fit');
+assert.equal(roleFitJson.result.structuredContent.resumeUrl, `${origin}/resume/`);
+assert(roleFitJson.result.structuredContent.matchedCompetencies.length >= 2);
+
+const mcpResumeRes = await worker.fetch(
+  new Request(`${origin}/mcp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: 6,
+      method: 'resources/read',
+      params: { uri: 'ivanovishado://resume.md' },
+    }),
+  }),
+  env,
+);
+assert.equal(mcpResumeRes.status, 200);
+const resumeResJson = (await mcpResumeRes.json()) as { result: { contents: { text: string }[] } };
+assert(resumeResJson.result.contents[0]?.text.includes('# Resume & Engineering Profile'));
 
 const mcpTooLarge = await worker.fetch(
   new Request(`${origin}/mcp`, {

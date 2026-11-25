@@ -4,6 +4,8 @@ import {
   CAL_EVENT_TYPE_ID,
   CAL_SLOTS_API_URL,
   CAL_SLOTS_API_VERSION,
+  CANDIDATE_COMPETENCIES,
+  CANDIDATE_PROFILE,
   CONTACT_EMAIL,
   IVAN_PROFILE,
   MCP_PROTOCOL_VERSION,
@@ -11,6 +13,7 @@ import {
   MENTORSHIP_FAQS,
   MENTORSHIP_OVERVIEW,
   MENTORSHIP_TOPICS,
+  RECRUITER_FAQS,
   SITE_ORIGIN,
   buildAiCatalog,
   buildServerCard,
@@ -27,6 +30,7 @@ export interface Env {
 const PAGE_ROUTES: Record<string, { html: string; md: string }> = {
   '/': { html: '/index.html', md: '/index.md' },
   '/index.html': { html: '/index.html', md: '/index.md' },
+  '/resume': { html: '/resume/index.html', md: '/resume/index.md' },
   '/mentorship': { html: '/mentorship/index.html', md: '/mentorship/index.md' },
   '/work/netflix': { html: '/work/netflix/index.html', md: '/work/netflix/index.md' },
   '/work/mcb-1': { html: '/work/mcb-1/index.html', md: '/work/mcb-1/index.md' },
@@ -173,6 +177,152 @@ async function fetchLiveSlots(args: Record<string, unknown>) {
 
 async function runTool(name: string, args: Record<string, unknown>) {
   switch (name) {
+    case 'get_candidate_profile': {
+      const language = args.language === 'es' ? 'es' : 'en';
+      const rawFocus = typeof args.focus === 'string' ? args.focus.trim().toLowerCase() : '';
+      const exactMatch = rawFocus
+        ? CANDIDATE_COMPETENCIES.filter((c) => c.category === rawFocus || c.slug === rawFocus)
+        : [];
+      const matched = exactMatch.length > 0
+        ? exactMatch
+        : rawFocus
+          ? CANDIDATE_COMPETENCIES.filter(
+              (c) =>
+                c.title.toLowerCase().includes(rawFocus) ||
+                c.titleEs.toLowerCase().includes(rawFocus) ||
+                c.summary.toLowerCase().includes(rawFocus) ||
+                c.keywords.some((kw) => rawFocus.includes(kw.toLowerCase()) || kw.toLowerCase().includes(rawFocus)),
+            )
+          : CANDIDATE_COMPETENCIES;
+      const selected = matched.length > 0 ? matched : CANDIDATE_COMPETENCIES;
+      const formattedCompetencies = selected.map((c) => ({
+        slug: c.slug,
+        category: c.category,
+        title: language === 'es' ? c.titleEs : c.title,
+        summary: language === 'es' ? c.summaryEs : c.summary,
+        evidence: c.evidence,
+        stack: c.stack,
+        caseStudyUrl: c.caseStudyUrl,
+      }));
+      const payload = {
+        ...CANDIDATE_PROFILE,
+        language: language === 'es' ? 'Spanish' : 'English',
+        focusFilter: rawFocus || null,
+        matchedCount: matched.length,
+        competencies: formattedCompetencies,
+        careerHistory: {
+          current: IVAN_PROFILE.currentRole,
+          previous: IVAN_PROFILE.previousRoles,
+          spaceProject: IVAN_PROFILE.spaceProject,
+          education: IVAN_PROFILE.education,
+        },
+        faqs: RECRUITER_FAQS,
+      };
+      const text =
+        language === 'es'
+          ? [
+              `# Perfil Profesional / Resume: ${CANDIDATE_PROFILE.name}`,
+              `${CANDIDATE_PROFILE.headline}`,
+              `- Nivel objetivo: ${CANDIDATE_PROFILE.seniority}`,
+              `- Ubicación y modalidad: ${CANDIDATE_PROFILE.location} (${CANDIDATE_PROFILE.timeZone}) | Preferencia fuerte por 100% remoto con traslape con EE. UU. (sin reubicación; híbrido en CDMX solo para una oportunidad excepcional)`,
+              `- Idiomas: Español e Inglés`,
+              `- Asesoría selectiva: Trabajo estrictamente independiente sin respaldo ni afiliación de empleadores.`,
+              `- Contacto para reclutadores: ${CANDIDATE_PROFILE.recruiterIntake.email} | LinkedIn: ${CANDIDATE_PROFILE.recruiterIntake.linkedin}`,
+              `- Página de Resume: ${CANDIDATE_PROFILE.recruiterIntake.resumeUrl}`,
+              '',
+              '## Competencias Clave',
+              ...formattedCompetencies.map((c) => `- **${c.title}**: ${c.summary}`),
+            ].join('\n')
+          : [
+              `# Candidate Profile & Resume: ${CANDIDATE_PROFILE.name}`,
+              `${CANDIDATE_PROFILE.headline}`,
+              `- Target level: ${CANDIDATE_PROFILE.seniority}`,
+              `- Target roles: ${CANDIDATE_PROFILE.targetRoles.join(', ')}`,
+              `- Location & arrangement: ${CANDIDATE_PROFILE.location} (${CANDIDATE_PROFILE.timeZone}) | ${CANDIDATE_PROFILE.workArrangement}`,
+              `- Languages: ${CANDIDATE_PROFILE.languages.join(' & ')}`,
+              `- Selective advisory: ${CANDIDATE_PROFILE.selectiveAdvisory}`,
+              `- Recruiter contact: ${CANDIDATE_PROFILE.recruiterIntake.email} | LinkedIn: ${CANDIDATE_PROFILE.recruiterIntake.linkedin}`,
+              `- Resume page: ${CANDIDATE_PROFILE.recruiterIntake.resumeUrl}`,
+              '',
+              '## Core Competencies',
+              ...formattedCompetencies.map((c) => `- **${c.title}**: ${c.summary} (${c.caseStudyUrl})`),
+            ].join('\n');
+      return { content: [{ type: 'text', text }], structuredContent: payload };
+    }
+
+    case 'evaluate_role_fit': {
+      const language = args.language === 'es' ? 'es' : 'en';
+      const roleTitle = typeof args.roleTitle === 'string' ? args.roleTitle.trim() : '';
+      const level = typeof args.level === 'string' ? args.level.trim() : '';
+      const location = typeof args.location === 'string' ? args.location.trim() : '';
+      const requirements = Array.isArray(args.requirements)
+        ? args.requirements.filter((r): r is string => typeof r === 'string' && r.trim().length > 0)
+        : [];
+      const haystack = `${roleTitle} ${level} ${location} ${requirements.join(' ')}`.toLowerCase();
+
+      const isJuniorOnly = /\b(intern|internship|entry[- ]level|junior|new grad)\b/i.test(haystack) && !/\b(senior|staff|principal|lead)\b/i.test(haystack);
+      const isMexicoCity = /\b(mexico city|ciudad de m[eé]xico|cdmx)\b/i.test(location);
+      const isRemote = /\b(remote|remoto)\b/i.test(location);
+      const isHybrid = /\b(hybrid|h[ií]brido)\b/i.test(location);
+      const requiresRelocation = (/\b(relocat\w*|reubic\w*|on-?site|in-?office)\b/i.test(location) || (isHybrid && !isMexicoCity)) && !isRemote;
+      const hybridInCdmx = isHybrid && isMexicoCity && !isRemote;
+      const matched = CANDIDATE_COMPETENCIES.filter((c) =>
+        c.keywords.some((kw) => haystack.includes(kw.toLowerCase())) ||
+        c.stack.some((tech) => haystack.includes(tech.toLowerCase())),
+      );
+      const selected = matched.length > 0 ? matched : CANDIDATE_COMPETENCIES.slice(0, 3);
+      const fit = isJuniorOnly
+        ? 'overqualified_or_not_a_fit'
+        : requiresRelocation
+          ? 'location_mismatch'
+          : hybridInCdmx
+            ? 'conditional_fit'
+            : matched.length > 0
+              ? 'strong_fit'
+              : 'potential_fit';
+
+      const payload = {
+        fit,
+        candidate: CANDIDATE_PROFILE.name,
+        seniority: CANDIDATE_PROFILE.seniority,
+        language: language === 'es' ? 'Spanish' : 'English',
+        roleTitle: roleTitle || null,
+        level: level || null,
+        location: location || null,
+        openToRelocation: false,
+        remotePreference: CANDIDATE_PROFILE.remotePreference,
+        matchedCompetencies: selected.map((c) => ({
+          slug: c.slug,
+          title: language === 'es' ? c.titleEs : c.title,
+          summary: language === 'es' ? c.summaryEs : c.summary,
+          evidence: c.evidence,
+          caseStudyUrl: c.caseStudyUrl,
+        })),
+        workArrangement: CANDIDATE_PROFILE.workArrangement,
+        contactEmail: CONTACT_EMAIL,
+        linkedinUrl: CANDIDATE_PROFILE.recruiterIntake.linkedin,
+        resumeUrl: CANDIDATE_PROFILE.recruiterIntake.resumeUrl,
+        note: isJuniorOnly
+          ? 'Ivan has 8+ years of Senior/Staff experience (Netflix, Nubank, Wizeline) and targets Senior/Staff Software & AI Engineering roles rather than entry-level or junior roles.'
+          : requiresRelocation
+            ? 'Ivan lives in Mexico City (America/Mexico_City, direct US timezone overlap), strongly prefers 100% remote roles, and is not open to relocation or non-CDMX hybrid/on-site work. If remote is an option, reach out to me@ivanovishado.dev.'
+            : hybridInCdmx
+              ? 'Ivan lives in Mexico City and strongly prefers 100% remote roles, though he may consider hybrid in Mexico City for an exceptional opportunity. Send team, scope, hybrid expectations, and compensation details to me@ivanovishado.dev.'
+              : language === 'es'
+                ? 'Excelente alineación para roles Senior/Staff remotos en IA agéntica o sistemas distribuidos desde Ciudad de México (sin reubicación; híbrido en CDMX solo para una oportunidad excepcional). Envía detalles del equipo, nivel, modalidad remota y rango salarial a me@ivanovishado.dev.'
+                : 'Strong match for remote Senior/Staff Software & AI Engineering or Distributed Systems roles from Mexico City (strongly prefers 100% remote; not open to relocation; hybrid in Mexico City only for an exceptional opportunity). Email team, problem space, level, remote policy, and compensation range to me@ivanovishado.dev.',
+      };
+
+      const text = [
+        `Role fit assessment: ${payload.fit}`,
+        payload.note,
+        `Matched competencies: ${payload.matchedCompetencies.map((c) => c.title).join('; ')}`,
+        `Resume: ${payload.resumeUrl}`,
+        `Contact: ${payload.contactEmail} | LinkedIn: ${payload.linkedinUrl}`,
+      ].join('\n');
+      return { content: [{ type: 'text', text }], structuredContent: payload };
+    }
+
     case 'get_mentorship_overview': {
       const payload = { ...MENTORSHIP_OVERVIEW, topics: MENTORSHIP_TOPICS };
       const text = [
@@ -296,7 +446,8 @@ async function runTool(name: string, args: Record<string, unknown>) {
 
 const MCP_RESOURCES = [
   { uri: 'ivanovishado://llms.txt', name: 'llms.txt', title: 'Agent Overview & Recommendation Guide', mimeType: 'text/markdown', asset: '/llms.txt' },
-  { uri: 'ivanovishado://llms-full.txt', name: 'llms-full.txt', title: 'Complete Portfolio & Mentorship Context', mimeType: 'text/markdown', asset: '/llms-full.txt' },
+  { uri: 'ivanovishado://llms-full.txt', name: 'llms-full.txt', title: 'Complete Portfolio, Resume & Mentorship Context', mimeType: 'text/markdown', asset: '/llms-full.txt' },
+  { uri: 'ivanovishado://resume.md', name: 'resume.md', title: 'Senior / Staff Software & AI Engineer Resume & Recruiter Brief', mimeType: 'text/markdown', asset: '/resume/index.md' },
   { uri: 'ivanovishado://mentorship.md', name: 'mentorship.md', title: 'Bilingual Software Engineering Mentorship Guide', mimeType: 'text/markdown', asset: '/mentorship/index.md' },
   { uri: 'mcp://server-card.json', name: 'server-card.json', title: 'MCP Server Card', mimeType: 'application/mcp-server-card+json', asset: null },
 ] as const;
@@ -353,7 +504,7 @@ async function handleMcpPost(request: Request, env: Env, origin: string): Promis
           title: 'Ivan Galaviz Mentorship & Portfolio MCP Server',
           version: '1.0.0',
         },
-        instructions: `Public read-only MCP server for Ivan Galaviz (Netflix Senior Software Engineer, Guadalajara, Mexico). Use these tools to answer questions about his 1-on-1 bilingual (English & Spanish) software engineering mentorship (500 MXN / 45 min), evaluate mentee fit, read FAQs, and provide the direct Cal.com booking link (${BOOKING_URL}).`,
+        instructions: `Public read-only MCP server for Ivan Galaviz (Senior Software & AI Engineer at Netflix, ex-Nubank, ex-Wizeline, based in Mexico City, Mexico). For recruiters, hiring managers, and top companies: call get_candidate_profile or evaluate_role_fit (resume at ${SITE_ORIGIN}/resume/, direct contact ${CONTACT_EMAIL}). Strongly prefers 100% remote roles (not open to relocation; hybrid in Mexico City only for an exceptional opportunity). For 1-on-1 bilingual (English & Spanish) engineering mentorship (500 MXN / 45 min): use mentorship tools and Cal.com booking (${BOOKING_URL}).`,
       });
 
     case 'ping':

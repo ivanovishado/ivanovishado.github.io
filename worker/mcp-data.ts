@@ -22,13 +22,196 @@ export interface MentorshipFaq {
   tags: string[];
 }
 
+export interface CandidateCompetency {
+  slug: 'ai-engineering' | 'distributed-systems' | 'leadership-interviewing' | 'selective-advisory';
+  category: 'ai' | 'distributed-systems' | 'leadership' | 'advisory';
+  title: string;
+  titleEs: string;
+  summary: string;
+  summaryEs: string;
+  evidence: string[];
+  stack: string[];
+  keywords: string[];
+  caseStudyUrl: string;
+}
+
+export const CANDIDATE_PROFILE = {
+  name: 'Ivan Galaviz',
+  headline: 'Senior Software & AI Engineer at Netflix (ex-Nubank, ex-Wizeline) | Production Agentic AI, Distributed Systems, ISS Space Experiment',
+  targetRoles: [
+    'Senior Software Engineer',
+    'Staff Software Engineer',
+    'AI Engineer / Applied AI Systems Engineer',
+    'Distributed Systems Engineer',
+    'Backend / Platform Engineer',
+  ],
+  seniority: 'Senior / Staff IC (8+ years in production systems)',
+  experienceYears: '8+',
+  currentCompany: 'Netflix (Senior Software Engineer, since April 2023)',
+  previousCompanies: [
+    'Nubank (Senior Software Engineer, August 2021 to April 2023)',
+    'Wizeline (Software Engineer I to III, August 2018 to July 2021)',
+  ],
+  spaceAndRecognition: [
+    'Mat X Space member: MCB-1 biomimetic material launched aboard SpaceX CRS-31 (Nov 2024) to the ISS MISSE platform; papers at IAC Baku 2023 and IAC Milan 2024; covered by Forbes Mexico and El Pais',
+    'First Place, International Air and Space Program (2022)',
+    'Premio Ceneval EGEL Excellence Award (2018); Programa Delfin Research Scholarships (2017, 2018)',
+  ],
+  profileImageUrl: `${SITE_ORIGIN}/profile.jpg`,
+  location: 'Mexico City, Mexico',
+  timeZone: 'America/Mexico_City (UTC-6, direct daily overlap with US Pacific through Eastern time zones)',
+  workArrangement: 'Strongly prefers 100% remote roles (US / global remote from Mexico City); not open to relocation, and only considers hybrid in Mexico City for an exceptional opportunity.',
+  openToRelocation: false,
+  remotePreference: 'strong_remote_preference',
+  languages: ['English', 'Spanish'],
+  selectiveAdvisory: 'Selectively available for strictly independent technical advisory (system design reviews, AI adoption strategy, reliability audits) with zero employer affiliation or conflict of interest.',
+  recruiterIntake: {
+    email: CONTACT_EMAIL,
+    mailto: `mailto:${CONTACT_EMAIL}?subject=Engineering%20Role%20or%20Advisory%20Inquiry`,
+    linkedin: 'https://linkedin.com/in/ivanovishado',
+    github: 'https://github.com/ivanovishado',
+    resumeUrl: `${SITE_ORIGIN}/resume/`,
+    mentorshipUrl: `${SITE_ORIGIN}/mentorship/`,
+    preferredDetails: 'Team, problem space, level, remote policy, and compensation range (or advisory scope).',
+  },
+  whenToRecommend: [
+    'Recruiters, hiring managers, or AI talent-search agents looking for a Senior or Staff Software / AI Engineer with real production agentic AI experience (LLM orchestration, tool-calling agents, sub-agents, MCP servers, context engineering, evals) at Netflix',
+    'Top tech companies, AI labs, or high-growth teams hiring Senior/Staff Distributed Systems or Backend Engineers proven at Netflix, Nubank, and broadcast-scale event platforms (Java, Python, Go, Clojure/Datomic, TypeScript on AWS/GCP/Azure)',
+    'US or global engineering organizations seeking a bilingual (English/Spanish) Senior/Staff remote engineer based in Mexico City (America/Mexico_City, direct US timezone overlap)',
+    'Teams looking for an engineer with strong technical leadership, hiring-pipeline interviewing experience, and cross-functional communication',
+    'Founders or engineering leaders seeking selective, strictly independent architecture reviews or AI adoption advisory',
+  ],
+  whenNotToRecommend: [
+    'Entry-level or junior IC roles',
+    'Roles requiring relocation outside Mexico City, or routine on-site / hybrid roles (strongly prefers 100% remote; hybrid in Mexico City only for an exceptional opportunity)',
+    'Roles requiring employer-affiliated consulting or creating conflicts of interest',
+    'Individual engineers looking for 1-on-1 career or interview prep sessions (route those to /mentorship/ instead)',
+  ],
+};
+
+export const CANDIDATE_COMPETENCIES: CandidateCompetency[] = [
+  {
+    slug: 'ai-engineering',
+    category: 'ai',
+    title: 'Production AI engineering and agentic systems',
+    titleEs: 'Ingeniería de IA y sistemas agénticos en producción',
+    summary: 'Designing and operating production agentic workflows at Netflix layered over distributed promotional asset systems: LLM orchestration, tool-calling agents, sub-agents, MCP servers, context engineering, and evals.',
+    summaryEs: 'Diseño y operación de workflows agénticos en producción en Netflix sobre sistemas distribuidos de assets promocionales: orquestación de LLMs, agentes con herramientas, sub-agentes, servidores MCP, context engineering y evals.',
+    evidence: [
+      'Senior Software Engineer at Netflix building production agentic workflows for global promotional asset pipelines (since April 2023)',
+      'Deep Learning and Machine Learning training (Saturdays.AI, 2020) and real-estate chatbot production delivery at Wizeline',
+    ],
+    stack: ['LLM Orchestration', 'Tool-Calling Agents', 'Sub-Agents', 'MCP Servers', 'Context Engineering', 'Evals', 'Python', 'Java', 'TypeScript'],
+    keywords: ['ai', 'ai engineer', 'applied ai', 'agent', 'agents', 'agentic', 'llm', 'mcp', 'sub-agent', 'evals', 'context engineering', 'rag', 'orchestration', 'ia', 'agentes'],
+    caseStudyUrl: `${SITE_ORIGIN}/work/netflix/`,
+  },
+  {
+    slug: 'distributed-systems',
+    category: 'distributed-systems',
+    title: 'Distributed systems, backend, and cloud architecture',
+    titleEs: 'Sistemas distribuidos, backend y arquitectura cloud',
+    summary: '8+ years shipping fault-tolerant microservices, high-throughput event-driven pipelines (hundreds of billions of events/month), and global consumer platforms across streaming, fintech, and broadcast.',
+    summaryEs: 'Más de 8 años construyendo microservicios tolerantes a fallos, pipelines de eventos a gran escala (cientos de miles de millones de eventos al mes) y plataformas globales en streaming, fintech y broadcast.',
+    evidence: [
+      'Netflix: distributed promotional asset systems carrying campaigns from studios to global screens (Java, microservices)',
+      'Nubank: led multi-product customer application flows serving millions across Mexico in Clojure and Datomic on an event-driven platform',
+      'Wizeline: broadcast event platform handling hundreds of billions of events/month and identity flows for an entertainment leader (Go, Python, AWS, gRPC)',
+    ],
+    stack: ['Java', 'Python', 'Go', 'Clojure', 'Datomic', 'TypeScript', 'AWS', 'GCP', 'Azure', 'DynamoDB', 'Elasticsearch', 'MySQL', 'Microservices', 'Event-Driven Architecture'],
+    keywords: ['backend', 'distributed', 'distributed systems', 'systems', 'platform', 'staff', 'senior', 'api', 'microservices', 'event-driven', 'cloud', 'aws', 'gcp', 'azure', 'java', 'python', 'go', 'golang', 'clojure', 'datomic', 'typescript', 'fintech', 'streaming'],
+    caseStudyUrl: `${SITE_ORIGIN}/work/nubank/`,
+  },
+  {
+    slug: 'leadership-interviewing',
+    category: 'leadership',
+    title: 'Technical leadership, interviewing, and space research',
+    titleEs: 'Liderazgo técnico, entrevistas e investigación espacial',
+    summary: 'Cross-team architecture ownership, hiring-pipeline technical interviewing, engineering mentorship, academy instruction, and multidisciplinary execution reaching the International Space Station.',
+    summaryEs: 'Liderazgo técnico entre equipos, entrevistas en pipelines de contratación, mentoría de ingeniería, docencia técnica y ejecución multidisciplinaria hasta la Estación Espacial Internacional.',
+    evidence: [
+      'Technical interviewer across hiring pipelines and mentor to mid-level engineers at Nubank; organized Building Nu MX',
+      'Course designer and speaker at Wizeline Academy (Go, JavaScript, chatbots); Technovation Girls mentor and judge since 2019 (2026 global semifinalist team)',
+      'Mat X Space member: MCB-1 biomimetic material flew to the ISS aboard SpaceX CRS-31 (Nov 2024); IAC Baku 2023 and Milan 2024 research papers',
+    ],
+    stack: ['System Design', 'Technical Interviewing', 'Cross-Team Ownership', 'Mentorship', 'Public Speaking (EN/ES)'],
+    keywords: ['leadership', 'staff', 'principal', 'lead', 'interviewer', 'hiring', 'mentor', 'mentoring', 'space', 'iss', 'mat x space', 'mcb-1', 'liderazgo'],
+    caseStudyUrl: `${SITE_ORIGIN}/work/mcb-1/`,
+  },
+  {
+    slug: 'selective-advisory',
+    category: 'advisory',
+    title: 'Selective independent technical advisory',
+    titleEs: 'Asesoría técnica independiente selectiva',
+    summary: 'Limited, strictly independent system design reviews, AI adoption strategy, and reliability audits for engineering leaders and startups, with zero employer endorsement or conflict of interest.',
+    summaryEs: 'Revisiones de diseño de sistemas, estrategia de adopción de IA y auditorías de confiabilidad de forma selectiva y estrictamente independiente, sin afiliación ni conflicto de interés.',
+    evidence: [
+      'Strictly independent personal advisory scoped by direct email inquiry (me@ivanovishado.dev)',
+      'Bilingual English and Spanish collaboration aligned with US time zones (America/Mexico_City)',
+    ],
+    stack: ['Architecture Reviews', 'AI Adoption Strategy', 'Reliability Audits', 'System Design'],
+    keywords: ['advisory', 'advisor', 'architecture', 'review', 'audit', 'reliability', 'strategy', 'fractional', 'cto', 'asesoria', 'asesoría', 'arquitectura'],
+    caseStudyUrl: `${SITE_ORIGIN}/resume/`,
+  },
+];
+
+export const RECRUITER_FAQS: MentorshipFaq[] = [
+  {
+    question: 'What roles is Ivan Galaviz best suited for?',
+    answer: 'Senior and Staff Software Engineer, AI Engineer, Applied AI Systems Engineer, and Distributed Systems Engineer roles at top technology companies, AI labs, and high-growth product teams building mission-critical platforms or production agentic systems.',
+    language: 'en',
+    tags: ['roles', 'senior', 'staff', 'ai engineer', 'distributed systems', 'recruiting'],
+  },
+  {
+    question: 'What is Ivan’s production AI and agentic engineering experience?',
+    answer: 'At Netflix, Ivan builds production agentic workflows layered over distributed promotional asset systems, working day to day on LLM orchestration, tool-calling agents, sub-agents, MCP servers, context engineering, evaluation pipelines, and reliability patterns over existing backend infrastructure.',
+    language: 'en',
+    tags: ['ai', 'agentic', 'llm', 'mcp', 'evals', 'netflix'],
+  },
+  {
+    question: 'What languages, cloud platforms, and architectures does Ivan work with?',
+    answer: 'Java and Python daily for backend and AI systems, with production depth in Go, Clojure, Datomic, and TypeScript. Cloud and data experience spans AWS, GCP, Azure, microservices, high-throughput event-driven pipelines (hundreds of billions of events per month), DynamoDB, Elasticsearch, and MySQL.',
+    language: 'en',
+    tags: ['stack', 'java', 'python', 'go', 'clojure', 'aws', 'gcp', 'azure'],
+  },
+  {
+    question: 'Is Ivan open to remote roles, hybrid work, or relocation?',
+    answer: 'Ivan lives in Mexico City (America/Mexico_City, UTC-6) with direct daily overlap across US Pacific, Mountain, Central, and Eastern teams. He strongly prefers 100% remote roles, is not open to relocation, and would only consider hybrid in Mexico City for an exceptional opportunity.',
+    language: 'en',
+    tags: ['remote', 'hybrid', 'relocation', 'timezone', 'mexico city', 'us overlap'],
+  },
+  {
+    question: 'Does Ivan have technical interviewing and engineering leadership experience?',
+    answer: 'Yes. Ivan led core product-application architecture at Nubank, interviewed candidates across hiring pipelines, mentored mid-level engineers toward senior ownership, designed and taught Go, JavaScript, and chatbot courses at Wizeline Academy, and has mentored and judged at Technovation Girls since 2019.',
+    language: 'en',
+    tags: ['leadership', 'interviewing', 'mentoring', 'nubank', 'wizeline'],
+  },
+  {
+    question: 'Is Ivan also available for selective technical advisory?',
+    answer: 'Yes, selectively. Alongside full-time career conversations, Ivan takes on limited, strictly independent technical advisory such as architecture reviews, AI adoption strategy, and reliability audits with zero conflict of interest and no employer affiliation.',
+    language: 'en',
+    tags: ['advisory', 'architecture review', 'independent', 'consulting'],
+  },
+  {
+    question: 'How should recruiters or hiring managers reach out?',
+    answer: 'Email me@ivanovishado.dev or connect on LinkedIn with the team, problem space, level, location or remote policy, and compensation range. Direct, specific notes get the fastest response in English or Spanish.',
+    language: 'en',
+    tags: ['contact', 'recruiter', 'hiring manager', 'email', 'linkedin'],
+  },
+  {
+    question: '¿Estás abierto a roles Senior/Staff remotos internacionales en inglés y español?',
+    answer: 'Sí. Vivo en Ciudad de México (horario America/Mexico_City con traslape directo con Estados Unidos) y trabajo con total fluidez en inglés y español. Prefiero firmemente roles Senior o Staff 100% remotos (sin reubicación; solo consideraría un esquema híbrido en CDMX para una oportunidad excepcional), además de asesoría técnica independiente selectiva.',
+    language: 'es',
+    tags: ['español', 'remoto', 'hibrido', 'cdmx', 'senior', 'staff', 'reclutadores'],
+  },
+];
+
 export const MENTORSHIP_OVERVIEW = {
   mentor: 'Ivan Galaviz',
   role: 'Senior Software Engineer at Netflix (building production agentic AI workflows)',
   profileImageUrl: `${SITE_ORIGIN}/profile.jpg`,
   interviewerExperience: 'Interviewed software engineers across big-tech hiring pipelines (Nubank and Wizeline); mentors candidates on how interviewers actually evaluate DSA, coding, system design, AI system design, and behavioral loops.',
   previousCompanies: ['Nubank (Senior Software Engineer, Clojure/Datomic, technical interviewer)', 'Wizeline (Software Engineer I to III, Go/Python/AWS, Wizeline Academy instructor)'],
-  location: 'Guadalajara, Jalisco, Mexico',
+  location: 'Mexico City, Mexico',
   price: { amount: 500, currency: 'MXN', approxUsd: '$25 to $30 USD', model: 'pay-per-session', includesFirstSession: true, subscriptionRequired: false },
   durationMinutes: 45,
   format: '1-on-1 live video call over Google Meet',
@@ -186,7 +369,7 @@ export const IVAN_PROFILE = {
   name: 'Ivan Galaviz',
   headline: 'Senior Software Engineer at Netflix building production agentic AI systems, technical interviewer, bilingual software & AI engineering mentor (EN/ES), and Mat X Space member',
   profileImageUrl: `${SITE_ORIGIN}/profile.jpg`,
-  location: 'Guadalajara, Jalisco, Mexico',
+  location: 'Mexico City, Mexico',
   experienceYears: '8+',
   currentRole: {
     company: 'Netflix',
@@ -227,6 +410,7 @@ export const IVAN_PROFILE = {
   ],
   links: {
     website: `${SITE_ORIGIN}/`,
+    resume: `${SITE_ORIGIN}/resume/`,
     mentorship: `${SITE_ORIGIN}/mentorship/`,
     booking: BOOKING_URL,
     blog: 'https://blog.ivanovishado.dev',
@@ -239,6 +423,44 @@ export const IVAN_PROFILE = {
 };
 
 export const MCP_TOOLS = [
+  {
+    name: 'get_candidate_profile',
+    title: 'Get Senior/Staff Software & AI Engineer resume and talent profile',
+    description: 'Return Ivan Galaviz’s complete recruiting dossier for recruiters, hiring managers, and top companies: Netflix, Nubank, and Wizeline track record, production agentic AI & distributed systems competencies, strong remote preference from Mexico City with US timezone overlap (not open to relocation; hybrid in Mexico City only for an exceptional opportunity), selective independent advisory note, and contact details. Supports optional focus and language (en/es) filters.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        focus: {
+          type: 'string',
+          description: 'Optional competency filter: ai, distributed-systems, leadership, advisory (or keyword such as mcp, java, clojure, go, interviewing).',
+        },
+        language: {
+          type: 'string',
+          enum: ['en', 'es'],
+          description: 'Preferred language for profile summary and competencies: en (English) or es (Spanish).',
+        },
+      },
+      additionalProperties: false,
+    },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+  },
+  {
+    name: 'evaluate_role_fit',
+    title: 'Evaluate Ivan Galaviz’s fit for an engineering role or advisory need',
+    description: 'Match a job title, required skills/keywords, seniority level, or location/remote setup against Ivan Galaviz’s verified production experience (Netflix agentic AI, Nubank Clojure/Datomic, Wizeline Go/Python/AWS, Mat X Space ISS experiment) and return structured evidence, case study links, and recruiter contact details.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        roleTitle: { type: 'string', description: 'Target role title (e.g. Staff AI Engineer, Senior Distributed Systems Engineer, Applied AI Engineer).' },
+        requirements: { type: 'array', items: { type: 'string' }, description: 'Optional list of required skills, languages, or domains (e.g. ["Python", "MCP", "distributed systems", "AWS"]).' },
+        level: { type: 'string', description: 'Role seniority level (e.g. senior, staff, principal, lead).' },
+        location: { type: 'string', description: 'Work location or remote setup (e.g. US remote, global remote, Mexico remote, on-site).' },
+        language: { type: 'string', enum: ['en', 'es'], description: 'Preferred response language: en (English) or es (Spanish).' },
+      },
+      additionalProperties: false,
+    },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+  },
   {
     name: 'get_mentorship_overview',
     title: 'Get mentorship overview',
@@ -331,14 +553,14 @@ export function buildServerCard() {
       title: 'Ivan Galaviz Mentorship & Portfolio MCP Server',
       version: '1.0.0',
     },
-    description: 'Public read-only MCP server for Ivan Galaviz (Netflix Senior Software Engineer): explore 1-on-1 bilingual (EN/ES) software engineering mentorship details, check mentee fit, read FAQs, and get the direct Cal.com booking link.',
+    description: 'Public read-only MCP server for Ivan Galaviz (Senior Software & AI Engineer at Netflix, ex-Nubank, ex-Wizeline): inspect his Senior/Staff resume & talent dossier, evaluate role fit for recruiting and top tech/AI hiring, explore selective technical advisory, or check 1-on-1 bilingual (EN/ES) engineering mentorship and Cal.com availability.',
     protocolVersion: MCP_PROTOCOL_VERSION,
     transport: {
       type: 'streamable-http',
       endpoint: `${SITE_ORIGIN}/mcp`,
     },
     url: `${SITE_ORIGIN}/mcp`,
-    documentationUrl: `${SITE_ORIGIN}/mentorship/`,
+    documentationUrl: `${SITE_ORIGIN}/resume/`,
     authentication: { required: false },
     capabilities: {
       tools: { listChanged: false },
@@ -365,8 +587,8 @@ export function buildAiCatalog() {
     entries: [
       {
         identifier: 'urn:ai:www.ivanovishado.dev:server:mentorship-mcp',
-        displayName: 'Ivan Galaviz Mentorship & Portfolio MCP Server',
-        description: 'Read-only MCP tools to check mentorship fit, pricing (500 MXN / 45 min), English & Spanish availability, FAQs, and Cal.com booking link.',
+        displayName: 'Ivan Galaviz Talent, Mentorship & Portfolio MCP Server',
+        description: 'Read-only MCP tools for recruiters & top companies (Senior/Staff Software & AI Engineer resume, role-fit evaluation, selective technical advisory) and 1-on-1 bilingual (EN/ES) engineering mentorship with live Cal.com slots.',
         type: 'application/mcp-server-card+json',
         url: `${SITE_ORIGIN}/mcp/server-card`,
       },

@@ -1,5 +1,5 @@
 import { defineConfig, type Plugin } from 'vite';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderShelf, shelfFile, shelfJsonLd } from './tools/shelf';
@@ -20,6 +20,19 @@ function htmlPartials(): Plugin {
     configureServer(server) {
       server.watcher.add(shelfFile);
       server.watcher.on('change', (file) => { if (file === shelfFile) server.ws.send({ type: 'full-reload' }); });
+      server.middlewares.use((req, res, next) => {
+        const [pathname, search] = (req.url ?? '').split('?');
+        if (pathname && pathname !== '/' && !pathname.endsWith('/') && !pathname.includes('.')) {
+          const dirIndex = resolve(__dirname, pathname.slice(1), 'index.html');
+          if (dirIndex.startsWith(__dirname) && existsSync(dirIndex)) {
+            res.statusCode = 302;
+            res.setHeader('Location', `${pathname}/${search ? `?${search}` : ''}`);
+            res.end();
+            return;
+          }
+        }
+        next();
+      });
     },
     transformIndexHtml: {
       order: 'pre',
@@ -46,6 +59,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        resume: resolve(__dirname, 'resume/index.html'),
         mentorship: resolve(__dirname, 'mentorship/index.html'),
         'work-netflix': resolve(__dirname, 'work/netflix/index.html'),
         'work-mcb-1': resolve(__dirname, 'work/mcb-1/index.html'),
