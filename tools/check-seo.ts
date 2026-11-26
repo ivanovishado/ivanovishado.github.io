@@ -1,5 +1,6 @@
 /* Validate the production HTML, agent discovery files, schema, and Worker behavior after a Vite build. */
-import { readFileSync, existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
 import worker from '../worker/index';
@@ -79,6 +80,8 @@ for (const path of ['', 'mentorship/', 'resume/']) {
 references.forEach(id => assert(ids.has(id), `Unresolved entity: ${id}`));
 assert(read('404.html').includes('content="noindex, follow"'));
 assert(read('robots.txt').includes(`Sitemap: ${origin}/sitemap.xml`));
+assert(read('robots.txt').includes(`Agentmap: ${origin}/.well-known/ard.json`), 'robots.txt missing Agentmap directive');
+assert(read('index.html').includes('rel="ard"'), 'Home missing rel="ard" discovery link');
 assert(read('index.html').includes('href="/resume/"'), 'Home / footer missing /resume/ link');
 
 // Verify /privacy/ trust anchor (>500 chars visible text, in sitemap & footer).
@@ -101,20 +104,110 @@ for (const key of ['title:', 'description:', 'canonical_url:', 'last_updated:'])
 }
 assert(read('404.md').length >= 100 && read('404.md').includes('/llms.txt'), '404.md missing recovery guidance');
 
-// Verify llms.txt, llms-full.txt, sitemap.md, and MCP discovery manifests.
+// Verify llms.txt, modular llms.txt, llms-full.txt, sitemap.md, pricing.md, and discovery manifests.
 const llms = read('llms.txt');
 assert(llms.startsWith('# '), 'llms.txt must start with H1');
 assert(/\n> .+/.test(llms), 'llms.txt must include blockquote summary');
 assert(/when to (use|recommend)/i.test(llms), 'llms.txt missing when-to-use guidance');
 assert(llms.includes(`${origin}/resume/`), 'llms.txt missing /resume/ link');
+assert(llms.includes(`${origin}/mentorship/llms.txt`), 'llms.txt missing modular /mentorship/llms.txt link');
+assert(llms.includes(`${origin}/resume/llms.txt`), 'llms.txt missing modular /resume/llms.txt link');
+assert(llms.includes(`${origin}/pricing.md`), 'llms.txt missing /pricing.md link');
+assert(llms.includes(`${origin}/.well-known/ard.json`), 'llms.txt missing ARD link');
+assert(llms.includes('https://github.com/ivanovishado/ivanovishado.github.io'), 'llms.txt missing public repo link');
+assert(read('mentorship/llms.txt').startsWith('# '), 'mentorship/llms.txt must start with H1');
+assert(read('resume/llms.txt').startsWith('# '), 'resume/llms.txt must start with H1');
+assert(read('pricing.md').startsWith('---\n') && read('pricing.md').includes('500 MXN'), 'pricing.md missing frontmatter or price');
 assert(read('llms-full.txt').includes('https://cal.com/ivan-galaviz-qtcayv/mentoring'), 'llms-full.txt missing booking URL');
 assert(read('llms-full.txt').includes(`${origin}/resume/`), 'llms-full.txt missing /resume/ content');
 assert(read('sitemap.md').includes(`${origin}/mentorship/`), 'sitemap.md missing mentorship link');
 assert(read('sitemap.md').includes(`${origin}/resume/`), 'sitemap.md missing resume link');
 
-for (const manifest of ['.well-known/mcp/server-card.json', '.well-known/mcp.json', '.well-known/ai-catalog.json', 'mcp/server-card']) {
+for (const manifest of [
+  '.well-known/mcp/server-card.json',
+  '.well-known/mcp.json',
+  '.well-known/ard.json',
+  '.well-known/ai-catalog.json',
+  '.well-known/agent-card.json',
+  '.well-known/agent-skills/index.json',
+  'mcp/server-card',
+]) {
   assert(JSON.parse(read(manifest)), `Invalid JSON in ${manifest}`);
 }
+
+// Verify MCP server card v1 schema compliance & branding.
+const serverCard = JSON.parse(read('.well-known/mcp/server-card.json')) as {
+  $schema?: string;
+  name?: string;
+  title?: string;
+  version?: string;
+  description?: string;
+  icons?: { src?: string }[];
+  remotes?: { url?: string }[];
+  tools?: unknown;
+};
+assert.equal(serverCard.$schema, 'https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json');
+assert.equal(serverCard.name, 'dev.ivanovishado/mcp');
+assert(serverCard.title && serverCard.version, 'Server card missing title or version');
+assert(serverCard.description && serverCard.description.length <= 100, `Server card description exceeds 100 chars (${serverCard.description?.length})`);
+assert(serverCard.icons?.[0]?.src?.endsWith('/profile.jpg'), 'Server card missing icon');
+assert.equal(serverCard.remotes?.[0]?.url, `${origin}/mcp`);
+assert.equal(serverCard.tools, undefined, 'v1 server card must omit static tools[]');
+
+// Verify ARD v0.91 catalog compliance & trust manifests.
+const ard = JSON.parse(read('.well-known/ard.json')) as {
+  entries: {
+    identifier?: string;
+    displayName?: string;
+    type?: string;
+    url?: string;
+    data?: unknown;
+    representativeQueries?: string[];
+    trustManifests?: { identity?: string; contributor?: string; provenance?: unknown }[];
+  }[];
+};
+assert(ard.entries.length >= 1, 'ARD catalog must have entries');
+for (const entry of ard.entries) {
+  assert(entry.identifier?.startsWith('urn:air:www.ivanovishado.dev:'), `Invalid ARD identifier: ${entry.identifier}`);
+  assert(entry.displayName && entry.type && entry.url && !entry.data, `Invalid ARD entry: ${entry.identifier}`);
+  assert((entry.representativeQueries?.length ?? 0) >= 2, `ARD entry missing representativeQueries: ${entry.identifier}`);
+  assert(entry.trustManifests?.[0]?.identity === 'did:web:www.ivanovishado.dev', `ARD entry missing trustManifests: ${entry.identifier}`);
+}
+
+// Verify A2A Agent Card.
+const a2a = JSON.parse(read('.well-known/agent-card.json')) as {
+  name?: string;
+  version?: string;
+  supportedInterfaces?: { url?: string }[];
+  provider?: { organization?: string; url?: string };
+  skills?: { id?: string }[];
+};
+assert(a2a.name && a2a.version && a2a.provider?.organization && a2a.provider?.url, 'A2A card missing required fields');
+assert.equal(a2a.supportedInterfaces?.[0]?.url, `${origin}/mcp`);
+assert((a2a.skills?.length ?? 0) >= 2, 'A2A card missing skills');
+
+// Verify Agent Skills v0.2.0 index and byte-exact SHA-256 digests.
+const skillsIdx = JSON.parse(read('.well-known/agent-skills/index.json')) as {
+  $schema?: string;
+  skills: { name: string; description: string; type: string; url: string; digest: string }[];
+};
+assert.equal(skillsIdx.$schema, 'https://schemas.agentskills.io/discovery/0.2.0/schema.json');
+assert(skillsIdx.skills.length >= 2, 'Agent skills index must list skills');
+for (const skill of skillsIdx.skills) {
+  assert.equal(skill.type, 'skill-md');
+  assert(/^sha256:[a-f0-9]{64}$/.test(skill.digest), `Invalid digest format for ${skill.name}`);
+  const relPath = new URL(skill.url).pathname.slice(1);
+  const actualHash = `sha256:${createHash('sha256').update(readFileSync(resolve(root, relPath))).digest('hex')}`;
+  assert.equal(skill.digest, actualHash, `Digest mismatch for ${skill.name}`);
+}
+
+// Verify WebMCP registration is present in built JS bundle.
+const jsAssets = readdirSync(resolve(root, 'assets')).filter((f) => f.endsWith('.js'));
+const hasWebMcp = jsAssets.some((f) => {
+  const code = read(`assets/${f}`);
+  return code.includes('modelContext') && code.includes('registerTool');
+});
+assert(hasWebMcp, 'Built JS bundle missing WebMCP modelContext.registerTool registration');
 
 // Verify Worker behavior in-process against dist/.
 const env = { ASSETS: createDistAssets(root) };
@@ -283,4 +376,73 @@ const availBody = await availRes.text();
 assert(availBody.includes('Live Mentorship Availability'));
 assert(availBody.includes('https://cal.com/ivan-galaviz-qtcayv/mentoring'));
 
-console.log('SEO & agentic checks passed: canonical URLs, sitemap, entity references, FAQ parity, privacy, llms.txt, .md mirrors, Worker negotiation, 404 Markdown, live availability, and MCP server.');
+// Verify bot-UA Markdown serving (even when Accept: text/html is sent) while audit/browser UAs still get HTML.
+for (const botUa of ['ChatGPT-User/1.0', 'Claude-User/1.0', 'Perplexity-User/1.0']) {
+  const botRes = await worker.fetch(new Request(`${origin}/`, { headers: { 'User-Agent': botUa, Accept: 'text/html' } }), env);
+  assert.equal(botRes.status, 200);
+  assert(botRes.headers.get('Content-Type')?.startsWith('text/markdown'), `${botUa} should receive Markdown`);
+}
+const oraHtmlRes = await worker.fetch(new Request(`${origin}/`, { headers: { 'User-Agent': 'ora-agent/1.0', Accept: 'text/html' } }), env);
+assert.equal(oraHtmlRes.status, 200);
+assert(oraHtmlRes.headers.get('Content-Type')?.startsWith('text/html'), 'Audit UA requesting HTML must receive HTML');
+
+// Verify ?mode=agent structured view (Markdown and JSON).
+const agentModeMd = await worker.fetch(new Request(`${origin}/?mode=agent`, { headers: { Accept: 'text/html' } }), env);
+assert.equal(agentModeMd.status, 200);
+assert(agentModeMd.headers.get('Content-Type')?.startsWith('text/markdown'));
+const agentModeText = await agentModeMd.text();
+assert(agentModeText.includes('Agent Mode') && agentModeText.includes('/mcp') && agentModeText.includes('Authentication'));
+
+const agentModeJsonRes = await worker.fetch(new Request(`${origin}/?mode=agent`, { headers: { Accept: 'application/json' } }), env);
+assert.equal(agentModeJsonRes.status, 200);
+const agentModeJson = (await agentModeJsonRes.json()) as { mode: string; authentication: { required: boolean }; endpoints: { mcp: string } };
+assert.equal(agentModeJson.mode, 'agent');
+assert.equal(agentModeJson.authentication.required, false);
+assert.equal(agentModeJson.endpoints.mcp, `${origin}/mcp`);
+
+// Verify new Worker endpoints: ARD, A2A, Agent Skills, modular llms.txt, pricing.md.
+const ardRes = await worker.fetch(new Request(`${origin}/.well-known/ard.json`), env);
+assert.equal(ardRes.status, 200);
+assert(ardRes.headers.get('Content-Type')?.startsWith('application/json'));
+assert.equal(ardRes.headers.get('Access-Control-Allow-Origin'), '*');
+
+const a2aRes = await worker.fetch(new Request(`${origin}/.well-known/agent-card.json`), env);
+assert.equal(a2aRes.status, 200);
+assert(a2aRes.headers.get('Content-Type')?.startsWith('application/json'));
+
+const skillsRes = await worker.fetch(new Request(`${origin}/.well-known/agent-skills/index.json`), env);
+assert.equal(skillsRes.status, 200);
+assert(skillsRes.headers.get('Content-Type')?.startsWith('application/json'));
+
+const pricingRes = await worker.fetch(new Request(`${origin}/pricing.md`), env);
+assert.equal(pricingRes.status, 200);
+assert(pricingRes.headers.get('Content-Type')?.startsWith('text/markdown'));
+
+const mentorshipLlmsRes = await worker.fetch(new Request(`${origin}/mentorship/llms.txt`), env);
+assert.equal(mentorshipLlmsRes.status, 200);
+assert(mentorshipLlmsRes.headers.get('Content-Type')?.startsWith('text/plain'));
+
+const resumeLlmsRes = await worker.fetch(new Request(`${origin}/resume/llms.txt`), env);
+assert.equal(resumeLlmsRes.status, 200);
+assert(resumeLlmsRes.headers.get('Content-Type')?.startsWith('text/plain'));
+
+// Verify every MCP tool has non-empty typed inputSchema.properties and explicit required array.
+const mcpToolsList = await worker.fetch(
+  new Request(`${origin}/mcp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: 8, method: 'tools/list', params: {} }),
+  }),
+  env,
+);
+assert.equal(mcpToolsList.status, 200);
+const toolsListJson = (await mcpToolsList.json()) as {
+  result: { tools: { name: string; inputSchema: { properties: Record<string, unknown>; required?: string[] } }[] };
+};
+assert(toolsListJson.result.tools.length >= 8);
+for (const tool of toolsListJson.result.tools) {
+  assert(Object.keys(tool.inputSchema.properties).length >= 1, `MCP tool ${tool.name} must define typed properties`);
+  assert(Array.isArray(tool.inputSchema.required), `MCP tool ${tool.name} must declare required array`);
+}
+
+console.log('SEO & agentic checks passed: canonical URLs, sitemap, entity references, FAQ parity, privacy, llms.txt, modular llms.txt, pricing.md, .md mirrors, ARD v0.91, MCP v1 server-card, A2A, Agent Skills v0.2.0, WebMCP, ?mode=agent, bot-UA Markdown, 404 Markdown, live availability, and MCP server.');

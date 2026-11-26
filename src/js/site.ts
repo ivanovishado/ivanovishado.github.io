@@ -8,8 +8,10 @@ import { startDriver } from './site/concept/driver';
 import { initCurtain } from './site/motion/curtain';
 import { initFrame, initMenu } from './site/ui/frame';
 import { initPreview } from './site/ui/preview';
+import { initWebMcp } from './site/agent/webmcp';
 
 function init() {
+  initWebMcp();
   boot(() => {
     initCurtain();
     startDriver();

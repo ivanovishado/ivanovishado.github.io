@@ -14,8 +14,10 @@ import {
   MENTORSHIP_OVERVIEW,
   MENTORSHIP_TOPICS,
   RECRUITER_FAQS,
+  REPO_URL,
   SITE_ORIGIN,
-  buildAiCatalog,
+  buildA2aAgentCard,
+  buildArdCatalog,
   buildServerCard,
 } from './mcp-data';
 
@@ -41,8 +43,10 @@ const PAGE_ROUTES: Record<string, { html: string; md: string }> = {
   '/privacy': { html: '/privacy/index.html', md: '/privacy/index.md' },
 };
 
-const AI_AGENT_UA =
-  /claudebot|claude-user|claude-searchbot|claude-code|anthropic-ai|gptbot|chatgpt-user|oai-searchbot|perplexitybot|perplexity-user|google-extended|ccbot|cohere-ai|meta-externalagent|cursor|opencode|agent-readability|ora-agent/i;
+const AI_BOT_UA =
+  /claudebot|claude-user|claude-searchbot|claude-code|anthropic-ai|gptbot|chatgpt-user|oai-searchbot|perplexitybot|perplexity-user|google-extended|ccbot|cohere-ai|meta-externalagent|cursor|opencode/i;
+
+const AUDIT_AGENT_UA = /agent-readability|ora-agent/i;
 
 const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
@@ -56,10 +60,105 @@ function wantsMarkdown(request: Request): boolean {
   if (accept.includes('text/markdown') && !/text\/markdown\s*;\s*q=0(?:\.0+)?(?:\s|,|$)/.test(accept)) {
     return true;
   }
+  if (AI_BOT_UA.test(ua)) {
+    return true;
+  }
   if (accept.includes('text/html')) {
     return false;
   }
-  return AI_AGENT_UA.test(ua);
+  return AUDIT_AGENT_UA.test(ua);
+}
+
+function buildAgentModeData(pageUrl: string) {
+  return {
+    mode: 'agent',
+    name: IVAN_PROFILE.name,
+    headline: CANDIDATE_PROFILE.headline,
+    canonicalUrl: pageUrl,
+    authentication: {
+      required: false,
+      type: 'none',
+      note: 'Public read-only portfolio, Markdown mirrors, live Cal.com availability, and Streamable HTTP MCP server. No API key or OAuth required.',
+    },
+    endpoints: {
+      mcp: `${SITE_ORIGIN}/mcp`,
+      mcpServerCard: `${SITE_ORIGIN}/mcp/server-card`,
+      ardCatalog: `${SITE_ORIGIN}/.well-known/ard.json`,
+      a2aAgentCard: `${SITE_ORIGIN}/.well-known/agent-card.json`,
+      agentSkillsIndex: `${SITE_ORIGIN}/.well-known/agent-skills/index.json`,
+      llmsTxt: `${SITE_ORIGIN}/llms.txt`,
+      mentorshipLlmsTxt: `${SITE_ORIGIN}/mentorship/llms.txt`,
+      resumeLlmsTxt: `${SITE_ORIGIN}/resume/llms.txt`,
+      llmsFullTxt: `${SITE_ORIGIN}/llms-full.txt`,
+      sitemapMd: `${SITE_ORIGIN}/sitemap.md`,
+      pricingMd: `${SITE_ORIGIN}/pricing.md`,
+      liveAvailabilityMd: `${SITE_ORIGIN}/mentorship/availability.md`,
+      calComBooking: BOOKING_URL,
+      sourceRepository: REPO_URL,
+    },
+    capabilities: {
+      recruiting: {
+        resumeUrl: `${SITE_ORIGIN}/resume/`,
+        targetRoles: CANDIDATE_PROFILE.targetRoles,
+        location: CANDIDATE_PROFILE.location,
+        workArrangement: CANDIDATE_PROFILE.workArrangement,
+        contactEmail: CONTACT_EMAIL,
+      },
+      mentorship: {
+        pageUrl: `${SITE_ORIGIN}/mentorship/`,
+        pricing: `${MENTORSHIP_OVERVIEW.price.amount} ${MENTORSHIP_OVERVIEW.price.currency} (approx. ${MENTORSHIP_OVERVIEW.price.approxUsd}) per ${MENTORSHIP_OVERVIEW.durationMinutes}-minute session`,
+        languages: MENTORSHIP_OVERVIEW.languages,
+        bookingUrl: BOOKING_URL,
+      },
+      mcpTools: MCP_TOOLS.map((t) => ({ name: t.name, title: t.title })),
+    },
+  };
+}
+
+function formatAgentModeMarkdown(pageUrl: string): string {
+  const data = buildAgentModeData(pageUrl);
+  return [
+    '---',
+    'title: "Agent Mode | Ivan Galaviz"',
+    'description: "Structured machine-readable entry point for Ivan Galaviz: endpoints, no-auth read-only MCP server, resume, mentorship pricing, and live Cal.com availability."',
+    `canonical_url: ${JSON.stringify(pageUrl)}`,
+    'mode: "agent"',
+    '---',
+    '',
+    '# Ivan Galaviz — Agent Mode',
+    '',
+    `${data.headline}`,
+    '',
+    '## Authentication',
+    '',
+    '- **Required:** None (public, read-only; no API key or OAuth required)',
+    '- **Content negotiation:** Send `Accept: text/markdown` on any page URL, or fetch `<page>/index.md` directly',
+    '',
+    '## Machine-Readable Endpoints',
+    '',
+    `- **MCP Server (Streamable HTTP JSON-RPC 2.0):** \`POST ${data.endpoints.mcp}\``,
+    `- **MCP Server Card:** [${data.endpoints.mcpServerCard}](${data.endpoints.mcpServerCard})`,
+    `- **ARD Discovery Catalog (v0.91):** [${data.endpoints.ardCatalog}](${data.endpoints.ardCatalog})`,
+    `- **A2A Agent Card:** [${data.endpoints.a2aAgentCard}](${data.endpoints.a2aAgentCard})`,
+    `- **Agent Skills Index (v0.2.0):** [${data.endpoints.agentSkillsIndex}](${data.endpoints.agentSkillsIndex})`,
+    `- **Root llms.txt:** [${data.endpoints.llmsTxt}](${data.endpoints.llmsTxt})`,
+    `- **Mentorship llms.txt:** [${data.endpoints.mentorshipLlmsTxt}](${data.endpoints.mentorshipLlmsTxt})`,
+    `- **Resume llms.txt:** [${data.endpoints.resumeLlmsTxt}](${data.endpoints.resumeLlmsTxt})`,
+    `- **Live Mentorship Availability (plain GET):** [${data.endpoints.liveAvailabilityMd}](${data.endpoints.liveAvailabilityMd})`,
+    `- **Mentorship Pricing:** [${data.endpoints.pricingMd}](${data.endpoints.pricingMd})`,
+    `- **Markdown Sitemap:** [${data.endpoints.sitemapMd}](${data.endpoints.sitemapMd})`,
+    `- **Source Repo (with AGENTS.md):** [${data.endpoints.sourceRepository}](${data.endpoints.sourceRepository})`,
+    '',
+    '## Key Capabilities',
+    '',
+    `- **Recruiting & Senior/Staff Hiring:** [${data.capabilities.recruiting.resumeUrl}](${data.capabilities.recruiting.resumeUrl}) — ${data.capabilities.recruiting.workArrangement} Contact: ${CONTACT_EMAIL}`,
+    `- **1-on-1 Software & AI Mentorship (EN/ES):** [${data.capabilities.mentorship.pageUrl}](${data.capabilities.mentorship.pageUrl}) — ${data.capabilities.mentorship.pricing}. Book: [${BOOKING_URL}](${BOOKING_URL})`,
+    '',
+    '## Available MCP Tools (`POST /mcp`)',
+    '',
+    ...MCP_TOOLS.map((t) => `- \`${t.name}\` — ${t.title}`),
+    '',
+  ].join('\n');
 }
 
 function estimateTokens(text: string): string {
@@ -450,19 +549,43 @@ async function runTool(name: string, args: Record<string, unknown>) {
     }
 
     case 'get_mentorship_overview': {
-      const payload = { ...MENTORSHIP_OVERVIEW, topics: MENTORSHIP_TOPICS };
-      const text = [
-        `# Software & AI Engineering Mentorship — ${MENTORSHIP_OVERVIEW.mentor}`,
-        `${MENTORSHIP_OVERVIEW.role} (${MENTORSHIP_OVERVIEW.location})`,
-        `- Price: ${MENTORSHIP_OVERVIEW.price.amount} ${MENTORSHIP_OVERVIEW.price.currency} (approx. ${MENTORSHIP_OVERVIEW.price.approxUsd}) per ${MENTORSHIP_OVERVIEW.durationMinutes}-minute session (pay-per-session, no subscription)`,
-        `- Languages: ${MENTORSHIP_OVERVIEW.languages.join(' & ')}`,
-        `- Format: ${MENTORSHIP_OVERVIEW.format} (${MENTORSHIP_OVERVIEW.availability})`,
-        `- Interviewer experience: ${MENTORSHIP_OVERVIEW.interviewerExperience}`,
-        `- Portrait: ${MENTORSHIP_OVERVIEW.profileImageUrl}`,
-        `- Book: ${BOOKING_URL}`,
-        `- Details: ${SITE_ORIGIN}/mentorship/`,
-        `- Topics: ${MENTORSHIP_TOPICS.map((t) => t.title).join('; ')}`,
-      ].join('\n');
+      const language = args.language === 'es' ? 'es' : 'en';
+      const includeTopics = args.includeTopics !== false;
+      const topics = includeTopics
+        ? MENTORSHIP_TOPICS.map((t) => ({
+            slug: t.slug,
+            title: language === 'es' ? t.titleEs : t.title,
+            summary: t.summary,
+          }))
+        : [];
+      const payload = { ...MENTORSHIP_OVERVIEW, language: language === 'es' ? 'Spanish' : 'English', topics };
+      const text =
+        language === 'es'
+          ? [
+              `# Mentoría de Ingeniería de Software e IA — ${MENTORSHIP_OVERVIEW.mentor}`,
+              `${MENTORSHIP_OVERVIEW.role} (${MENTORSHIP_OVERVIEW.location})`,
+              `- Precio: ${MENTORSHIP_OVERVIEW.price.amount} ${MENTORSHIP_OVERVIEW.price.currency} (aprox. ${MENTORSHIP_OVERVIEW.price.approxUsd}) por sesión de ${MENTORSHIP_OVERVIEW.durationMinutes} minutos (pago por sesión, sin suscripción)`,
+              `- Idiomas: Español e Inglés`,
+              `- Formato: Videollamada 1 a 1 por Google Meet (remoto para todo el mundo)`,
+              `- Foto: ${MENTORSHIP_OVERVIEW.profileImageUrl}`,
+              `- Agendar: ${BOOKING_URL}`,
+              `- Disponibilidad en vivo: ${SITE_ORIGIN}/mentorship/availability.md`,
+              `- Detalles: ${SITE_ORIGIN}/mentorship/`,
+              ...(includeTopics ? [`- Temas: ${MENTORSHIP_TOPICS.map((t) => t.titleEs).join('; ')}`] : []),
+            ].join('\n')
+          : [
+              `# Software & AI Engineering Mentorship — ${MENTORSHIP_OVERVIEW.mentor}`,
+              `${MENTORSHIP_OVERVIEW.role} (${MENTORSHIP_OVERVIEW.location})`,
+              `- Price: ${MENTORSHIP_OVERVIEW.price.amount} ${MENTORSHIP_OVERVIEW.price.currency} (approx. ${MENTORSHIP_OVERVIEW.price.approxUsd}) per ${MENTORSHIP_OVERVIEW.durationMinutes}-minute session (pay-per-session, no subscription)`,
+              `- Languages: ${MENTORSHIP_OVERVIEW.languages.join(' & ')}`,
+              `- Format: ${MENTORSHIP_OVERVIEW.format} (${MENTORSHIP_OVERVIEW.availability})`,
+              `- Interviewer experience: ${MENTORSHIP_OVERVIEW.interviewerExperience}`,
+              `- Portrait: ${MENTORSHIP_OVERVIEW.profileImageUrl}`,
+              `- Book: ${BOOKING_URL}`,
+              `- Live availability: ${SITE_ORIGIN}/mentorship/availability.md`,
+              `- Details: ${SITE_ORIGIN}/mentorship/`,
+              ...(includeTopics ? [`- Topics: ${MENTORSHIP_TOPICS.map((t) => t.title).join('; ')}`] : []),
+            ].join('\n');
       return { content: [{ type: 'text', text }], structuredContent: payload };
     }
 
@@ -510,29 +633,45 @@ async function runTool(name: string, args: Record<string, unknown>) {
 
     case 'get_mentorship_faq': {
       const query = typeof args.query === 'string' ? args.query.trim().toLowerCase() : '';
+      const lang = args.language === 'en' || args.language === 'es' ? args.language : null;
+      const byLang = lang ? MENTORSHIP_FAQS.filter((f) => f.language === lang) : MENTORSHIP_FAQS;
       const faqs = query
-        ? MENTORSHIP_FAQS.filter(
+        ? byLang.filter(
             (f) =>
               f.question.toLowerCase().includes(query) ||
               f.answer.toLowerCase().includes(query) ||
               f.tags.some((tag) => tag.toLowerCase().includes(query)),
           )
-        : MENTORSHIP_FAQS;
-      const results = faqs.length > 0 ? faqs : MENTORSHIP_FAQS;
+        : byLang;
+      const results = faqs.length > 0 ? faqs : byLang;
       const text = results.map((f) => `Q: ${f.question}\nA: ${f.answer}`).join('\n\n');
       return { content: [{ type: 'text', text }], structuredContent: { count: results.length, faqs: results } };
     }
 
     case 'get_ivan_profile': {
+      const section =
+        args.section === 'experience' || args.section === 'education' || args.section === 'space' || args.section === 'links'
+          ? args.section
+          : 'all';
+      const structured =
+        section === 'experience'
+          ? { name: IVAN_PROFILE.name, currentRole: IVAN_PROFILE.currentRole, previousRoles: IVAN_PROFILE.previousRoles }
+          : section === 'education'
+            ? { name: IVAN_PROFILE.name, education: IVAN_PROFILE.education, communityMentoring: IVAN_PROFILE.communityMentoring }
+            : section === 'space'
+              ? { name: IVAN_PROFILE.name, spaceProject: IVAN_PROFILE.spaceProject }
+              : section === 'links'
+                ? { name: IVAN_PROFILE.name, links: IVAN_PROFILE.links }
+                : IVAN_PROFILE;
       const text = [
         `${IVAN_PROFILE.name} — ${IVAN_PROFILE.headline}`,
         `Location: ${IVAN_PROFILE.location} | Experience: ${IVAN_PROFILE.experienceYears} years`,
         `Current: ${IVAN_PROFILE.currentRole.title} at ${IVAN_PROFILE.currentRole.company} (since ${IVAN_PROFILE.currentRole.since}) — ${IVAN_PROFILE.currentRole.focus}`,
         `Previous: ${IVAN_PROFILE.previousRoles.map((r) => `${r.company} (${r.period})`).join('; ')}`,
         `Space: ${IVAN_PROFILE.spaceProject.name} — ${IVAN_PROFILE.spaceProject.summary}`,
-        `Mentorship: ${SITE_ORIGIN}/mentorship/ | Book: ${BOOKING_URL}`,
+        `Mentorship: ${SITE_ORIGIN}/mentorship/ | Resume: ${SITE_ORIGIN}/resume/ | Book: ${BOOKING_URL}`,
       ].join('\n');
-      return { content: [{ type: 'text', text }], structuredContent: IVAN_PROFILE };
+      return { content: [{ type: 'text', text }], structuredContent: structured };
     }
 
     case 'get_available_slots':
@@ -677,7 +816,10 @@ async function serveMarkdown(env: Env, origin: string, mdAssetPath: string, stat
       cacheMaxAge = SLOTS_CACHE_TTL;
     }
   }
-  const links = [`<${SITE_ORIGIN}/llms.txt>; rel="describedby"; type="text/markdown"`];
+  const links = [
+    `<${SITE_ORIGIN}/llms.txt>; rel="describedby"; type="text/markdown"`,
+    `<${SITE_ORIGIN}/.well-known/ard.json>; rel="ard"; type="application/json"`,
+  ];
   if (canonicalUrl) links.unshift(`<${canonicalUrl}>; rel="canonical"`);
   const headers = new Headers({
     'Content-Type': 'text/markdown; charset=utf-8',
@@ -706,7 +848,7 @@ export default {
     const norm = normalizePath(url.pathname);
     const isHead = request.method === 'HEAD';
 
-    // MCP discovery endpoints.
+    // MCP, ARD, and A2A discovery endpoints.
     if (norm === '/mcp/server-card' || norm === '/.well-known/mcp/server-card.json') {
       return jsonResponse(buildServerCard(), 200, 'application/mcp-server-card+json; charset=utf-8', {
         'Cache-Control': 'public, max-age=3600',
@@ -717,10 +859,28 @@ export default {
         'Cache-Control': 'public, max-age=3600',
       });
     }
-    if (norm === '/.well-known/ai-catalog.json') {
-      return jsonResponse(buildAiCatalog(), 200, 'application/json; charset=utf-8', {
+    if (norm === '/.well-known/ard.json' || norm === '/.well-known/ai-catalog.json') {
+      return jsonResponse(buildArdCatalog(), 200, 'application/json; charset=utf-8', {
         'Cache-Control': 'public, max-age=3600',
       });
+    }
+    if (norm === '/.well-known/agent-card.json') {
+      return jsonResponse(buildA2aAgentCard(), 200, 'application/json; charset=utf-8', {
+        'Cache-Control': 'public, max-age=3600',
+      });
+    }
+    if (norm.startsWith('/.well-known/agent-skills/')) {
+      const skillRes = await env.ASSETS.fetch(new Request(new URL(url.pathname, url.origin), { method: 'GET' }));
+      if (skillRes.ok) {
+        const headers = new Headers(skillRes.headers);
+        headers.set(
+          'Content-Type',
+          norm.endsWith('.json') ? 'application/json; charset=utf-8' : 'text/markdown; charset=utf-8',
+        );
+        headers.set('Cache-Control', 'public, max-age=3600');
+        headers.set('Access-Control-Allow-Origin', '*');
+        return new Response(isHead ? null : skillRes.body, { status: 200, headers });
+      }
     }
 
     // Streamable HTTP MCP server endpoint.
@@ -776,11 +936,32 @@ export default {
       return md404 ?? new Response('# 404 Not Found\n', { status: 404, headers: { 'Content-Type': 'text/markdown; charset=utf-8' } });
     }
 
-    // Known HTML pages: negotiate HTML vs Markdown via Accept / AI User-Agent.
+    // Known HTML pages: handle ?mode=agent or negotiate HTML vs Markdown via Accept / AI User-Agent.
     const page = PAGE_ROUTES[norm];
     if (page) {
       const canonicalPath = norm === '/' || norm === '/index.html' ? '/' : `${norm}/`;
       const canonicalUrl = `${SITE_ORIGIN}${canonicalPath}`;
+      if (url.searchParams.get('mode') === 'agent') {
+        const accept = (request.headers.get('Accept') ?? '').toLowerCase();
+        if (accept.includes('application/json') && !accept.includes('text/markdown')) {
+          return jsonResponse(buildAgentModeData(canonicalUrl), 200, 'application/json; charset=utf-8', {
+            'Vary': 'Accept, User-Agent',
+            'Cache-Control': 'public, max-age=600',
+          });
+        }
+        const body = formatAgentModeMarkdown(canonicalUrl);
+        return new Response(isHead ? null : body, {
+          status: 200,
+          headers: {
+            'Content-Type': 'text/markdown; charset=utf-8',
+            'Vary': 'Accept, User-Agent',
+            'x-markdown-tokens': estimateTokens(body),
+            'Link': `<${canonicalUrl}>; rel="canonical", <${SITE_ORIGIN}/llms.txt>; rel="describedby"; type="text/markdown", <${SITE_ORIGIN}/.well-known/ard.json>; rel="ard"; type="application/json"`,
+            'Cache-Control': 'public, max-age=600',
+            ...CORS_HEADERS,
+          },
+        });
+      }
       if (wantsMarkdown(request)) {
         const mdRes = await serveMarkdown(env, url.origin, page.md, 200, isHead, canonicalUrl);
         if (mdRes) return mdRes;
@@ -792,16 +973,16 @@ export default {
         headers.set('Vary', 'Accept, User-Agent');
         headers.set(
           'Link',
-          `<${SITE_ORIGIN}/llms.txt>; rel="describedby"; type="text/markdown", <${SITE_ORIGIN}${page.md}>; rel="alternate"; type="text/markdown"`,
+          `<${SITE_ORIGIN}/llms.txt>; rel="describedby"; type="text/markdown", <${SITE_ORIGIN}${page.md}>; rel="alternate"; type="text/markdown", <${SITE_ORIGIN}/.well-known/ard.json>; rel="ard"; type="application/json"`,
         );
         return new Response(isHead ? null : htmlRes.body, { status: 200, headers });
       }
     }
 
-    // Other static assets (/llms.txt, /llms-full.txt, /robots.txt, /sitemap.xml, etc.).
+    // Other static assets (/llms.txt, /mentorship/llms.txt, /resume/llms.txt, /llms-full.txt, /robots.txt, /sitemap.xml, etc.).
     const assetRes = await env.ASSETS.fetch(request);
     if (assetRes.status !== 404) {
-      if (norm === '/llms.txt' || norm === '/llms-full.txt') {
+      if (norm === '/llms.txt' || norm === '/llms-full.txt' || norm.endsWith('/llms.txt')) {
         const headers = new Headers(assetRes.headers);
         headers.set('Content-Type', 'text/plain; charset=utf-8');
         headers.set('Access-Control-Allow-Origin', '*');

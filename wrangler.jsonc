@@ -39,7 +39,8 @@
       "/.well-known/*",
       "/llms.txt",
       "/llms-full.txt",
-      "/sitemap.md"
+      "/sitemap.md",
+      "/pricing.md"
     ]
   }
 }

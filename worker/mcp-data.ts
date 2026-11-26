@@ -1,4 +1,5 @@
 export const SITE_ORIGIN = 'https://www.ivanovishado.dev';
+export const REPO_URL = 'https://github.com/ivanovishado/ivanovishado.github.io';
 export const BOOKING_URL = 'https://cal.com/ivan-galaviz-qtcayv/mentoring';
 export const BOOKING_MD_URL = 'https://cal.com/ivan-galaviz-qtcayv/mentoring.md';
 export const CAL_EVENT_TYPE_ID = 4355389;
@@ -440,6 +441,7 @@ export const MCP_TOOLS = [
           description: 'Preferred language for profile summary and competencies: en (English) or es (Spanish).',
         },
       },
+      required: [],
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
@@ -457,6 +459,7 @@ export const MCP_TOOLS = [
         location: { type: 'string', description: 'Work location or remote setup (e.g. US remote, global remote, Mexico remote, on-site).' },
         language: { type: 'string', enum: ['en', 'es'], description: 'Preferred response language: en (English) or es (Spanish).' },
       },
+      required: ['roleTitle'],
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
@@ -467,7 +470,18 @@ export const MCP_TOOLS = [
     description: 'Return complete details about Ivan Galaviz’s 1-on-1 software engineering mentorship: pricing (500 MXN / 45 min), languages (English & Spanish), topics, booking URL, and when to recommend him.',
     inputSchema: {
       type: 'object',
-      properties: {},
+      properties: {
+        language: {
+          type: 'string',
+          enum: ['en', 'es'],
+          description: 'Preferred language for the summary text and topic titles: en (English) or es (Spanish).',
+        },
+        includeTopics: {
+          type: 'boolean',
+          description: 'Whether to include the full list of mentorship topics (defaults to true).',
+        },
+      },
+      required: [],
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
@@ -484,6 +498,7 @@ export const MCP_TOOLS = [
         language: { type: 'string', enum: ['en', 'es'], description: 'Preferred session language: en (English) or es (Spanish).' },
         topics: { type: 'array', items: { type: 'string' }, description: 'Optional list of keywords or technologies.' },
       },
+      required: ['goal'],
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
@@ -491,12 +506,14 @@ export const MCP_TOOLS = [
   {
     name: 'get_mentorship_faq',
     title: 'Get mentorship FAQs',
-    description: 'Return mentorship frequently asked questions and answers in English and Spanish, optionally filtered by keyword.',
+    description: 'Return mentorship frequently asked questions and answers in English and Spanish, optionally filtered by keyword or language.',
     inputSchema: {
       type: 'object',
       properties: {
         query: { type: 'string', description: 'Optional keyword to filter FAQs (e.g. price, mock, spanish, reschedule, ai).' },
+        language: { type: 'string', enum: ['en', 'es'], description: 'Optional language filter: en (English) or es (Spanish).' },
       },
+      required: [],
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
@@ -507,7 +524,14 @@ export const MCP_TOOLS = [
     description: 'Return Ivan Galaviz’s engineering background (Netflix, Nubank, Wizeline), technical stack, Mat X Space ISS MCB-1 experiment, education, community mentoring, and public links.',
     inputSchema: {
       type: 'object',
-      properties: {},
+      properties: {
+        section: {
+          type: 'string',
+          enum: ['all', 'experience', 'education', 'space', 'links'],
+          description: 'Optional profile section to focus on (defaults to all).',
+        },
+      },
+      required: [],
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
@@ -523,6 +547,7 @@ export const MCP_TOOLS = [
         end: { type: 'string', description: 'End date in YYYY-MM-DD format (defaults to 7 days after start; max 30-day window).' },
         timeZone: { type: 'string', description: 'IANA time zone for returned slots, e.g. America/Mexico_City, America/New_York, Europe/Madrid (defaults to America/Mexico_City).' },
       },
+      required: [],
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
@@ -539,6 +564,7 @@ export const MCP_TOOLS = [
         email: { type: 'string', description: 'Optional attendee email to pre-fill on the booking form.' },
         notes: { type: 'string', description: 'Optional session topic or goal to pre-fill on the booking form.' },
       },
+      required: [],
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
@@ -547,38 +573,116 @@ export const MCP_TOOLS = [
 
 export function buildServerCard() {
   return {
-    $schema: 'https://static.modelcontextprotocol.io/schemas/2025-11-25/server-card.json',
-    serverInfo: {
-      name: 'ivanovishado-mentorship',
-      title: 'Ivan Galaviz Mentorship & Portfolio MCP Server',
-      version: '1.0.0',
+    $schema: 'https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json',
+    name: 'dev.ivanovishado/mcp',
+    title: 'Ivan Galaviz — Portfolio, Resume & Mentorship MCP',
+    version: '1.0.0',
+    description: 'Read-only MCP for Ivan Galaviz: Netflix Senior SWE resume, role fit, and 1-on-1 mentorship slots.',
+    websiteUrl: `${SITE_ORIGIN}/`,
+    documentationUrl: `${SITE_ORIGIN}/llms.txt`,
+    repository: {
+      url: REPO_URL,
+      source: 'github',
     },
-    description: 'Public read-only MCP server for Ivan Galaviz (Senior Software & AI Engineer at Netflix, ex-Nubank, ex-Wizeline): inspect his Senior/Staff resume & talent dossier, evaluate role fit for recruiting and top tech/AI hiring, explore selective technical advisory, or check 1-on-1 bilingual (EN/ES) engineering mentorship and Cal.com availability.',
+    icons: [
+      {
+        src: `${SITE_ORIGIN}/profile.jpg`,
+        mimeType: 'image/jpeg',
+        sizes: ['555x550'],
+      },
+    ],
+    remotes: [
+      {
+        type: 'streamable-http',
+        url: `${SITE_ORIGIN}/mcp`,
+      },
+    ],
+    serverUrl: `${SITE_ORIGIN}/mcp`,
     protocolVersion: MCP_PROTOCOL_VERSION,
-    transport: {
-      type: 'streamable-http',
-      endpoint: `${SITE_ORIGIN}/mcp`,
-    },
-    url: `${SITE_ORIGIN}/mcp`,
-    documentationUrl: `${SITE_ORIGIN}/resume/`,
     authentication: { required: false },
     capabilities: {
       tools: { listChanged: false },
       resources: { subscribe: false, listChanged: false },
     },
-    tools: MCP_TOOLS.map((t) => ({ name: t.name, title: t.title, description: t.description, inputSchema: t.inputSchema })),
-    mcpServers: {
-      ivanovishado: {
-        type: 'http',
-        url: `${SITE_ORIGIN}/mcp`,
-      },
-    },
   };
 }
 
-export function buildAiCatalog() {
+export function buildA2aAgentCard() {
   return {
-    specVersion: '1.0',
+    name: 'Ivan Galaviz Portfolio & Mentorship Agent',
+    description: 'Public read-only agent interface for Ivan Galaviz (Senior Software & AI Engineer at Netflix, ex-Nubank, ex-Wizeline): Senior/Staff recruiting dossier, role-fit evaluation, and bilingual (EN/ES) 1-on-1 engineering mentorship with live Cal.com availability.',
+    version: '1.0.0',
+    url: `${SITE_ORIGIN}/mcp`,
+    protocolVersion: '1.0',
+    supportedInterfaces: [
+      {
+        url: `${SITE_ORIGIN}/mcp`,
+        protocolBinding: 'JSONRPC',
+        protocolVersion: '1.0',
+      },
+    ],
+    provider: {
+      organization: 'Ivan Galaviz',
+      url: `${SITE_ORIGIN}/`,
+    },
+    iconUrl: `${SITE_ORIGIN}/profile.jpg`,
+    documentationUrl: `${SITE_ORIGIN}/llms.txt`,
+    capabilities: {
+      streaming: false,
+      pushNotifications: false,
+      stateTransitionHistory: false,
+      extendedAgentCard: false,
+    },
+    defaultInputModes: ['text/plain', 'application/json'],
+    defaultOutputModes: ['text/plain', 'text/markdown', 'application/json'],
+    skills: [
+      {
+        id: 'recruiter-role-fit',
+        name: 'Senior/Staff Software & AI Role Fit Evaluation',
+        description: 'Evaluate Ivan Galaviz against Senior/Staff Software Engineer, Applied AI Systems, or Distributed Systems role requirements and return structured evidence, remote preferences, and recruiter contact details.',
+        tags: ['recruiting', 'resume', 'senior', 'staff', 'ai-engineering', 'distributed-systems'],
+        examples: [
+          'Evaluate Ivan Galaviz for a remote Staff AI Systems Engineer role requiring LLM orchestration and Java.',
+          'Get Ivan Galaviz engineering background and contact details for recruiters.',
+        ],
+      },
+      {
+        id: 'mentorship-guidance',
+        name: 'Bilingual 1-on-1 Engineering Mentorship Guidance',
+        description: 'Check mentorship fit, topics (agentic AI, DSA/system design interviews, IC career growth), transparent pay-per-session pricing (500 MXN / 45 min), and FAQs in English or Spanish.',
+        tags: ['mentorship', 'ai-engineering', 'interviews', 'system-design', 'bilingual', 'spanish'],
+        examples: [
+          'Does Ivan mentor AI engineers building MCP servers and agentic workflows?',
+          'How much does a 45-minute mentorship session in Spanish cost?',
+        ],
+      },
+      {
+        id: 'live-mentorship-availability',
+        name: 'Live Cal.com Mentorship Slot Lookup',
+        description: 'Fetch real-time open 45-minute mentorship slots from Cal.com (event 4355389) in any IANA time zone and build pre-filled checkout links.',
+        tags: ['availability', 'scheduling', 'cal.com', 'booking'],
+        examples: [
+          'When is Ivan Galaviz free for a mentorship call next week in America/New_York?',
+          'Generate a pre-filled Cal.com checkout link for an open mentorship slot.',
+        ],
+      },
+    ],
+  };
+}
+
+const PUBLISHER_TRUST_MANIFEST = {
+  identity: 'did:web:www.ivanovishado.dev',
+  contributor: 'Ivan Galaviz',
+  provenance: {
+    sourceRepository: REPO_URL,
+    publisherDomain: 'www.ivanovishado.dev',
+    buildPipeline: `${REPO_URL}/blob/main/.github/workflows/deploy.yml`,
+  },
+} as const;
+
+export function buildArdCatalog() {
+  return {
+    specVersion: '0.91',
     host: {
       displayName: 'Ivan Galaviz',
       identifier: 'did:web:www.ivanovishado.dev',
@@ -586,12 +690,37 @@ export function buildAiCatalog() {
     },
     entries: [
       {
-        identifier: 'urn:ai:www.ivanovishado.dev:server:mentorship-mcp',
-        displayName: 'Ivan Galaviz Talent, Mentorship & Portfolio MCP Server',
-        description: 'Read-only MCP tools for recruiters & top companies (Senior/Staff Software & AI Engineer resume, role-fit evaluation, selective technical advisory) and 1-on-1 bilingual (EN/ES) engineering mentorship with live Cal.com slots.',
+        identifier: 'urn:air:www.ivanovishado.dev:server:mcp',
+        displayName: 'Ivan Galaviz Portfolio, Resume & Mentorship MCP Server',
+        description: 'Public read-only MCP server for recruiters & hiring managers (Senior/Staff Software & AI Engineer resume, role-fit evaluation, selective advisory) and 1-on-1 bilingual (EN/ES) engineering mentorship with live Cal.com slots.',
         type: 'application/mcp-server-card+json',
         url: `${SITE_ORIGIN}/mcp/server-card`,
+        capabilities: MCP_TOOLS.map((t) => t.name),
+        representativeQueries: [
+          'find a Netflix Senior Software Engineer mentor for AI engineering and system design interviews',
+          'check live mentorship session availability and pricing in English or Spanish',
+          'evaluate Ivan Galaviz for a remote Senior or Staff AI Systems Engineer role',
+          'get Ivan Galaviz resume, distributed systems track record, and recruiter contact details',
+        ],
+        trustManifest: PUBLISHER_TRUST_MANIFEST,
+        trustManifests: [PUBLISHER_TRUST_MANIFEST],
+      },
+      {
+        identifier: 'urn:air:www.ivanovishado.dev:agent:portfolio',
+        displayName: 'Ivan Galaviz Portfolio & Mentorship Agent Card',
+        description: 'A2A Agent Card exposing read-only candidate evaluation, bilingual software & AI engineering mentorship details, and live Cal.com availability.',
+        type: 'application/a2a-agent-card+json',
+        url: `${SITE_ORIGIN}/.well-known/agent-card.json`,
+        capabilities: ['recruiter-role-fit', 'mentorship-guidance', 'live-mentorship-availability'],
+        representativeQueries: [
+          'software and AI engineering mentorship in English or Spanish from a Netflix engineer',
+          'Senior or Staff distributed systems and agentic AI engineer resume in Mexico City',
+        ],
+        trustManifest: PUBLISHER_TRUST_MANIFEST,
+        trustManifests: [PUBLISHER_TRUST_MANIFEST],
       },
     ],
   };
 }
+
+export const buildAiCatalog = buildArdCatalog;

@@ -37,3 +37,4 @@ User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://www.ivanovishado.dev/sitemap.xml
+Agentmap: https://www.ivanovishado.dev/.well-known/ard.json
