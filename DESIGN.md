@@ -50,7 +50,7 @@ talks stay honest labels only.
 Idea:        Ivan's work drawn as an orbit's ground track: each chapter is one pass over the place it happened.
 Metaphor:    satellite ground tracks and imaging swaths (mission-control map, revolution counter, coordinates).
 Signature:   the swath reveal. A sine track sweeps west to east over a dark Earth; land appears only
-             inside the swath the track has flown. Scroll adds revolutions (each shifted ~23° west, as real
+             inside the swath the track has flown. On case pages scroll adds revolutions (each shifted ~23° west, as real
              ground tracks do); pointer nudges the lead marker; at rest the orbit keeps going.
              Implemented in src/js/site/concept/ (orbit math + land mask + one driver).
 Emotion:     calm precision, a control room at night. Then: "oh, that experiment actually went up".
@@ -111,7 +111,7 @@ orbit is (track, marker, focus, the mentorship field). No glow, no gradient wash
 
 - 12 columns, gutter `clamp(1rem, 0.6rem + 1.6vw, 2.5rem)`, outer margin = gutter.
 - Three hanging lines: **col 1**, **col 5**, **col 9**. Every text block starts on one.
-- Section moods: hero = 200svh sticky stage; work = normal; MCB-1 = airy; statement = airy;
+- Section moods: hero = 100svh stage; work = normal; MCB-1 = airy; statement = airy;
   record = tight; mentorship = full field; footer = full viewport.
 
 ### Shape
@@ -135,7 +135,7 @@ Radius 0 everywhere except the marker dot. Hairlines 1 px.
 ### Composition plan
 
 ```
-HERO (sticky stage, poster + scene)
+HERO (100svh stage, poster + scene)
 ┌──────────────────────────────────────────────────────────┐
 │ Ivan Galaviz            Work  About  Mentorship  Email   │
 │      ~~~~ track ~~~~/\~~~~~ scanline Earth in swath      │

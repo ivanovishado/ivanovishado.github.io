@@ -436,9 +436,9 @@ html.on-light .frame__marker { background: var(--c-paper-accent); }
   }
 }
 
-/* --- Hero (full-bleed sticky orbital stage) ------------------------------- */
-.hero { position: relative; height: 190svh; }
-.hero__stage { position: sticky; top: 0; height: 100svh; overflow: clip; }
+/* --- Hero (full-bleed orbital stage) -------------------------------------- */
+.hero { position: relative; }
+.hero__stage { position: relative; height: 100svh; overflow: clip; }
 .hero__map { position: absolute; inset: -2%; cursor: crosshair; }
 /* Subtle top header clearing + focused lower horizon gradient only (keeps map crisp) */
 .hero__stage::before, .case-hero::before, .lost::before {
@@ -478,7 +478,6 @@ html.on-light .frame__marker { background: var(--c-paper-accent); }
   .hero__aside { grid-column: 1 / span 8; margin-top: 1.5rem; padding-bottom: 0; }
 }
 @media (max-width: 767px) {
-  .hero { height: 140svh; }
   .hero__name { grid-column: 1 / -1; font-size: clamp(4rem, 22vw, 6.25rem); }
   .hero__aside { grid-column: 1 / -1; margin-top: 1.25rem; }
   .hero__stage::after { background: linear-gradient(to top, var(--c-bg) 0%, color-mix(in srgb, var(--c-bg) 84%, transparent) 36%, transparent 62%); }
@@ -1118,7 +1117,5 @@ html.on-light .frame__marker { background: var(--c-paper-accent); }
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .hero { height: auto; }
-  .hero__stage { position: relative; }
   html.frame-away .frame { translate: none; }
 }

@@ -159,7 +159,7 @@ export function startDriver() {
       const links = (t: number) => (isTrips ? phase(t) : still || reduced ? 1 : st.intro);
       // The readout counts revolutions from the one that crosses the place, so it agrees with the page.
       const rev = parseInt(el.dataset.rev ?? '1', 10) - Math.floor(sweep);
-      // The hero canvas is sticky: its stage is what scrolls through the viewport.
+      // Maps inside a [data-stage] are on screen while that stage is.
       const stage = el.closest<HTMLElement>('[data-stage]') ?? el;
       const view = ScrollTrigger.create({ trigger: stage, start: 'top bottom', end: 'bottom top' });
       const m: Mounted = { map, el, view, phase, links, rev, still, kind: el.dataset.track ?? 'pass' };
@@ -171,10 +171,11 @@ export function startDriver() {
         // Trips fly when their map scrolls into view; everything else plays with the page intro.
         if (isTrips) ScrollTrigger.create({ trigger: el, start: 'top 75%', once: true, onEnter: () => { tween.play(); } });
         else intro.add(tween, 0.1);
-        ScrollTrigger.create({
+        // The hero rests on its intro and idle; other passes advance as their stage scrolls.
+        if (!isHero) ScrollTrigger.create({
           trigger: stage,
           start: 'top top',
-          end: isHero ? 'bottom bottom' : 'bottom top',
+          end: 'bottom top',
           onUpdate: (s) => { st.scroll = s.progress; },
         });
       }
