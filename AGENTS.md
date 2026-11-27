@@ -110,8 +110,8 @@ script, an input in `vite.config.ts` and an entry in `tools/sitemap.ts`.
   They run inside one `gsap.matchMedia()` and re-run when reduced motion, touch or the mobile
   breakpoint changes: read the `motion-setup` skill before editing motion code.
   Same-origin links are fetched and `<main>` is swapped behind the curtain.
-- Maps are `<canvas data-track="hero|pass|trips">`; the driver mounts them. Guadalajara
-  is the home station; passes land where the work is used (DESIGN.md, Station).
+- Maps are `<canvas data-track="hero|pass|trips">`; the driver mounts them. Mexico City
+  is the home station (Guadalajara until late 2026); passes land where the work is used (DESIGN.md, Station).
 - Everything enters west to east ("sweep and lock"); hovers draw an amber line west to east.
 - Under reduced motion: no Lenis, no reveals, one still map frame, content fully visible.
 - Visible copy: no em or en dashes, sentence case.

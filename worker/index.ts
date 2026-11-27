@@ -340,7 +340,7 @@ function formatAvailabilityDocument(res: CalSlotsResult): string {
     '',
     '# Live Mentorship Availability — Ivan Galaviz',
     '',
-    `- **Mentor:** Ivan Galaviz (Senior Software Engineer at Netflix, Guadalajara, Mexico)`,
+    `- **Mentor:** Ivan Galaviz (Senior Software Engineer at Netflix, Mexico City, Mexico)`,
     `- **Price:** 500 MXN (approx. $25 to $30 USD) per 45-minute session (pay-per-session, no subscription)`,
     `- **Languages:** English or Spanish`,
     `- **Location:** Google Meet, worldwide`,

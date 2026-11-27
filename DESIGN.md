@@ -22,11 +22,12 @@ read this first so the system stays consistent.
 
 ### Assumptions (owner to confirm)
 
-- **Guadalajara is the home station** (owner confirmed): almost all the work is remote, so it is
+- **Mexico City is the home station** since late 2026 (Guadalajara before; owner confirmed): almost all the work is remote, so it is
   drawn once, with a coverage ring, and each project's pass lands where the work is used:
-  Netflix over the **Bay Area**, Nubank over **São Paulo**, Wizeline at the station itself.
-- Trips (owner confirmed): Toronto 2015, IAC Baku 2023, Samara 2024, IAC Milan 2024, Kennedy
-  Space Center for the CRS-31 launch, Nov 2024 (assumed attended, from the launch-guest photo).
+  Netflix over the **Bay Area**, Nubank over **São Paulo**, Wizeline over **Guadalajara**.
+- Trips (owner confirmed), each for work or education: Toronto 2015 (education), IAC Baku 2023
+  (work), Samara 2024 (education), IAC Milan 2024 (work), Kennedy Space Center for the CRS-31
+  launch, Nov 2024 (work), and regular visits to the Netflix offices in Los Gatos and Los Angeles (work).
 - Case-study prose is written from facts on the current site; nothing beyond them is claimed.
   Paragraphs marked `data-placeholder` want the owner's own detail.
 - The orbit is a **model** at ISS parameters (51.64° inclination, 92.9 min period), not live
@@ -56,7 +57,7 @@ Signature:   the swath reveal. A sine track sweeps west to east over a dark Eart
 Emotion:     calm precision, a control room at night. Then: "oh, that experiment actually went up".
 Motion verb: sweep and lock. Things enter west to east like a track crossing the frame, then lock with an
              expo settle. Hovers draw a track line west to east; arrows travel east.
-Station:     Guadalajara is the home station. Passes land where the work is used and a dashed
+Station:     Mexico City is the home station (Guadalajara until late 2026). Passes land where the work is used and a dashed
              signal arc links them home; trips are solid arcs that reveal the land they cross
              (/trajectory/, linked from the nav and the MCB-1 section). Samara (53.2°N) sits just above the ISS reach line.
 Screenshot:  the hero: "Ivan Galaviz" at poster size over three amber revolutions that have revealed the

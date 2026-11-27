@@ -43,7 +43,7 @@ function initWorkMonitor(reduced: boolean) {
   gsap.ticker.add(tick);
 
   const select = (a: HTMLAnchorElement, immediate = false) => {
-    const placeKey = (a.dataset.place ?? 'gdl') as PlaceKey;
+    const placeKey = (a.dataset.place ?? 'cdmx') as PlaceKey;
     const next = `${placeKey}-${a.dataset.descending ?? ''}-${a.dataset.rev ?? ''}`;
     links.forEach((item) => item.closest('.index__row')?.toggleAttribute('data-active', item === a));
     if (next === activeKey) return;
@@ -58,7 +58,7 @@ function initWorkMonitor(reduced: boolean) {
     const km = targetPlace ? distanceKm(STATION, targetPlace) : 0;
     if (placeEl) placeEl.textContent = a.dataset.location ?? targetPlace?.name ?? '';
     if (coordsEl) coordsEl.textContent = a.dataset.coords ?? '';
-    if (distEl) distEl.textContent = km > 0 ? `${km.toLocaleString('en-US')} km from Guadalajara` : 'Home station · Guadalajara';
+    if (distEl) distEl.textContent = km > 0 ? `${km.toLocaleString('en-US')} km from ${STATION.name}` : `Home station · ${STATION.name}`;
     if (summaryEl) summaryEl.textContent = a.dataset.summary ?? '';
 
     sweep?.kill();

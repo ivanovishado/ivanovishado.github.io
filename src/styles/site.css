@@ -974,6 +974,7 @@ html.on-light .frame__marker { background: var(--c-paper-accent); }
 .stops__row--signal .stops__when { color: var(--c-muted); }
 .stops__place { grid-column: 3 / span 2; font-size: var(--t-body); }
 .stops__place b { font-weight: 500; }
+.stops__kind { display: block; margin-top: 0.3rem; }
 .stops__what { grid-column: 5 / span 5; font-size: var(--t-body); color: var(--c-muted); }
 .stops__what a { color: var(--c-fg); }
 .stops__coords { grid-column: 10 / -1; justify-self: end; white-space: nowrap; }

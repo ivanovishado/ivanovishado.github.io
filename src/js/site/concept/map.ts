@@ -513,7 +513,7 @@ export class TrackMap {
         const d = Math.hypot(px - sx, py - sy);
         if (d < bestDist) {
           bestDist = d;
-          activeKey = 'gdl';
+          activeKey = 'cdmx';
           snapped = { x: sx, y: sy, name: o.station.name, sub: 'Home station' };
         }
       }
@@ -524,7 +524,7 @@ export class TrackMap {
         if (d < bestDist) {
           bestDist = d;
           activeKey = l.key ?? null;
-          const km = o.station ? `${distanceKm(o.station, l.to).toLocaleString('en-US')} km from Guadalajara` : '';
+          const km = o.station ? `${distanceKm(o.station, l.to).toLocaleString('en-US')} km from ${o.station.name}` : '';
           snapped = { x: lx, y: ly, name: l.to.name, sub: km };
         }
       }
@@ -572,7 +572,7 @@ export class TrackMap {
 
     // Highlight active link arc + target ring (from ledger hover or pointer snap).
     if (!activeKey || !o.station) return;
-    if (activeKey === 'gdl') {
+    if (activeKey === 'cdmx') {
       const sx = this.x(o.station.lon);
       const sy = this.y(o.station.lat);
       const pulse = (time * 0.7) % 1;

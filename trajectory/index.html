@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trajectory | Ivan Galaviz</title>
-    <meta name="description" content="Every place Ivan Galaviz's work has reached, on one map: congresses in Baku and Milan, a space school in Samara, a launch at Kennedy, and work sent from Guadalajara." />
+    <meta name="description" content="Every place Ivan Galaviz's work has reached, on one map: congresses in Baku and Milan, a space school in Samara, a launch at Kennedy, regular visits to the Netflix offices in Los Gatos and Los Angeles, and work sent from Mexico City." />
     <meta name="author" content="Ivan Galaviz" />
     <link rel="canonical" href="https://www.ivanovishado.dev/trajectory/" />
     <link rel="alternate" type="text/markdown" href="https://www.ivanovishado.dev/trajectory/index.md" />
     <meta property="og:title" content="Trajectory | Ivan Galaviz" />
-    <meta property="og:description" content="Every place the work has reached, on one map, all of it sent from a home station in Guadalajara." />
+    <meta property="og:description" content="Every place the work has reached, on one map, every trip made for work or education, from a home station in Mexico City." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.ivanovishado.dev/trajectory/" />
     <meta property="og:site_name" content="Ivan Galaviz" />
@@ -28,13 +28,13 @@
       <section class="traj" aria-labelledby="traj-title">
         <div class="traj__head grid">
           <h1 class="traj__title c-1-8" id="traj-title" data-split="lines" data-intro data-delay="0.05">Trajectory</h1>
-          <p class="traj__lede c-9-12" data-split="lines" data-intro data-delay="0.2">I work from home in Guadalajara (20.66°N 103.35°W). Hover any stop below or move across the map to trace where the work, and I, ended up going.</p>
+          <p class="traj__lede c-9-12" data-split="lines" data-intro data-delay="0.2">Since late 2026 I work remotely from Mexico City (19.43°N 099.13°W); before that, home was Guadalajara. Every trip was for work or education. Hover any stop below or move across the map to trace where the work, and I, ended up going.</p>
         </div>
         <div class="traj__map" aria-hidden="true">
           <canvas data-track="trips"></canvas>
         </div>
         <ul class="traj__legend grid mono muted">
-          <li class="c-1-4"><span class="key key--trip" aria-hidden="true"></span>Trips</li>
+          <li class="c-1-4"><span class="key key--trip" aria-hidden="true"></span>Trips for work or education</li>
           <li class="c-5-8"><span class="key key--signal" aria-hidden="true"></span>Work sent from home</li>
           <li class="c-9-12"><span class="key key--reach" aria-hidden="true"></span>Farthest north and south the ISS flies</li>
         </ul>
@@ -43,18 +43,24 @@
       <section class="section section--tight" aria-labelledby="stops-title">
         <header class="section__head grid">
           <h2 class="h-section c-1-4" id="stops-title">Every stop</h2>
-          <p class="c-5-12 muted">In chronological order, starting from Guadalajara. Hover a row to illuminate its arc on the map.</p>
+          <p class="c-5-12 muted">Home first, then every trip in chronological order, each marked work or education. Hover a row to illuminate its arc on the map.</p>
         </header>
         <ol class="stops">
-          <li class="stops__row" data-stop-place="gdl" tabindex="0">
-            <span class="stops__when mono">Home</span>
+          <li class="stops__row" data-stop-place="cdmx" tabindex="0">
+            <span class="stops__when mono">Since late 2026</span>
+            <span class="stops__place"><b>Mexico City</b>, Mexico</span>
+            <span class="stops__what">Home station. I work remotely for Netflix from here.</span>
+            <span class="stops__coords mono muted">19.43°N 099.13°W</span>
+          </li>
+          <li class="stops__row stops__row--signal" data-stop-place="gdl" tabindex="0">
+            <span class="stops__when mono">Until 2026</span>
             <span class="stops__place"><b>Guadalajara</b>, Mexico</span>
-            <span class="stops__what">Home station. Wizeline, the Netflix work and almost everything else on this site was built from here.</span>
+            <span class="stops__what">Earlier home, where I studied. Wizeline, Nubank and my first Netflix years were built from here.</span>
             <span class="stops__coords mono muted">20.66°N 103.35°W</span>
           </li>
           <li class="stops__row" data-stop-place="toronto" tabindex="0">
             <span class="stops__when mono">2015</span>
-            <span class="stops__place"><b>Toronto</b>, Canada</span>
+            <span class="stops__place"><b>Toronto</b>, Canada<span class="stops__kind mono muted">Education</span></span>
             <span class="stops__what">English Language Program at the University of Toronto.</span>
             <span class="stops__coords mono muted">43.66°N 079.40°W</span>
           </li>
@@ -66,31 +72,37 @@
           </li>
           <li class="stops__row" data-stop-place="baku" tabindex="0">
             <span class="stops__when mono">2023</span>
-            <span class="stops__place"><b>Baku</b>, Azerbaijan</span>
+            <span class="stops__place"><b>Baku</b>, Azerbaijan<span class="stops__kind mono muted">Work</span></span>
             <span class="stops__what">International Astronautical Congress, presenting a research paper with Mat X Space.</span>
             <span class="stops__coords mono muted">40.41°N 049.87°E</span>
           </li>
-          <li class="stops__row stops__row--signal" data-stop-place="bay" tabindex="0">
+          <li class="stops__row" data-stop-place="lgt" tabindex="0">
             <span class="stops__when mono">Since 2023</span>
-            <span class="stops__place"><b>Bay Area</b>, United States</span>
-            <span class="stops__what">Netflix. Work sent from home: <a class="link" href="/work/netflix/" data-title="Agentic workflows for promotional assets" data-coords="37.39°N 122.08°W">agentic workflows for promotional assets</a>.</span>
-            <span class="stops__coords mono muted">37.39°N 122.08°W</span>
+            <span class="stops__place"><b>Los Gatos</b>, United States<span class="stops__kind mono muted">Work</span></span>
+            <span class="stops__what">Netflix headquarters, which I visit regularly. Work sent from home: <a class="link" href="/work/netflix/" data-title="Agentic workflows for promotional assets" data-coords="37.39°N 122.08°W">agentic workflows for promotional assets</a>.</span>
+            <span class="stops__coords mono muted">37.24°N 121.96°W</span>
+          </li>
+          <li class="stops__row" data-stop-place="lax" tabindex="0">
+            <span class="stops__when mono">Regularly</span>
+            <span class="stops__place"><b>Los Angeles</b>, United States<span class="stops__kind mono muted">Work</span></span>
+            <span class="stops__what">The Netflix office in Los Angeles, which I visit regularly.</span>
+            <span class="stops__coords mono muted">34.10°N 118.33°W</span>
           </li>
           <li class="stops__row" data-stop-place="samara" tabindex="0">
             <span class="stops__when mono">2024</span>
-            <span class="stops__place"><b>Samara</b>, Russia</span>
+            <span class="stops__place"><b>Samara</b>, Russia<span class="stops__kind mono muted">Education</span></span>
             <span class="stops__what">Summer Space School at Samara University. At 53.2°N it sits just north of anywhere the ISS flies over. <a class="link" href="https://blog.matxspace.com/2025-05-14-mi-aventura-espacial-de-m%C3%A9xico-a-samara/" target="_blank" rel="noopener noreferrer">I wrote about it</a> in Spanish.</span>
             <span class="stops__coords mono muted">53.20°N 050.15°E</span>
           </li>
           <li class="stops__row" data-stop-place="milan" tabindex="0">
             <span class="stops__when mono">2024</span>
-            <span class="stops__place"><b>Milan</b>, Italy</span>
+            <span class="stops__place"><b>Milan</b>, Italy<span class="stops__kind mono muted">Work</span></span>
             <span class="stops__what">International Astronautical Congress, a second research paper with Mat X Space.</span>
             <span class="stops__coords mono muted">45.46°N 009.19°E</span>
           </li>
           <li class="stops__row" data-stop-place="ksc" tabindex="0">
             <span class="stops__when mono">Nov 2024</span>
-            <span class="stops__place"><b>Kennedy Space Center</b>, Florida</span>
+            <span class="stops__place"><b>Kennedy Space Center</b>, Florida<span class="stops__kind mono muted">Work</span></span>
             <span class="stops__what">The launch of SpaceX CRS-31, carrying our experiment to the ISS: <a class="link" href="/work/mcb-1/" data-title="MCB-1, a material that went to orbit" data-coords="28.61°N 080.60°W">MCB-1</a>.</span>
             <span class="stops__coords mono muted">28.61°N 080.60°W</span>
           </li>
@@ -98,7 +110,7 @@
       </section>
 
       <nav class="case-next" aria-label="Back to the work">
-        <a href="/#work" data-title="Work" data-coords="20.66°N 103.35°W">
+        <a href="/#work" data-title="Work" data-coords="19.43°N 099.13°W">
           <span class="mono muted">Back to the portfolio</span>
           <span class="case-next__title">See the work <span class="arrow" aria-hidden="true">→</span></span>
         </a>
