@@ -119,7 +119,7 @@ Senior Software Engineer at Netflix based in Mexico City, Mexico. Over 8 years b
 
 - **Target roles:** Senior / Staff Software Engineer, AI Engineer, Applied AI Systems Engineer, Distributed Systems Engineer
 - **Track record:** Netflix (since April 2023, production agentic workflows & distributed promotional asset systems), Nubank (2021 to 2023, Clojure/Datomic application flows serving millions), Wizeline (2018 to 2021, Go/Python/AWS broadcast event pipelines), Mat X Space (MCB-1 experiment on the ISS)
-- **Location & languages:** Mexico City, Mexico (America/Mexico_City, US timezone overlap), English & Spanish; strongly prefers 100% remote roles (not open to relocation; hybrid in Mexico City only for an exceptional opportunity)
+- **Location & languages:** Mexico City, Mexico (remote for Netflix since late 2026, previously Guadalajara; regular visits to the Los Gatos and Los Angeles offices; America/Mexico_City, US timezone overlap), English & Spanish; strongly prefers 100% remote roles (not open to relocation; hybrid in Mexico City only for an exceptional opportunity)
 - **Selective advisory:** Limited, strictly independent architecture reviews and AI adoption advisory (no employer endorsement or conflict of interest)
 - **Resume & hiring brief:** [${SITE_ORIGIN}/resume/](${SITE_ORIGIN}/resume/)
 - **Direct contact:** [${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}?subject=Engineering%20Role%20or%20Advisory%20Inquiry)
@@ -308,7 +308,7 @@ const netflixMd =
 - **Company:** Netflix
 - **Since:** April 2023
 - **Role:** Senior Software Engineer
-- **Location:** Remote from Guadalajara for Bay Area teams (37.39°N 122.08°W)
+- **Location:** Remote from Mexico City since late 2026 (Guadalajara before) for Bay Area teams, with regular visits to the Los Gatos and Los Angeles offices
 - **Stack:** Java, distributed systems, microservices, LLMs, agentic workflows
 
 ## Context
@@ -401,23 +401,25 @@ At Wizeline Academy I designed courses on chatbot development, taught JavaScript
 const trajectoryMd =
   frontmatter({
     title: 'Trajectory | Ivan Galaviz',
-    description: 'Every place Ivan Galaviz’s work and trips have reached, starting from Guadalajara, Mexico.',
+    description: 'Every place Ivan Galaviz’s work and trips have reached, from a home station in Mexico City (Guadalajara until late 2026).',
     canonical: `${SITE_ORIGIN}/trajectory/`,
   }) +
   `# Trajectory
 
-Home station: Guadalajara, Mexico (20.66°N 103.35°W).
+Home station: Mexico City, Mexico (19.43°N 099.13°W), since late 2026. Earlier home: Guadalajara, Mexico (20.66°N 103.35°W). Every trip is tagged as work or education.
 
 ## Stops
 
-- **Home — Guadalajara, Mexico (20.66°N 103.35°W):** Home station where Wizeline, Netflix, and most projects were built.
-- **2015 — Toronto, Canada (43.66°N 079.40°W):** English Language Program at the University of Toronto.
+- **Since late 2026 (home) — Mexico City, Mexico (19.43°N 099.13°W):** Home station; works remotely for Netflix from here.
+- **Until late 2026 (earlier home) — Guadalajara, Mexico (20.66°N 103.35°W):** Where I studied, and where Wizeline, Nubank, and the first Netflix years were built.
+- **2015 — Toronto, Canada (43.66°N 079.40°W) — Education:** English Language Program at the University of Toronto.
 - **2021 to 2023 — Sao Paulo, Brazil (23.55°S 046.63°W):** Nubank work sent from home ([case study](${SITE_ORIGIN}/work/nubank/)).
-- **2023 — Baku, Azerbaijan (40.41°N 049.87°E):** International Astronautical Congress, research paper with Mat X Space.
-- **Since 2023 — Bay Area, United States (37.39°N 122.08°W):** Netflix work sent from home ([case study](${SITE_ORIGIN}/work/netflix/)).
-- **2024 — Samara, Russia (53.20°N 050.15°E):** Summer Space School at Samara University.
-- **2024 — Milan, Italy (45.46°N 009.19°E):** International Astronautical Congress, second research paper with Mat X Space.
-- **Nov 2024 — Kennedy Space Center, Florida (28.61°N 080.60°W):** Launch of SpaceX CRS-31 carrying MCB-1 to the ISS ([case study](${SITE_ORIGIN}/work/mcb-1/)).
+- **2023 — Baku, Azerbaijan (40.41°N 049.87°E) — Work:** International Astronautical Congress, research paper with Mat X Space.
+- **Since 2023 — Los Gatos, United States (37.24°N 121.96°W) — Work:** Netflix headquarters. Work sent from home ([case study](${SITE_ORIGIN}/work/netflix/)), and I visit the office regularly.
+- **Regularly — Los Angeles, United States (34.10°N 118.33°W) — Work:** The Netflix Los Angeles office, which I visit regularly.
+- **2024 — Samara, Russia (53.20°N 050.15°E) — Education:** Summer Space School at Samara University.
+- **2024 — Milan, Italy (45.46°N 009.19°E) — Work:** International Astronautical Congress, second research paper with Mat X Space.
+- **Nov 2024 — Kennedy Space Center, Florida (28.61°N 080.60°W) — Work:** Launch of SpaceX CRS-31 carrying MCB-1 to the ISS ([case study](${SITE_ORIGIN}/work/mcb-1/)).
 `;
 
 const privacyMd =
@@ -428,7 +430,7 @@ const privacyMd =
   }) +
   `# Privacy Policy — ivanovishado.dev
 
-- **Owner:** Ivan Galaviz (Guadalajara, Jalisco, Mexico)
+- **Owner:** Ivan Galaviz (Mexico City, Mexico)
 - **Contact:** [${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL})
 
 ## Browsing and Analytics
@@ -520,7 +522,7 @@ How an agent should connect a user:
 - [Mat X Space — MCB-1 experiment on the ISS](${SITE_ORIGIN}/work/mcb-1/): Biomimetic material flown aboard SpaceX CRS-31 to the ISS MISSE platform
 - [Nubank — How people apply](${SITE_ORIGIN}/work/nubank/): Clojure and Datomic application flows serving millions in Mexico
 - [Wizeline — Three clients, three systems](${SITE_ORIGIN}/work/wizeline/): Broadcast event platform, entertainment identity flows, real-estate chatbot, and Wizeline Academy teaching
-- [Trajectory](${SITE_ORIGIN}/trajectory/): Map and timeline of work and international trips from Guadalajara
+- [Trajectory](${SITE_ORIGIN}/trajectory/): Map and timeline of work and education trips from Mexico City (Guadalajara until late 2026)
 - [Shelf](${SITE_ORIGIN}/shelf/): Books and physical games Ivan would pack for orbit
 
 ## Agent Interfaces & Machine Discovery
@@ -696,7 +698,7 @@ Every HTML page also supports \`Accept: text/markdown\` content negotiation at i
 - [Resume & Engineering Profile (EN & ES)](${SITE_ORIGIN}/resume/) ([Markdown](${SITE_ORIGIN}/resume/index.md) · [llms.txt](${SITE_ORIGIN}/resume/llms.txt)) — Senior/Staff Software & AI Engineer hiring brief (Netflix, Nubank, Wizeline, Mat X Space) and selective technical advisory.
 - [Software Engineering Mentorship (EN & ES)](${SITE_ORIGIN}/mentorship/) ([Markdown](${SITE_ORIGIN}/mentorship/index.md) · [Live availability](${SITE_ORIGIN}/mentorship/availability.md) · [llms.txt](${SITE_ORIGIN}/mentorship/llms.txt)) — 1-on-1 mentorship, 500 MXN per 45-minute Google Meet session, English or Spanish.
 - [Pricing (Markdown)](${SITE_ORIGIN}/pricing.md) — Transparent pay-per-session mentorship pricing (500 MXN, approx. $25 to $30 USD) and selective advisory note.
-- [Trajectory](${SITE_ORIGIN}/trajectory/) ([Markdown](${SITE_ORIGIN}/trajectory/index.md)) — Timeline and coordinates of work and trips from Guadalajara.
+- [Trajectory](${SITE_ORIGIN}/trajectory/) ([Markdown](${SITE_ORIGIN}/trajectory/index.md)) — Timeline and coordinates of work and education trips from Mexico City (Guadalajara until late 2026).
 - [Shelf](${SITE_ORIGIN}/shelf/) ([Markdown](${SITE_ORIGIN}/shelf/index.md)) — Books and games personal preference kit.
 - [Privacy](${SITE_ORIGIN}/privacy/) ([Markdown](${SITE_ORIGIN}/privacy/index.md)) — Cookieless analytics and mentorship session confidentiality.
 

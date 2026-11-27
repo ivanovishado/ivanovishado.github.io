@@ -11,8 +11,11 @@ export type Pass = { node: number; theta0: number };
 export type Place = { name: string; lat: number; lon: number; short?: string };
 
 export const PLACES = {
+  cdmx: { name: 'Mexico City', lat: 19.4326, lon: -99.1332 },
   gdl: { name: 'Guadalajara', lat: 20.6597, lon: -103.3496 },
   bay: { name: 'Bay Area', lat: 37.39, lon: -122.08 },
+  lgt: { name: 'Los Gatos', lat: 37.2358, lon: -121.9624 },
+  lax: { name: 'Los Angeles', lat: 34.0983, lon: -118.3267 },
   sao: { name: 'São Paulo', lat: -23.5505, lon: -46.6333 },
   ksc: { name: 'Kennedy Space Center', short: 'Kennedy', lat: 28.6082, lon: -80.6041 },
   toronto: { name: 'Toronto', lat: 43.6629, lon: -79.3957 },
@@ -23,7 +26,7 @@ export const PLACES = {
 } satisfies Record<string, Place>;
 
 /** Home station: every pass is sent from here; the work lands elsewhere. */
-export const STATION = PLACES.gdl;
+export const STATION = PLACES.cdmx;
 
 /** Points along the great circle from a to b (degrees), t from 0 to `upto`. */
 export function greatCircle(a: Place, b: Place, upto = 1, steps = 72) {

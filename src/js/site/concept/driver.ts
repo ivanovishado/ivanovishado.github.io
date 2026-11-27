@@ -22,9 +22,9 @@ let readout: HTMLElement[] = [];
 let lastText = '';
 let reducedNow = false;
 
-/** Hero: one continuous orbit that crosses Guadalajara during the intro. */
+/** Hero: one continuous orbit that crosses the home station during the intro. */
 function heroConfig() {
-  const place = PLACES.gdl;
+  const place = STATION;
   const lead = 1.34; // the first revolution is flown during the intro; the second crosses home
   return {
     place,
@@ -52,19 +52,20 @@ function passConfig(key: PlaceKey, descending = false) {
     pass: passOver(place, lead, descending),
     station: key === 'nemo' ? undefined : STATION,
     oceanRings: key === 'nemo',
-    links: (key === 'gdl' || key === 'nemo' ? [] : [{ to: place, kind: key === 'ksc' ? 'trip' : 'signal', key }]) as Link[],
+    links: (key === 'cdmx' || key === 'gdl' || key === 'nemo' ? [] : [{ to: place, kind: key === 'ksc' ? 'trip' : 'signal', key }]) as Link[],
     latSpan: 64,
     center: (w: number, h: number) => ({ lon: place.lon + (w / h > 1.2 ? -8 : 4), lat: place.lat < -40 ? place.lat - 6 : Math.min(40, place.lat) }),
     swath: 7.5,
   };
 }
 
-/** Every trip (solid, it reveals the land it crosses) and where the work lands (dashed). */
+/** Every trip for work or education (solid, it reveals the land it crosses) and where the work lands (dashed). */
 export const TRIPS: Link[] = [
   { to: PLACES.toronto, kind: 'trip', label: '2015', key: 'toronto' },
   { to: PLACES.sao, kind: 'signal', label: 'Nubank', key: 'sao' },
   { to: PLACES.baku, kind: 'trip', label: 'IAC 2023', key: 'baku' },
-  { to: PLACES.bay, kind: 'signal', label: 'Netflix', key: 'bay' },
+  { to: PLACES.lgt, kind: 'trip', label: 'Netflix', key: 'lgt', side: 'left' },
+  { to: PLACES.lax, kind: 'trip', label: 'Netflix LA', key: 'lax' },
   { to: PLACES.samara, kind: 'trip', label: '2024', key: 'samara' },
   { to: PLACES.milan, kind: 'trip', label: 'IAC 2024', key: 'milan' },
   { to: PLACES.ksc, kind: 'trip', label: 'CRS-31, 2024', key: 'ksc' },
@@ -88,7 +89,7 @@ function tripsConfig() {
 export function setTripsHighlight(key: PlaceKey | null) {
   for (const m of mounted) {
     if (m.kind !== 'trips') continue;
-    m.map.setHighlight(key);
+    m.map.setHighlight(key, key ? PLACES[key] : null);
     if (reducedNow || !m.view.isActive) m.map.render(m.phase(gsap.ticker.time), gsap.ticker.time, m.links(gsap.ticker.time));
   }
 }
@@ -96,7 +97,7 @@ export function setTripsHighlight(key: PlaceKey | null) {
 export function configFor(el: HTMLElement) {
   if (el.dataset.track === 'hero') return heroConfig();
   if (el.dataset.track === 'trips') return tripsConfig();
-  const cfg = passConfig((el.dataset.place ?? 'gdl') as PlaceKey, el.dataset.descending !== undefined);
+  const cfg = passConfig((el.dataset.place ?? 'cdmx') as PlaceKey, el.dataset.descending !== undefined);
   // Index strips are wide and short: show more of the Earth around the place.
   return el.dataset.static !== undefined ? { ...cfg, latSpan: 70, swath: 9 } : cfg;
 }
