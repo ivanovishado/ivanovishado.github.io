@@ -89,7 +89,7 @@ function tripsConfig() {
 export function setTripsHighlight(key: PlaceKey | null) {
   for (const m of mounted) {
     if (m.kind !== 'trips') continue;
-    m.map.setHighlight(key);
+    m.map.setHighlight(key, key ? PLACES[key] : null);
     if (reducedNow || !m.view.isActive) m.map.render(m.phase(gsap.ticker.time), gsap.ticker.time, m.links(gsap.ticker.time));
   }
 }

@@ -119,6 +119,7 @@ export class TrackMap {
   private baked = false; // arrived links are drawn into the ground layer once
   private pointer: { x: number; y: number } | null = null;
   private highlight: string | null = null;
+  private highlightPlace: Place | null = null; // a ledger stop without an arc, e.g. an earlier home
 
   constructor(private canvas: HTMLCanvasElement, private o: MapOptions) {
     this.ctx = canvas.getContext('2d')!;
@@ -407,8 +408,9 @@ export class TrackMap {
     this.pointer = { x: (clientX - r.left) * this.dpr, y: (clientY - r.top) * this.dpr };
   }
 
-  setHighlight(key: string | null) {
+  setHighlight(key: string | null, place: Place | null = null) {
     this.highlight = key;
+    this.highlightPlace = place;
   }
 
   coordsAt(phase: number) {
@@ -583,7 +585,19 @@ export class TrackMap {
       return;
     }
     const target = (o.links ?? []).find((l) => l.key === activeKey);
-    if (!target) return;
+    if (!target) {
+      const at = activeKey === this.highlight ? this.highlightPlace : null;
+      if (!at) return;
+      const ax = this.x(at.lon);
+      const ay = this.y(at.lat);
+      const pulse = (time * 0.75) % 1;
+      g.strokeStyle = alpha(this.pal.accent, 0.85 * (1 - pulse * 0.5));
+      g.lineWidth = dpr * 1.5;
+      g.beginPath(); g.arc(ax, ay, (7 + pulse * 14) * dpr, 0, Math.PI * 2); g.stroke();
+      g.fillStyle = this.pal.accentSolid;
+      g.beginPath(); g.arc(ax, ay, 3.2 * dpr, 0, Math.PI * 2); g.fill();
+      return;
+    }
     g.strokeStyle = this.pal.accentSolid;
     g.lineWidth = dpr * 2.2;
     g.setLineDash(target.kind === 'trip' ? [] : [dpr * 5, dpr * 4]);
