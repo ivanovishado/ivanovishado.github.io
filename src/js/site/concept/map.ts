@@ -5,7 +5,8 @@
 import { DEG, INCLINATION, distanceKm, formatCoords, greatCircle, subsolar, trackAt, wrap180, type Pass, type Place } from './orbit';
 import { landRowAt } from './land';
 
-export type Link = { to: Place; kind: 'trip' | 'signal'; label?: string; key?: string };
+/** `side: 'left'` sets a label west of (on narrow maps, above) its marker, apart from a close neighbor. */
+export type Link = { to: Place; kind: 'trip' | 'signal'; label?: string; key?: string; side?: 'left' };
 
 export type MapOptions = {
   /** The ground track. Without one, the map draws only the station and its links. */
@@ -598,7 +599,7 @@ export class TrackMap {
     g.beginPath(); g.arc(end.x, end.y, 3.2 * dpr, 0, Math.PI * 2); g.fill();
   }
 
-  private label(g: CanvasRenderingContext2D, x: number, y: number, text: string, sub?: string) {
+  private label(g: CanvasRenderingContext2D, x: number, y: number, text: string, sub?: string, side?: 'left') {
     const dpr = this.dpr;
     const pad = 12 * dpr;
     if (this.narrow) {
@@ -607,7 +608,7 @@ export class TrackMap {
       g.font = `500 ${11 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
       const tw = g.measureText(text).width;
       const cx = Math.max(pad + tw / 2, Math.min(this.w - pad - tw / 2, x));
-      const cy = Math.max(20 * dpr, Math.min(this.h - 10 * dpr, y + 18 * dpr));
+      const cy = Math.max(20 * dpr, Math.min(this.h - 10 * dpr, y + (side ? -10 : 18) * dpr));
       g.textAlign = 'center';
       g.strokeText(text, cx, cy);
       g.fillStyle = this.pal.inkSolid;
@@ -617,7 +618,7 @@ export class TrackMap {
     }
     g.font = `500 ${12 * dpr}px "JetBrains Mono Variable", ui-monospace, monospace`;
     const tw = Math.max(g.measureText(text).width, sub ? g.measureText(sub).width : 0);
-    const right = x + tw + 24 * dpr > this.w;
+    const right = side === 'left' || x + tw + 24 * dpr > this.w;
     g.textAlign = right ? 'right' : 'left';
     const rawX = right ? x - 12 * dpr : x + 12 * dpr;
     const tx = right ? Math.max(pad + tw, rawX) : Math.min(this.w - pad - tw, rawX);
@@ -690,7 +691,7 @@ export class TrackMap {
       g.lineWidth = dpr;
       g.beginPath(); g.moveTo(ex - s, ey); g.lineTo(ex + s, ey); g.moveTo(ex, ey - s); g.lineTo(ex, ey + s); g.stroke();
       const inView = ex >= -16 * dpr && ex <= this.w + 16 * dpr && ey >= 12 * dpr && ey <= this.h - 12 * dpr;
-      if (o.labels && inView) this.label(g, ex, ey, this.narrow ? l.to.short ?? l.to.name : l.to.name, l.label);
+      if (o.labels && inView) this.label(g, ex, ey, this.narrow ? l.to.short ?? l.to.name : l.to.name, l.label, l.side);
     });
 
     const stationInView = sx >= -16 * dpr && sx <= this.w + 16 * dpr && sy >= 12 * dpr && sy <= this.h - 12 * dpr;

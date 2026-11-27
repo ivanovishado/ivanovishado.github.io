@@ -64,7 +64,7 @@ export const TRIPS: Link[] = [
   { to: PLACES.toronto, kind: 'trip', label: '2015', key: 'toronto' },
   { to: PLACES.sao, kind: 'signal', label: 'Nubank', key: 'sao' },
   { to: PLACES.baku, kind: 'trip', label: 'IAC 2023', key: 'baku' },
-  { to: PLACES.lgt, kind: 'trip', label: 'Netflix', key: 'lgt' },
+  { to: PLACES.lgt, kind: 'trip', label: 'Netflix', key: 'lgt', side: 'left' },
   { to: PLACES.lax, kind: 'trip', label: 'Netflix LA', key: 'lax' },
   { to: PLACES.samara, kind: 'trip', label: '2024', key: 'samara' },
   { to: PLACES.milan, kind: 'trip', label: 'IAC 2024', key: 'milan' },
